@@ -50,7 +50,7 @@ License: http://www.egrappler.com/license.
 
                     var valueLabel = progressContainer.find('.bar-percent');
                     valueLabel.html('0');
-                    valueLabelHeight = parseInt(valueLabel.outerHeight());
+                    valueLabelHeight = parseFloat(valueLabel.outerHeight());
                     valueLabel.css({ top: (settings.barLength - valueLabelHeight) + 'px' });
                 }
 
@@ -58,7 +58,7 @@ License: http://www.egrappler.com/license.
 
                 function animateProgressBar(progressBar) {
 
-                    var level = parseInt(progressBar.attr('data-value'));
+                    var level = parseFloat(progressBar.attr('data-value'));
                     if (level > 100) {
                         level = 100;
                         alert('max value cannot exceed 100 percent');
@@ -69,10 +69,10 @@ License: http://www.egrappler.com/license.
                         progressBar.animate({ width: w }, {
                             duration: 2000,
                             step: function (currentWidth) {
-                                var percent = parseInt(currentWidth / settings.barLength * 100);
+                                var percent = parseFloat(currentWidth / settings.barLength * 100);
                                 if (isNaN(percent))
                                     percent = 0;
-                                progressContainer.find('.bar-percent').html(percent + '%');
+                                progressContainer.find('.bar-percent').html((percent.toFixed(2)) + '%');
                             }
                         });
                     }
@@ -82,10 +82,10 @@ License: http://www.egrappler.com/license.
                         progressBar.animate({ top: h }, {
                             duration: 2000,
                             step: function (currentValue) {
-                                var percent = parseInt((settings.barLength - parseInt(currentValue)) / settings.barLength * 100);
+                                var percent = parseFloat((settings.barLength - parseFloat(currentValue)) / settings.barLength * 100);
                                 if (isNaN(percent))
                                     percent = 0;
-                                progressContainer.find('.bar-percent').html(Math.abs(percent) + '%');
+                                progressContainer.find('.bar-percent').html(percent.toFixed(2) + '%');
                             }
                         });
 

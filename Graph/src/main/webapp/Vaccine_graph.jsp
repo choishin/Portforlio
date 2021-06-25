@@ -230,6 +230,11 @@ body {
 	left: 350px;
 }
 /* 전국:1, 서울:2, 부산:3, 대구:4, 인천:5, 광주:6, 대전:7, 울산:8, 세종:9, 경기:10, 강원:11, 충북:12, 충남:13, 전북:14, 전남:15, 경북:16, 경남:17, 제주:18 */
+footer {
+	position: absolute;
+	top: 1100px;
+	left: 180px;
+}
 </style>
 <link href="css/demo.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="jqbar.css" />
@@ -261,11 +266,9 @@ body {
 	String getPopulation = "select * from population";
 	ResultSet rset = stmt.executeQuery(getPopulation);
 	int totalCnt = 18;
-	String[] city_name = new String[totalCnt];
 	double[] city_population = new double[totalCnt];
 	int index = 0;
 	while (rset.next()) {
-		city_name[index] = rset.getString(1);
 		city_population[index] = rset.getDouble(2);
 		//out.println("<p>"+city_name[index]+"</p>"); 
 		//out.println("<p>"+city_population[index]+"</p>"); 
@@ -288,15 +291,17 @@ body {
 		} else {
 			getVaccine = "select * from vaccine where vaccine_date=" + lastdate + ";";
 		}
+	String[] city_name = new String[totalCnt];
 	double[] first_day_total = new double[totalCnt];
 	double[] second_day_total = new double[totalCnt];
 	int index2 = 0;
 	rset = stmt.executeQuery(getVaccine);
 	while (rset.next()) {
+		city_name[index2] = rset.getString(3);
 		first_day_total[index2] = rset.getInt(5);
 		second_day_total[index2] = rset.getInt(7);
-		// 				out.println("<p>"+first_day_total[index2] +"</p>"); 
-		// 				out.println("<p>"+second_day_total[index2]+"</p>"); 
+// 				out.println("<p>"+first_day_total[index2] +"</p>"); 
+// 				out.println("<p>"+second_day_total[index2]+"</p>");  
 		index2++;
 	}
 	double[] first_percent = new double[totalCnt];
@@ -304,8 +309,8 @@ body {
 	for (int i = 0; i < totalCnt; i++) {
 		first_percent[i] = Double.parseDouble(String.format("%.2f", (first_day_total[i] / city_population[i]) * 100));
 		second_percent[i] = Double.parseDouble(String.format("%.2f", (second_day_total[i] / city_population[i]) * 100));
-		// 		out.println("<p>"+first_percent[i]+"</p>");
-		// 		out.println("<p>"+second_percent[i]+"</p>");
+// 				out.println("<p>"+first_percent[i]+"</p>");
+// 				out.println("<p>"+second_percent[i]+"</p>");
 	}
 	%>
 	<!-- 	<img src="C:\Users\chois\Documents\workspace-spring-tool-suite-4-4.11.0.RELEASE\.metadata\.plugins\org.eclipse.wst.jsdt.core\korea.png"> -->
@@ -406,9 +411,7 @@ body {
 	conn.close();
 	%>
 </body>
-<!-- <center> -->
-<!-- 	<footer style="color: #767676"> -->
-<!--         <p>출처: 질병관리청 코로나19 백신 및 예방접종 - 시도별 접종 현황, KOSIS - 시도별 주민등록 인구현황</p> -->
-<!--     </footer> -->
-<!-- </center> -->
+	<footer style="color: #767676">
+         <p>출처: 질병관리청 코로나19 백신 및 예방접종 - 시도별 접종 현황, KOSIS - 시도별 주민등록 인구현황</p>
+     </footer>
 </html>
