@@ -313,9 +313,6 @@ footer {
 // 				out.println("<p>"+second_percent[i]+"</p>");
 	}
 	%>
-	<!-- 	<img src="C:\Users\chois\Documents\workspace-spring-tool-suite-4-4.11.0.RELEASE\.metadata\.plugins\org.eclipse.wst.jsdt.core\korea.png"> -->
-	<!-- 	<img src='Vaccine.png'> -->
-	<!-- 	<img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fpabf4%2Fbtq77ugEOI4%2FlFJ5MlV7fOiQScL3DGr9j1%2Fimg.png'> -->
 	<div class="mainbody">
 <!-- 	전국:1, 서울:2, 부산:3, 대구:4, 인천:5, 광주:6, 대전:7, 울산:8, 세종:9, 경기:10, 강원:11, 충북:12, 충남:13, 전북:14, 전남:15, 경북:16, 경남:17, 제주:18 -->
 		<div id="bar-1"></div>
