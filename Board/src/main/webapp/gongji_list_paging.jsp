@@ -162,11 +162,11 @@ h1, h4 {
 				//보여줄 글 시작번호 -> LineCnt
 				int LineCnt = 1;
 				while (rset.next()) {
-					if (LineCnt <= Integer.parseInt(fromPT)) {
+					if (LineCnt < Integer.parseInt(fromPT)) {
 						LineCnt++;
 						continue;
 					}
-					if (LineCnt >= Integer.parseInt(fromPT) + (Integer.parseInt(cntPT)) - 1) {
+					if (LineCnt > Integer.parseInt(fromPT) + (Integer.parseInt(cntPT)) - 1) {
 						break;
 					}
 					int id = rset.getInt(1);
@@ -237,7 +237,7 @@ h1, h4 {
 						 * ◀◀: 첫 페이지로 이동
 						 * ◀  : 이전 페이지로 이동
 						 **************************/
-						out.println("<li class='page-item'><a class='page-link' href='gongji_list3.jsp?from="
+						out.println("<li class='page-item'><a class='page-link' href='gongji_list_paging.jsp?from="
 								+ (pageNum - 2) * Integer.parseInt(cntPT) + "&cnt=" + cntPT + "'>Previous</a></li>");
 						if (Integer.parseInt(cntPT) == 1) {
 							for (int i = startPage; i <= endPage; i++) {
@@ -245,7 +245,7 @@ h1, h4 {
 							endPage = totalPage;
 							endPage++;
 								}
-								out.println("<li class='page-item'><a class='page-link' href='gongji_list3.jsp?from="
+								out.println("<li class='page-item'><a class='page-link' href='gongji_list_paging.jsp?from="
 								+ ((i - 1) * Integer.parseInt(cntPT)) + "&cnt=" + cntPT + "'>" + i + "</a></li>");
 							}
 						} else {
@@ -253,7 +253,7 @@ h1, h4 {
 								if (endPage > totalPage) {
 							endPage = totalPage;
 								} //마지막 페이지는 항상 10만을 출력하진 않도록 합니다.
-								out.println("<li class='page-item'><a class='page-link' href='gongji_list3.jsp?from="
+								out.println("<li class='page-item'><a class='page-link' href='gongji_list_paging.jsp?from="
 								+ ((i - 1) * Integer.parseInt(cntPT)) + "&cnt=" + cntPT + "'>" + i + "</a></li>");
 							}
 						}
@@ -261,7 +261,7 @@ h1, h4 {
 						 * ▶  : 다음 페이지로 이동
 						 * ▶▶: 끝 페이지로 이동
 						 **************************/
-						out.println("<li class='page-item'><a class='page-link' href='gongji_list3.jsp?from="
+						out.println("<li class='page-item'><a class='page-link' href='gongji_list_paging.jsp?from="
 								+ (pageNum) * Integer.parseInt(cntPT) + "&cnt=" + cntPT + "'>Next</a></li>");
 
 						// for debuging
