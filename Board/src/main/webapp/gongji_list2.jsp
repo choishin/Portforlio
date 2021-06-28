@@ -79,7 +79,7 @@ h1, h4 {
 			<%
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
-				Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.171.18:3306/kopoctc?autoReconnect=true", "root",
+				Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc?autoReconnect=true", "root",
 				"kopoctc");
 				Statement stmt = conn.createStatement();
 

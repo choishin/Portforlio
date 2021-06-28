@@ -4,7 +4,6 @@
 <%
 request.setCharacterEncoding("UTF-8");
 String keyword = request.getParameter("keyword");
-out.println(keyword);
 %>
 <html>
 <head>
@@ -54,6 +53,30 @@ tr, th {
 }
 </style>
 </head>
+<%
+try {
+	Class.forName("com.mysql.cj.jdbc.Driver");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+	Statement stmt = conn.createStatement();
+
+	String QueryTxt;
+	QueryTxt = String.format(
+	"SELECT * FROM gongji WHERE title LIKE '%%" + keyword + "%%' or content like '%%" + keyword + "%%';");
+
+	ResultSet rset = stmt.executeQuery(QueryTxt);
+	String result_id = "";
+	String noResult = "";
+	while (rset.next()) {
+		result_id = rset.getString(1);
+
+		if (result_id == "" || result_id == null) {
+			noResult = "<h3> 검색 결과가 없습니다</h3>";
+		} else {
+			noResult = "<h3>" + keyword + "검색 결과 </h3>";
+		}
+	}
+
+%>
 <body>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -79,67 +102,62 @@ tr, th {
 				</ul>
 				<form class="d-flex" method='get' action='gongji_search.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> 
-					<input class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input
+						class="btn btn-outline-secondary" type="submit" value="Search">
 				</form>
 			</div>
 		</div>
 	</nav>
-	<%
-	try {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.171.18:3306/kopoctc", "root", "kopoctc");
-		Statement stmt = conn.createStatement();
+	<br>
+		<%out.println(noResult);%>
+		<br>
+	<table class="table table-hover">
+		<thead>
+		<% 
 
-		String QueryTxt;
-		QueryTxt = String.format(
-		"SELECT * FROM gongji WHERE title LIKE '%%" + keyword + "%%' or content like '%%" + keyword + "%%';");
+				stmt = conn.createStatement();
+				QueryTxt = String.format(
+				"SELECT * FROM gongji WHERE title LIKE '%%" + keyword + "%%' or content like '%%" + keyword + "%%';");
 
-		ResultSet rset = stmt.executeQuery(QueryTxt);
-		String id = "";
-		String title = "";
-		String date = "";
-		String content = "";
-		String viewcnt = "";
-		String noResult ="";
-		while (rset.next()) {
-			id = rset.getString(1);
-			title = rset.getString(2);
-			date = rset.getString(3);
-			content = rset.getString(4);
-			viewcnt = rset.getString(5);
+				rset = stmt.executeQuery(QueryTxt);
+				String id = "";
+				String title = "";
+				String date = "";
+				String content = "";
+				String viewcnt = "";
+				while (rset.next()) {
+					id = rset.getString(1);
+					title = rset.getString(2);
+					date = rset.getString(3);
+					content = rset.getString(4);
+					viewcnt = rset.getString(5);
 
-			if (id == "" || id == null) {
-			noResult ="<h3> 검색 결과가 없습니다</h3>";
-			}
-			else {
-			noResult ="";
-			}
+					out.println("<tr>");
+					out.println("<td>");
+					out.println(id);
+					out.println("</th>");
+					out.println("<td'>");
+					out.println(title);
+					out.println("</td>");
+					out.println("<td>");
+					out.println(date);
+					out.println("</td>");
+					out.println("<td>");
+					out.println(content);
+					out.println("</td>");
+					out.println("</tr>");
 
-			out.println("<table>");
-			out.println("<tr>");
-			out.println("<td>");
-			out.println(id);
-			out.println("</td>");
-			out.println("<td>");
-			out.println(title);
-			out.println("</td>");
-			out.println("<td>");
-			out.println(date);
-			out.println("</td>");
-			out.println("<td>");
-			out.println(content);
-			out.println("</td>");
-			out.println("</tr>");
-			out.println("</table>");
-
-		}
-	%>
+				}
+			%>
+		
+		</tbody>
+	</table>
 	<div class="container">
 		<div id="textbox">
 			<table>
 				<tr>
-					<td colspan="2"><%out.println(noResult);%></td>
+					<td colspan="2">
+					</td>
 				</tr>
 				<tr>
 					<td width="100"></td>
@@ -151,7 +169,6 @@ tr, th {
 			</table>
 		</div>
 	</div>
-	</form>
 	<script>
 		function characterCheck(obj) {
 			var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;

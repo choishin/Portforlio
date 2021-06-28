@@ -4,7 +4,7 @@
 <%
 try {
 	Class.forName("com.mysql.cj.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.171.18:3306/kopoctc", "root", "kopoctc");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
 	Statement stmt = conn.createStatement();
 
 	String QueryTxt;
@@ -275,9 +275,9 @@ h1, h4 {
 									+ ((pageNum-1) * Integer.parseInt(cntPT)+1) + "&cnt=" + cntPT + "'>Next</a></li>");
 
 						// for debuging
-						out.println("pageNum : " + pageNum);
-						out.println("fromPT : " + Integer.parseInt(fromPT));
-						out.println("나머지 : " + LineCnt % (Integer.parseInt(cntPT)));
+// 						out.println("pageNum : " + pageNum);
+// 						out.println("fromPT : " + Integer.parseInt(fromPT));
+// 						out.println("나머지 : " + LineCnt % (Integer.parseInt(cntPT)));
 
 						rset.close();
 						stmt.close();
