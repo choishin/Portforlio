@@ -3,6 +3,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+<%
+request.setCharacterEncoding("UTF-8");
+String budget = request.getParameter("budget");
+out.println(budget);
+%>
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,7 +36,7 @@
 	align-items: center;
 }
 
-#inputbox {
+#tablebox {
 	width: 1000px;
 	margin-top: 50px;
 	display: flex;
@@ -62,21 +67,29 @@ h1, h4 {
 		crossorigin="anonymous"></script>
 	<div class="container">
 		<div id="textbox">
-			<h1>서현역 맛집 추천 봇 <- 제목은 바뀔 것임!</h1>
+			<h1>
+				입력하신<%=budget%>원 으로 갈 수 있는 맛집은!
+			</h1>
 		</div>
-		<div id="inputbox">
-			<div id="space2"></div>
-			<div class="input-group input-group-lg">
-				<form class="d-flex" method='get' action='Gourmet_search.jsp'>
-					<div class="input-group input-group-lg">
-						<input type="text" class="form-control" placeholder="가격을 입력해주세요"
-							aria-label="Sizing example input"
-							aria-describedby="inputGroup-sizing-lg" name="budget">
-					</div>
-					<div id="space1"></div>
-					<input type="submit" class="btn btn-outline-primary btn-lg" value="입력">
-				</form>
-			</div>
+		<div id="tablebox">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">First</th>
+						<th scope="col">Last</th>
+						<th scope="col">Handle</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">1</th>
+						<td>Mark</td>
+						<td>Otto</td>
+						<td>@mdo</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </body>

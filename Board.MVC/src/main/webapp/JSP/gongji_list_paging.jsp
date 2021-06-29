@@ -9,7 +9,6 @@ try {
 
 	String QueryTxt;
 	QueryTxt = String.format("select count(*) from gongji;");
-// 	QueryTxt = String.format("select count(*) from gongji where title not in('삭제된 글 입니다.');");
 
 	ResultSet rset = stmt.executeQuery(QueryTxt);
 	int totalCnt = 0;
@@ -18,15 +17,15 @@ try {
 	}
 	//총 게시글 수 -> totalcnt
 	// default = 0, Contents가 출력되기 시작하는 위치
-	String fromPT = "1";
+	String fromPT = "0";
 	if (request.getParameter("from") == null) {
-		fromPT = "1";
-	} else if (Integer.parseInt(request.getParameter("from")) <0) {
-		fromPT = "1";
+		fromPT = "0";
+	} else if (Integer.parseInt(request.getParameter("from")) < 0) {
+		fromPT = "0";
 	} else {
 		fromPT = request.getParameter("from");
 	}
-	// default = 0, 한 페이지에 출력될 게시글 수
+	// default = 1, 한 페이지에 출력될 게시글 수
 	String cntPT = "10";
 	if (request.getParameter("cnt") == null) {
 		cntPT = "10";
@@ -49,12 +48,11 @@ try {
 	throw new Exception();
 		}
 	}
-	//예를들어 총 글이 10개가 있는데, 11번째 글을 보겠다.
-	//->그럼 fromPT는 10개가 되야함.
 	if (Integer.parseInt(fromPT) > totalCnt) {
 		fromPT = Integer.toString(totalCnt - (totalCnt % Integer.parseInt(cntPT)));
-	}
-
+	}	
+	out.println(fromPT);
+	out.println(cntPT);
 %>
 <html>
 <head>
@@ -153,22 +151,22 @@ h1, h4 {
 				<tr>
 					<th scope="col" width="50px"><p align=center>번호</p></th>
 					<th scope="col" width="400px"><p align=center>제목</p></th>
-					<th scope="col" width="100px"><p align=center>조회수</p></th>					
+					<th scope="col" width="100px"><p align=center>조회수</p></th>
 					<th scope="col" width="200px"><p align=center>등록일</p></th>
 				</tr>
 			<tbody>
 <%
 				stmt = conn.createStatement();
-				QueryTxt = String.format("select * from gongji order by id desc;");
+				QueryTxt = String.format("select * from gongji;");
 				rset = stmt.executeQuery(QueryTxt);
+				//보여줄 글 시작번호 -> LineCnt
 				int LineCnt = 1;
-				int removeCnt = 0;
 				while (rset.next()) {
 					if (LineCnt < Integer.parseInt(fromPT)) {
 						LineCnt++;
 						continue;
 					}
-					if (LineCnt > Integer.parseInt(fromPT) + (Integer.parseInt(cntPT)) -1) {
+					if (LineCnt > Integer.parseInt(fromPT) + (Integer.parseInt(cntPT)) - 1) {
 						break;
 					}
 					int id = rset.getInt(1);
@@ -176,11 +174,6 @@ h1, h4 {
 					String date = rset.getString(3);
 					String content = rset.getString(4);
 					String viewcnt = rset.getString(5);
-					
-					if(title.contains("삭제된 글 입니다.")) {
-						removeCnt++;
-						continue;
-					}
 					out.print("<tr>");
 					out.print("<th scope='row' width='50px;'> <p align=center>" + id + "</p></th>");
 					out.print("<td width=500 width='400px'><p align=center><a href='gongji_view.jsp?get_id=" + id + "'>" + title
@@ -190,9 +183,6 @@ h1, h4 {
 					out.print("</tr>");
 					LineCnt++;
 				}
-				
-				LineCnt = LineCnt - removeCnt;
-				totalCnt = totalCnt - removeCnt;
 			
 				// default = 1, 현재 페이지 수
 				int pageNum = ((LineCnt - 1) / Integer.parseInt(cntPT)) + 1;
@@ -247,37 +237,37 @@ h1, h4 {
 						 * ◀◀: 첫 페이지로 이동
 						 * ◀  : 이전 페이지로 이동
 						 **************************/
-						out.println("<li class='page-item'><a class='page-link' href='gongji_list.jsp?from="
-								+ (((pageNum - 2) * Integer.parseInt(cntPT))+1-removeCnt) + "&cnt=" + cntPT + "'>Previous</a></li>");
+						out.println("<li class='page-item'><a class='page-link' href='gongji_list_paging.jsp?from="
+								+ (pageNum - 2) * Integer.parseInt(cntPT) + "&cnt=" + cntPT + "'>Previous</a></li>");
 						if (Integer.parseInt(cntPT) == 1) {
 							for (int i = startPage; i <= endPage; i++) {
 								if (endPage > totalPage) {
 							endPage = totalPage;
 							endPage++;
 								}
-								out.println("<li class='page-item'><a class='page-link' href='gongji_list.jsp?from="
-								+ ((i -1) * Integer.parseInt(cntPT)+1) + "&cnt=" + cntPT + "'>" + i + "</a></li>");
+								out.println("<li class='page-item'><a class='page-link' href='gongji_list_paging.jsp?from="
+								+ ((i - 1) * Integer.parseInt(cntPT)) + "&cnt=" + cntPT + "'>" + i + "</a></li>");
 							}
 						} else {
 							for (int i = startPage; i <= endPage; i++) {
 								if (endPage > totalPage) {
 							endPage = totalPage;
 								} //마지막 페이지는 항상 10만을 출력하진 않도록 합니다.
-								out.println("<li class='page-item'><a class='page-link' href='gongji_list.jsp?from="
-								+ ((i -1) * Integer.parseInt(cntPT)+1) + "&cnt=" + cntPT + "'>" + i + "</a></li>");
+								out.println("<li class='page-item'><a class='page-link' href='gongji_list_paging.jsp?from="
+								+ ((i - 1) * Integer.parseInt(cntPT)) + "&cnt=" + cntPT + "'>" + i + "</a></li>");
 							}
 						}
 						/***************************
 						 * ▶  : 다음 페이지로 이동
 						 * ▶▶: 끝 페이지로 이동
 						 **************************/
-						 out.println("<li class='page-item'><a class='page-link' href='gongji_list.jsp?from="
-									+ ((pageNum-1) * Integer.parseInt(cntPT)+1) + "&cnt=" + cntPT + "'>Next</a></li>");
+						out.println("<li class='page-item'><a class='page-link' href='gongji_list_paging.jsp?from="
+								+ (pageNum) * Integer.parseInt(cntPT) + "&cnt=" + cntPT + "'>Next</a></li>");
 
 						// for debuging
-// 						out.println("pageNum : " + pageNum);
-// 						out.println("fromPT : " + Integer.parseInt(fromPT));
-// 						out.println("나머지 : " + LineCnt % (Integer.parseInt(cntPT)));
+						// out.println("pageNum : " + pageNum);
+						// out.println("fromPT : " + Integer.parseInt(fromPT));
+						// out.println("나머지 : " + LineCnt % (Integer.parseInt(cntPT)));
 
 						rset.close();
 						stmt.close();

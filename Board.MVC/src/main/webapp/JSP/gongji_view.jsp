@@ -75,7 +75,7 @@ width: 200px;
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="gongji_list.jsp">Home</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='BoardItem1.jsp'>board1</a></li>
+						href='gongji_list.jsp'>board1</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href='gongji_list2.jsp'>board2</a></li>
 				</ul>
@@ -158,7 +158,7 @@ width: 200px;
 					<%
 					try {
 						Class.forName("com.mysql.cj.jdbc.Driver");
-						Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+						Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.171.18:3306/kopoctc", "root", "kopoctc");
 						Statement stmt = conn.createStatement();
 
 						String QueryTxt;
@@ -240,7 +240,7 @@ width: 200px;
 			<th scope="col" width=450></th>
 		</tr>
 	</table>
-</div>
+<div>
 	<script>
 		function characterCheck(obj) {
 			var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;
