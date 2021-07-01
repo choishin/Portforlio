@@ -12,7 +12,6 @@ String budget = request.getParameter("budget");
 %>
 <!-- Required meta tags -->
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -84,12 +83,11 @@ h1, h4 {
 				</thead>
 				<tbody>
 				<%
-				GourmetDao gourmetDao = new GourmetDao();
+				GourmetDao gourmetDao = new GourmetDao();			
 						List<Price> selected = gourmetDao.getPrice(Integer.parseInt(budget));				
 						for(int i=0; i<selected.size(); i++) {
 							Price price = new Price();
 							price = selected.get(i);						
-							if (price.getGourmet_price().equals("변동"))
 							out.println("<tr>");
 							out.println("<td width=400px><a href='Gourmet_detail.jsp?gourmet_name="+price.getGourmet_name()+"'>"+price.getGourmet_name()+"</a></td>");
 							out.println("<td width=400px>"+price.getGourmet_menu()+"</td>");

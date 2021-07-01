@@ -35,8 +35,7 @@ body {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 900px 1000px;
-/* 	background-image: url('korea.png'); */
-	background-image: url('resources/img/korea.png');
+ 	background-image: url('korea.png'); 
 }
 
 #bar-1 {
@@ -52,13 +51,13 @@ body {
 
 #bar-2 {
 	position: absolute;
-	top: 130px;
-	left: 310px;
+	top: 100px;
+	left: 330px;
 }
 #bar-2-1 {
 	position: absolute;
-	top: 130px;
-	left: 410px;
+	top: 100px;
+	left: 430px;
 }
 #bar-3 {
 	position: absolute;
@@ -82,32 +81,32 @@ body {
 }
 #bar-5 {
 	position: absolute;
-	top: 190px;
-	left: 100px;
+	top: 200px;
+	left: 180px;
 }
 #bar-5-1 {
 	position: absolute;
-	top: 190px;
-	left: 210px;
+	top: 200px;
+	left: 280px;
 }
 #bar-6 {
 	position: absolute;
-	top: 620px;
+	top: 580px;
 	left: 220px;
 }
 #bar-6-1 {
 	position: absolute;
-	top: 620px;
+	top: 580px;
 	left: 320px;
 }
 #bar-7 {
 	position: absolute;
-	top: 380px;
+	top: 350px;
 	left: 320px;
 }
 #bar-7-1 {
 	position: absolute;
-	top: 380px;
+	top: 350px;
 	left: 420px;
 }
 #bar-8 {
@@ -122,54 +121,63 @@ body {
 }
 #bar-9 {
 	position: absolute;
-	top: 310px;
-	left: 120px;
+	top: 300px;
+	left: 150px;
 }
 #bar-9-1 {
 	position: absolute;
-	top: 310px;
-	left: 220px;
+	top: 300px;
+	left: 250px;
 }
-
 #bar-10 {
 	position: absolute;
 	top: 250px;
-	left: 320px;
+	left: 350px;
 }
 #bar-10-1 {
 	position: absolute;
 	top: 250px;
-	left: 420px;
+	left: 460px;
+}
+#bar-10 {
+	position: absolute;
+	top: 200px;
+	left: 400px;
+}
+#bar-10-1 {
+	position: absolute;
+	top: 200px;
+	left: 500px;
 }
 #bar-11 {
 	position: absolute;
-	top: 200px;
-	left: 580px;
+	top: 140px;
+	left: 550px;
 }
 #bar-11-1 {
 	position: absolute;
-	top: 200px;
-	left: 680px;
+	top: 140px;
+	left: 650px;
 }
 #bar-12 {
 	position: absolute;
 	top: 300px;
-	left: 490px;
+	left: 450px;
 }
 #bar-12-1 {
 	position: absolute;
 	top: 300px;
-	left: 590px;
+	left: 550px;
 }
 #bar-13 {
 	position: absolute;
-	top: 440px;
-	left: 100px;
+	top: 420px;
+	left: 180px;
 }
 #bar-13-1 {
 	position: absolute;
-	top: 440px;
-	left: 200px;
+	top: 420px;
+	left: 280px;
 }
 #bar-14 {
 	position: absolute;
@@ -183,42 +191,42 @@ body {
 }
 #bar-15 {
 	position: absolute;
-	top: 680px;
+	top: 650px;
 	left: 400px;
 }
 #bar-15-1 {
 	position: absolute;
-	top: 680px;
-	left: 500px;
+	top: 650px;
+	left: 480px;
 }
 #bar-16 {
 	position: absolute;
 	top: 350px;
-	left: 680px;
+	left: 650px;
 }
 #bar-16-1 {
 	position: absolute;
 	top: 350px;
-	left: 780px;
+	left: 750px;
 }
 #bar-17 {
 	position: absolute;
-	top: 580px;
+	top: 560px;
 	left: 540px;
 }
 #bar-17-1 {
 	position: absolute;
-	top: 580px;
+	top: 560px;
 	left: 640px;
 }
 #bar-18 {
 	position: absolute;
-	top: 810px;
+	top: 780px;
 	left: 250px;
 }
 #bar-18-1 {
 	position: absolute;
-	top: 810px;
+	top: 780px;
 	left: 350px;
 }
 /* 전국:1, 서울:2, 부산:3, 대구:4, 인천:5, 광주:6, 대전:7, 울산:8, 세종:9, 경기:10, 강원:11, 충북:12, 충남:13, 전북:14, 전남:15, 경북:16, 경남:17, 제주:18 */
@@ -235,68 +243,43 @@ footer {
 	<%
 	java.util.Date date = new java.util.Date();
 	SimpleDateFormat sdf_title1 = new SimpleDateFormat("yyyyMMdd");
-	String lastdate = "";
-	int lastdate_int =0;
-	if(sdf_title1.format(date).substring(4,6).equals("02") || sdf_title1.format(date).substring(4,6).equals("04") || sdf_title1.format(date).substring(4,6).equals("06") || sdf_title1.format(date).substring(4,6).equals("08") ||
-			sdf_title1.format(date).substring(4,6).equals("09") || sdf_title1.format(date).substring(4,6).equals("11") ||sdf_title1.format(date).substring(4,6).equals("01")) {		
-	if (sdf_title1.format(date).substring(6,8).equals("01")) {
-		lastdate = "0"+Integer.toString(Integer.parseInt(sdf_title1.format(date).substring(4,6))-1).concat("31");
-		lastdate_int = Integer.parseInt(lastdate);
-	}
-	}else if (sdf_title1.format(date).substring(4,6).equals("05") || sdf_title1.format(date).substring(4,6).equals("07") || sdf_title1.format(date).substring(4,6).equals("10")||sdf_title1.format(date).substring(4,6).equals("12")){
-		if (sdf_title1.format(date).substring(6,8).equals("01")) {
-			lastdate = "0"+Integer.toString(Integer.parseInt(sdf_title1.format(date).substring(4,6))-1).concat("30");
-			lastdate_int = Integer.parseInt(lastdate);
-		}
-	}
-	else {
-		lastdate_int = Integer.parseInt(sdf_title1.format(date)) - 1;
-		lastdate = "0"+Integer.toString(lastdate_int);
-	}
-
-//  out.println(lastdate);
-// 	out.println(lastdate_int); 
-	String lastdate_str = sdf_title1.format(date);
- 	String today_year = lastdate_str.substring(0, 4);
-// 	String today_month = lastdate_str.substring(4, 6);
-// 	String today_date = lastdate_str.substring(6, 8); 
-
+	int lastdate_int = Integer.parseInt(sdf_title1.format(date)) - 1;
+	String lastdate_str = Integer.toString(lastdate_int);
+	String today_year = lastdate_str.substring(0, 4);
+	String today_month = lastdate_str.substring(4, 6);
+	String today_date = lastdate_str.substring(6, 8);
 	%>
 		<div class="title">
 			<h1 style="font-weight: bold; color: #767676">대한민국 시도별 백신 예방 접종
 				현황</h1>
 			<h2 style="font-weight: bold; color: #767676">
 				기준일자:<%=today_year%>년
-				<%=lastdate.substring(0,2)%>월
-				<%=lastdate.substring(2,4)%>일
+				<%=today_month%>월
+				<%=today_date%>일
 			</h2>
 		</div>
 	<%
 	Class.forName("com.mysql.cj.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.171.18:3306/kopoctc", "root", "kopoctc");
 	Statement stmt = conn.createStatement();
 
 	String getPopulation = "select * from population";
 	ResultSet rset = stmt.executeQuery(getPopulation);
 	int totalCnt = 18;
 	double[] city_population = new double[totalCnt];
-// 	String[] city_temp = new String[totalCnt];
 	int index = 0;
 	while (rset.next()) {
-// 		city_temp[index] = rset.getString(1);
 		city_population[index] = rset.getDouble(2);
-// 		out.println("<p>"+city_temp[index]+"</p>"); 
-// 		out.println("<p>"+city_population[index]+"</p>"); 
+		//out.println("<p>"+city_name[index]+"</p>"); 
+		//out.println("<p>"+city_population[index]+"</p>"); 
 		index++;
 	}
 	%>
 	<%
 	SimpleDateFormat sdf = new SimpleDateFormat("MMdd");
-	String today = sdf.format(date);
+	String today = sdf.format(date).replace("0", "");
 	int today_parse = Integer.parseInt(today);
-/* 	int lastdate = today_parse - 1; */
-// 	out.println(today_parse);
-// 	out.println(lastdate);
+	int lastdate = today_parse - 1;
 	String getVaccine = "select * from vaccine where vaccine_date=" + lastdate + ";";
 		rset = stmt.executeQuery(getVaccine);
 		String lastdate_query = "";
@@ -304,7 +287,7 @@ footer {
 			lastdate_query = rset.getString(1);
 		}
 		if (lastdate_query == null || lastdate_query == "") {
-			getVaccine = "select * from vaccine where vaccine_date=" + (lastdate_int - 1) + ";";
+			getVaccine = "select * from vaccine where vaccine_date=" + (lastdate - 1) + ";";
 		} else {
 			getVaccine = "select * from vaccine where vaccine_date=" + lastdate + ";";
 		}

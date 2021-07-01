@@ -28,4 +28,41 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/main/webapp/resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>src/main/webapp/resources/img</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>src/main/webapp/resources/img/chinese.jpg</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/Portforlio-main/Portforlio-main/Gourmet/src/main/webapp/resources/img/chinese.jpg</locationURI>
+		</link>
+		<link>
+			<name>src/main/webapp/resources/img/korean.jpg</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/Portforlio-main/Portforlio-main/Gourmet/src/main/webapp/resources/img/korean.jpg</locationURI>
+		</link>
+		<link>
+			<name>src/main/webapp/resources/img/main.jpg</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/Portforlio-main/Portforlio-main/Gourmet/src/main/webapp/resources/img/main.jpg</locationURI>
+		</link>
+		<link>
+			<name>src/main/webapp/resources/img/western.jpg</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/Portforlio-main/Portforlio-main/Gourmet/src/main/webapp/resources/img/western.jpg</locationURI>
+		</link>
+		<link>
+			<name>src/main/webapp/resources/img/world.jpg</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/Portforlio-main/Portforlio-main/Gourmet/src/main/webapp/resources/img/world.jpg</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

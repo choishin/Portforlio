@@ -9,8 +9,7 @@ import java.util.List;
 
 public class GourmetDao {
 	public List<Price> getPrice(int price) {
-		List<Price> selected = new ArrayList<Price>();
-		
+		List<Price> selected = new ArrayList<Price>();	
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");

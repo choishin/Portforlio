@@ -10,7 +10,7 @@ License: http://www.egrappler.com/license.
         jqbar: function (options) {
             var settings = $.extend({
                 animationSpeed: 2000,
-                barLength: 150,
+                barLength: 200,
                 orientation: 'h',
                 barWidth: 15,
                 barColor: 'red',
