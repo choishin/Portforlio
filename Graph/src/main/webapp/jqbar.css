@@ -1,7 +1,6 @@
 .jqbar
 {
     position: relative;
-    top: 100px;
 }
 .jqbar.vertical
 {
@@ -19,7 +18,7 @@
     font-size: 13px;
     font-weight: bold;
     position: absolute;
-    height: 20px;
+    height: 30px;
     margin-bottom: 5px;
     width: 100%;
 }
@@ -40,14 +39,14 @@
 {
     display: inline-block;
     margin-left: 5px;
-    font-size: 11px;
+    font-size: 18px;
     font-weight: bold;
 }
 .jqbar.horizontal .bar-percent
 {
-    font-size: 11px;
+    font-size: 18px;
     font-weight: bold;
-    height: 20px;
+    height: 30px;
     margin-bottom: 5px;
 }
 

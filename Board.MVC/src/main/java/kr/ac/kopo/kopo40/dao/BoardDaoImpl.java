@@ -22,7 +22,7 @@ public class BoardDaoImpl implements BoardDao {
 	public void create(Board board) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -41,7 +41,7 @@ public class BoardDaoImpl implements BoardDao {
 		Board selectOne = new Board();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -68,7 +68,7 @@ public class BoardDaoImpl implements BoardDao {
 		List<Board> boardAll = new ArrayList<Board>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -101,7 +101,7 @@ public class BoardDaoImpl implements BoardDao {
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -122,7 +122,7 @@ public class BoardDaoImpl implements BoardDao {
 		int board_index = board.getBoard_index();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -141,7 +141,7 @@ public class BoardDaoImpl implements BoardDao {
 		int totalCnt = 0;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
 			Statement stmt = conn.createStatement();
 			String QueryTxt;
 			QueryTxt = String.format("select count(*) from boardList;");
@@ -159,7 +159,7 @@ public class BoardDaoImpl implements BoardDao {
 		int get_id = 0;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;

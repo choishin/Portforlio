@@ -135,6 +135,9 @@ try {
 				<%
 				//보드 전체를 가지고 온다
 				List<Board> boardAll = bs.selectAll();
+				
+				request.setAttribute("boardAll", boardAll);
+				
 				int BoardCnt = 1;
 				int removeCnt = 0;
 				for (int i = 0; i < boardAll.size(); i++) {
@@ -242,9 +245,9 @@ try {
 		</div>
 	</div>
 	<%-- <c:set var="board" value="<%=boards%>"/> --%>
-	<c:forEach var="board" items="${boards}" varStatus="status">
-		<p>${status.count}:
-			<c:out value="${board}" />
+	<c:forEach var="board" items="${boardAll}">
+		<p>
+			<c:out value="${board.board_title}" />
 		</p>
 		<br>
 	</c:forEach>

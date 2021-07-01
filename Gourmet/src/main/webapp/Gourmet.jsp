@@ -12,31 +12,58 @@
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
-<title>서현역 주변 맛집 추천봇</title>
+<title>맛집을 알려드립니다!</title>
 <style>
+@import url(//fonts.googleapis.com/earlyaccess/jejumyeongjo.css);
+
+body {
+	font-family: 'Jeju Myeongjo', serif;
+}
+
+html {
+	background: url('resources/img/main.jpg') no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	opacity: 70%;
+}
+
 .contaner {
-	/*flex : 정렬을 위한 컨테이너*/
 	display: flex;
-	/*주측 방향 정렬 (가로에서만)*/
 	justify-content: flex-start;
-	/*교차측 방향 정렬 (가로세로모두에서)*/
 	align-items: flex-start;
 }
 
-#textbox {
-	width: 1000px;
-	margin-top: 100px;
+.textcontainer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
+#textbox {
+	position: fixed;
+	top: 300px;
+	left: 400px;
+	width: 800px;
+	padding: 50px 0px;
+	border: 1px solid #ffffff;
+	background: rgba(255, 255, 255, 0);
+	text-align: center;
+	z-index: -1;
+}
+
+#textbox:hover {
+	background: rgba(0, 0, 0, 0.2);
+	opacity: 1.0;
+	color: #767676;
+}
+
 #inputbox {
-	width: 1000px;
-	margin-top: 50px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	opacity: 1;
 }
 
 #space1 {
@@ -46,11 +73,12 @@
 
 #space2 {
 	display: block;
-	width: 500px;
+	width: 350px;
 }
 
 h1, h4 {
-	color: #767676;
+	display: inline;
+	color: #ffffff;
 }
 </style>
 </head>
@@ -61,22 +89,29 @@ h1, h4 {
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous"></script>
 	<div class="container">
-		<div id="textbox">
-			<h1>서현역 맛집 추천 봇 <- 제목은 바뀔 것임!</h1>
-		</div>
-		<div id="inputbox">
-			<div id="space2"></div>
-			<div class="input-group input-group-lg">
-				<form class="d-flex" method='get' action='Gourmet_search.jsp'>
-					<div class="input-group input-group-lg">
-						<input type="text" class="form-control" placeholder="가격을 입력해주세요"
-							aria-label="Sizing example input"
-							aria-describedby="inputGroup-sizing-lg" name="budget">
+		<div class="textcontainer">
+			<div id="textbox">
+				<h1>
+					서현역에서
+					<div id="inputbox">
+						<div id="space2"></div>
+						<div class="input-group input-group-lg">
+							<form class="d-flex" method='get' action='Gourmet_search.jsp'>
+								<div class="input-group input-group-lg">
+									<input type="text" class="form-control"
+										placeholder="가격을 입력해주세요" aria-label="Sizing example input"
+										aria-describedby="inputGroup-sizing-lg" name="budget">
+								</div>
+								<div id="space1"></div>
+								<input type="submit" class="btn btn-outline-primary btn-lg"
+									value="입력">
+							</form>
+						</div>
 					</div>
-					<div id="space1"></div>
-					<input type="submit" class="btn btn-outline-primary btn-lg" value="입력">
-				</form>
+					원으로 갈 수 있는 맛집은?
+				</h1>
 			</div>
+
 		</div>
 	</div>
 </body>

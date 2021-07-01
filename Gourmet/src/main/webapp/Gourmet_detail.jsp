@@ -1,13 +1,15 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*"%>
 <%@ page import="Gourmet.Price"%>
+<%@ page import="Gourmet.Main"%>
+<%@ page import="Gourmet.Image"%>
 <%@ page import="Gourmet.GourmetDao"%>
 <!doctype html>
 <html lang="en">
 <head>
 <%
 request.setCharacterEncoding("UTF-8");
-String budget = request.getParameter("budget");
+String gourmet_name = request.getParameter("gourmet_name");
 // out.println(budget);
 %>
 <!-- Required meta tags -->
@@ -46,6 +48,14 @@ String budget = request.getParameter("budget");
 	align-items: center;
 }
 
+#imagebox {
+	margin-top: 20px;
+	margin-bottom: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 #space1 {
 	display: block;
 	width: 10px;
@@ -54,6 +64,11 @@ String budget = request.getParameter("budget");
 #space2 {
 	display: block;
 	width: 500px;
+}
+
+#space3 {
+	display: block;
+	width: 200px;
 }
 
 h1, h4 {
@@ -70,36 +85,62 @@ h1, h4 {
 	<div class="container">
 		<div id="textbox">
 			<h1>
-				입력하신 '<%=budget%>'원 으로 갈 수 있는 맛집은!
+				'<%=gourmet_name%>'의 상세정보 입니다.
 			</h1>
 		</div>
 		<div id="tablebox">
 			<table class="table">
-				<thead>
-					<tr>
-						<th scope="col" width=400px>상호명</th>
-						<th scope="col" width=400px>메뉴</th>
-						<th scope="col" width=400px>가격</th>
-					</tr>
-				</thead>
 				<tbody>
-				<%
-				GourmetDao gourmetDao = new GourmetDao();
-						List<Price> selected = gourmetDao.getPrice(Integer.parseInt(budget));				
-						for(int i=0; i<selected.size(); i++) {
-							Price price = new Price();
-							price = selected.get(i);						
-							if (price.getGourmet_price().equals("변동"))
-							out.println("<tr>");
-							out.println("<td width=400px><a href='Gourmet_detail.jsp?gourmet_name="+price.getGourmet_name()+"'>"+price.getGourmet_name()+"</a></td>");
-							out.println("<td width=400px>"+price.getGourmet_menu()+"</td>");
-							out.println("<td width=400px>"+price.getGourmet_price()+"</td>");
-							out.println("</tr>");					
-						}
-				%>
+					<%
+					GourmetDao gourmetDao = new GourmetDao();
+					Main main = gourmetDao.getMain(gourmet_name);					
+					%>
+					<tr>
+						<th scope='col' width=200px>상호명</th>
+						<td width><%=main.getGourmet_name()%></td>
+					</tr>
+					<tr>
+						<th scope='col' width>별점</th>
+						<td width><%=main.getGourmet_star()%></td>
+					</tr>
+					<tr>
+						<th scope='col' width>방문자 리뷰수</th>
+						<td width><%=main.getGourmet_visitor_review_cnt()%></td>
+					</tr>
+					<tr>
+						<th scope='col' width>블로거 리뷰수</th>
+						<td width><%=main.getGourmet_blogger_review_cnt()%></td>
+					</tr>
+					<tr>
+						<th scope='col' width>주소</th>
+						<td width><%=main.getGourmet_address()%></td>
+					</tr>
+					<tr>
+						<th scope='col' width>운영시간</th>
+						<td width><%=main.getGourmet_openinghour()%></td>
+					</tr>
+					<tr>
+						<th scope='col' width>편의</th>
+						<td width><%=main.getGourmet_service()%></td>
+					</tr>
+					<tr>
+						<th scope='col' width>주소</th>
+						<td width><%=main. getGourmet_info()%></td>
+					</tr>
 				</tbody>
 			</table>
+
+			<%
+				Image image = gourmetDao.getImage(gourmet_name);
+				
+			%>
 		</div>
+			<div class="container">
+		<div id="imagebox">
+			<iframe src="<%=image.getGourmet_image()%>" width=600px height=600px></iframe>
+							<div id="space3"></div>
+		</div>
+	</div>
 	</div>
 </body>
 </html>
