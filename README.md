@@ -1,2 +1,2 @@
-# Spring-Lecture
-KOPO curriculum
+웹 프로젝트 포트폴리오 코드 모음입니다!
+JSP에서 Spring MVC 모델로 코드를 수정하고 있습니다.
