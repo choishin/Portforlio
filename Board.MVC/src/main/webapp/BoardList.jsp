@@ -145,7 +145,7 @@ try {
 					String board_title = boardAll.get(i).getBoard_title();
 					out.print("<tr>");
 					out.print("<td><p align=center>" + board_index + "</p></td>");
-					out.print("<td><a href='BoardItem"+BoardCnt+".jsp'>" + board_title + "</a></td>");
+					out.print("<td><a href='BoardView.jsp?board_index="+BoardCnt+"'>" + board_title + "</a></td>");
 					out.print("</tr>");
 					BoardCnt++;
 
@@ -244,13 +244,5 @@ try {
 			</nav>
 		</div>
 	</div>
-	<%-- <c:set var="board" value="<%=boards%>"/> --%>
-	<c:forEach var="board" items="${boardAll}">
-		<p>
-			<c:out value="${board.board_title}" />
-		</p>
-		<br>
-	</c:forEach>
-
 </body>
 </html>

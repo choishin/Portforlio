@@ -40,12 +40,12 @@ public class BoardItemServiceImpl implements BoardItemService {
 
 
 	@Override
-	public List<BoardItem> selectAll() {
+	public List<BoardItem> selectAll(int board_index) {
 		// TODO Auto-generated method stub
 		List<BoardItem> boardItemAll = new ArrayList<BoardItem>();
 		try {
 			boardItemDao = BoardItemDaoImpl.getInstance();
-			boardItemAll = boardItemDao.selectAll();
+			boardItemAll = boardItemDao.selectAll(board_index);
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

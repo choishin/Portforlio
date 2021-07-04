@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import kr.ac.kopo.kopo40.domain.BoardItem;
+import kr.ac.kopo.kopo40.domain.Comment;
 
 public class BoardItemDaoImpl implements BoardItemDao {
+	static final String IP = "192.168.171.18";
 	static BoardItemDaoImpl instance = null;
 	public static BoardItemDaoImpl getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
@@ -28,7 +30,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-DD-mm");		
 		try {			
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -50,11 +52,11 @@ public class BoardItemDaoImpl implements BoardItemDao {
 		BoardItem newBoardItem = new BoardItem();
 		try{
 			Class.forName("com.mysql.cj.jdbc.Driver");  													
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc","root" , "kopoctc");  
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc","root" , "kopoctc");  
 			Statement stmt = conn.createStatement(); 
 				
 			String QueryTxt;
-			QueryTxt = String.format("select * from gongji where id="+id+";");
+			QueryTxt = String.format("select * from board"+id+";");
 			
 			ResultSet rset = stmt.executeQuery(QueryTxt);
 			while(rset.next()) {	
@@ -78,16 +80,16 @@ public class BoardItemDaoImpl implements BoardItemDao {
 	}
 
 	@Override
-	public List<BoardItem> selectAll() {
+	public List<BoardItem> selectAll(int board_index) {
 		// TODO Auto-generated method stub
 		List<BoardItem> boardItemAll = new ArrayList<BoardItem>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
-			QueryTxt = String.format("select * from gongji order by id desc;");
+			QueryTxt = String.format("select * from board"+board_index+" order by id desc;");
 
 			ResultSet rset = stmt.executeQuery(QueryTxt);
 			while (rset.next()) {
@@ -125,7 +127,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 			String boardItem_content = boardItem.getContent();
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
-				Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+				Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 				Statement stmt = conn.createStatement();
 
 				String QueryTxt;
@@ -146,7 +148,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 		int boardItem_index = boardItem.getId();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -165,7 +167,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 		int totalCnt = 0;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 			String QueryTxt;
 			QueryTxt = String.format("select count(*) from gongji;");
@@ -183,7 +185,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 		int get_id = 0;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -203,7 +205,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 	public void addCount(int id) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -217,5 +219,5 @@ public class BoardItemDaoImpl implements BoardItemDao {
 		}
 		
 	}
-
+	
 }

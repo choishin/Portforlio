@@ -6,7 +6,7 @@ import kr.ac.kopo.kopo40.domain.BoardItem;
 public interface BoardItemService {
 	void create(BoardItem boardItem);
 	BoardItem selectOne(int id);
-	List<BoardItem> selectAll();
+	List<BoardItem> selectAll(int board_index);
 	void update(BoardItem boardItem);
 	void delete(BoardItem boardItem);
 }

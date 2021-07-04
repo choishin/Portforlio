@@ -84,6 +84,8 @@ String get_id = request.getParameter("get_id");
 					boardItem = bis.selectOne(Integer.parseInt(get_id));
 					bid.addCount(Integer.parseInt(get_id));
 					
+					List<BoardItem> boardItemAll = bis.selectAll(Integer.parseInt(board_index));
+					
 					int boardItem_id = boardItem.getId();
 					String boardItem_title = boardItem.getTitle();
 					String boardItem_date = boardItem.getDate();
