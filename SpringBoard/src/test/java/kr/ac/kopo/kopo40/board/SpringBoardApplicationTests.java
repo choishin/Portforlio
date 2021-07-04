@@ -1,4 +1,4 @@
-package kr.ac.kopo.kopo40;
+package kr.ac.kopo.kopo40.board;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
