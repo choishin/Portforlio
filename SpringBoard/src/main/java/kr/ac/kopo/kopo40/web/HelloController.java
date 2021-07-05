@@ -1,4 +1,4 @@
-package kr.ac.kopo.kopo40.board.web;
+package kr.ac.kopo.kopo40.web;
 
 
 //@Controller

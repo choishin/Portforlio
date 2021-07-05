@@ -1,15 +1,7 @@
 package kr.ac.kopo.kopo40.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity
 public class BoardItem {
-	@Id
-	@GeneratedValue
-	@Column
+
 	private long id;
 	private String title;
 	private String date;
