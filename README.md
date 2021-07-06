@@ -4,3 +4,4 @@ SpringBoard : Hibernate (table 만들고, 가져오기)<br>
 SpringBoard-1 : Hibernate (search, paging)<br>
 SpringBoard-2 : Mybatis (table 만들고, 가져오기)<br>
 SpringBoard-3 : Junit test<br>
+SpringBoard-4 : 1-多 관계 설정<br>
