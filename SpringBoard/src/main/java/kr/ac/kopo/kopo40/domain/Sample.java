@@ -10,25 +10,24 @@ public class Sample {
 	@Id
 	@GeneratedValue
 	@Column
-	private long board_index;
-	
+	private long id;
+	//해당 데이터 베이스를 컬럼으로 처리하겠다는 뜻. 여러개를 추가해도 됨 
 	@Column
-	private String board_title;
-
-	public long getBoard_index() {
-		return board_index;
+	private String title;
+	public long getId() {
+		return id;
 	}
-
-	public long setBoard_index(long index) {
-		return board_index = index;
+	public void setId(long id) {
+		this.id = id;
 	}
-
-	public String getBoard_title() {
-		return board_title;
+	public String getTitle() {
+		return title;
 	}
-
-	public void setBoard_title(String new_title) {
-		this.board_title = new_title;
+	public void setTitle(String title) {
+		this.title = title;
 	}
+	
+	
+	
 
 }
