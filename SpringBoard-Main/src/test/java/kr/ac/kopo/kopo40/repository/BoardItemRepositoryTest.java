@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.ac.kopo.kopo40.domain.BoardItem;
-import kr.ac.kopo.kopo40.repo.BoardItemRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,8 +25,8 @@ public class BoardItemRepositoryTest {
 	void create() {
 		BoardItem boardItem1 = new BoardItem();
 		boardItem1.setTitle("title1");
-		//코드 더 추가해야함
-		
+		// 코드 더 추가해야함
+
 		boardItemRepository.save(boardItem1);
 	}
 

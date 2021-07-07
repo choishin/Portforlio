@@ -27,18 +27,18 @@ public class BoardItem {
 	@Column
 	private String date;
 
-	@Column
+	@Column(columnDefinition = "LONGTEXT")
 	private String content;
 
 	@Column
 	private Integer viewCnt;
-	
-	//게시판과 1:多 관계로 연결
+
+	// 게시판과 1:多 관계로 연결
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "board_id")
 	private Board board;
 
-	//게시글과 댓글을 1:多 관계로 연결
+	// 게시글과 댓글을 1:多 관계로 연결
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "boardItem", fetch = FetchType.LAZY)
 	private Collection<Comment> comments;
 
@@ -49,11 +49,11 @@ public class BoardItem {
 		return comments;
 	}
 
-	public void setBoardItems(Collection<Comment> comments) {
+	public void setComments(Collection<Comment> comments) {
 		this.comments = comments;
 	}
 
-	public void addBoardItem(Comment comment) {
+	public void addComment(Comment comment) {
 		Collection<Comment> comments = getComments();
 		comments.add(comment);
 	}
@@ -73,6 +73,7 @@ public class BoardItem {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 
 	public String getDate() {
 		return date;
@@ -97,8 +98,9 @@ public class BoardItem {
 	public void setViewCnt(Integer viewCnt) {
 		this.viewCnt = viewCnt;
 	}
+	
+	//부모 가져오는 용도
 
-	// @ManytoOne을 하고 getter, setter을 하면 자동으로 생기는 것이고, 부모를 지정
 	public Board getBoard() {
 		return board;
 	}
@@ -106,4 +108,5 @@ public class BoardItem {
 	public void setBoard(Board board) {
 		this.board = board;
 	}
+
 }

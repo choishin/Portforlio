@@ -1,5 +1,7 @@
 package kr.ac.kopo.kopo40.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,10 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Comment {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
@@ -18,9 +21,10 @@ public class Comment {
 	@Column
 	private String name;
 	@Column
-	private String contents;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateTime;
 	@Column
-	private String date;
+	private String contents;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "post_id")
@@ -42,6 +46,14 @@ public class Comment {
 		this.name = name;
 	}
 
+	public Date getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
+	}
+
 	public String getContents() {
 		return contents;
 	}
@@ -49,16 +61,9 @@ public class Comment {
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
+	
+	//부모를 가져오는 용도
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	//부모 객체 확인 하는 용도로 쓰일 수 있음
 	public BoardItem getBoardItem() {
 		return boardItem;
 	}
@@ -66,10 +71,6 @@ public class Comment {
 	public void setBoardItem(BoardItem boardItem) {
 		this.boardItem = boardItem;
 	}
-	
-	
-	
-	
-	
+
 	
 }

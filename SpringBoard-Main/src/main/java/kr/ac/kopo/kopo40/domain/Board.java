@@ -18,36 +18,40 @@ public class Board {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private Integer id;
-	
+
 	@Column
 	private String title;
-	
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="board",fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "board", fetch = FetchType.LAZY)
 	private Collection<BoardItem> BoardItems;
-	
+
 	public Collection<BoardItem> getBoardItems() {
-		if( BoardItems == null) {
+		if (BoardItems == null) {
 			BoardItems = new ArrayList<BoardItem>();
 		}
 		return BoardItems;
 	}
+
 	public void setBoardItems(Collection<BoardItem> boardItems) {
 		this.BoardItems = boardItems;
 	}
-	
+
 	public void addBoardItem(BoardItem boardItem) {
 		Collection<BoardItem> boardItems = getBoardItems();
 		boardItems.add(boardItem);
