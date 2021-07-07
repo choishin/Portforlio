@@ -10,9 +10,8 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class BoardItem {
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
 	private Integer id;
 	
@@ -31,7 +30,7 @@ public class BoardItem {
 	@ManyToOne(optional=false)
 	@JoinColumn(name="board_id")
 	private Board board;
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -71,7 +70,7 @@ public class BoardItem {
 	public void setViewCnt(Integer viewCnt) {
 		this.viewCnt = viewCnt;
 	}
-
+	
 	//@ManytoOne을 하고 getter, setter을 하면 자동으로 생기는 것이고, 부모를 지정 
 	public Board getBoard() {
 		return board;
@@ -80,7 +79,4 @@ public class BoardItem {
 	public void setBoard(Board board) {
 		this.board = board;
 	}
-	
-	
-	
 }

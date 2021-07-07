@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +35,7 @@ public class Board {
 		this.title = title;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="board")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="board",fetch = FetchType.LAZY)
 	private Collection<BoardItem> BoardItems;
 	
 	public Collection<BoardItem> getBoardItems() {
