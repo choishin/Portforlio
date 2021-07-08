@@ -26,6 +26,19 @@
 	align-items: flex-start;
 }
 
+#paging {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 100px;
+}
+#buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 1050px;
+}
+
 table {
 	text-align: center;
 }
@@ -98,12 +111,10 @@ try {
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="BoardList.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='BoardItem1.jsp'>board1</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='BoardItem2.jsp'>board2</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='gongji_search.jsp'>
+				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -135,20 +146,18 @@ try {
 				<%
 				//보드 전체를 가지고 온다
 				List<Board> boardAll = bs.selectAll();
-				
 				request.setAttribute("boardAll", boardAll);
-				
+
 				int BoardCnt = 1;
 				int removeCnt = 0;
-				for (int i = 0; i < boardAll.size(); i++) {
+				for (int i = 0; i <boardAll.size(); i++) {
 					int board_index = boardAll.get(i).getBoard_index();
 					String board_title = boardAll.get(i).getBoard_title();
 					out.print("<tr>");
 					out.print("<td><p align=center>" + board_index + "</p></td>");
-					out.print("<td><a href='BoardView.jsp?board_index="+BoardCnt+"'>" + board_title + "</a></td>");
+					out.print("<td><a href='BoardItemList.jsp?board_index=" + BoardCnt + "'>" + board_title + "</a></td>");
 					out.print("</tr>");
 					BoardCnt++;
-
 				}
 				BoardCnt = BoardCnt - removeCnt;
 				totalCnt = totalCnt - removeCnt;
@@ -182,12 +191,11 @@ try {
 				<td>
 					<div class="btn-group btn-group" role="group"
 						aria-label="Basic outlined example">
-						<input type="button" class="btn btn-outline-secondary" value="게시판 목록"
-							OnClick="location.href='BoardList.jsp'">
+						<input type="button" class="btn btn-outline-secondary"
+							value="게시판 목록" OnClick="location.href='BoardList.jsp'">
 					</div>
 				</td>
-				<td>
-				</td>
+				<td></td>
 			</tr>
 		</table>
 	</div>

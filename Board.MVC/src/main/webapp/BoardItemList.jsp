@@ -5,6 +5,11 @@
 <%@ page import="kr.ac.kopo.kopo40.dao.BoardItemDaoImpl"%>
 <%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%
+request.setCharacterEncoding("UTF-8");
+String board_index = request.getParameter("board_index");
+%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -26,6 +31,18 @@
 	align-items: flex-start;
 }
 
+#paging {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 100px;
+}
+#buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 1050px;
+}
 table {
 	text-align: center;
 }
@@ -98,11 +115,10 @@ try {
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="BoardList.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItem1.jsp'>board1</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='BoardItem2.jsp'>board2</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='gongji_search.jsp'>
+				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -130,7 +146,7 @@ try {
 				</tr>
 			<tbody>
 				<%
-				List<BoardItem> boardItemAll = bis.selectAll();
+				List<BoardItem> boardItemAll = bis.selectAll(Integer.parseInt(board_index));
 				int  LineCnt =0;
 				int removeCnt = 0;
 				for (int i = 0; i < boardItemAll.size(); i++) {
@@ -144,7 +160,7 @@ try {
 
 					out.print("<tr>");
 					out.print("<th scope='row' width='50px;'> <p align=center>" + boardItem_id + "</p></th>");
-					out.print("<td width=500 width='400px'><p align=center><a href='BoardItem_view.jsp?get_id=" + boardItem_id + "'>"
+					out.print("<td width=500 width='400px'><p align=center><a href='BoardItemView.jsp?board_index="+board_index+"&get_id="+(boardItemAll.size()-i)+"'>"
 					+ boardItem_title + "</a></p></td>");
 					out.print("<td width=50 width='100px'>" + boardItem_viewcnt + "</td>");
 					out.print("<td width='200px'> <p align=center>" + boardItem_date + "</p></td>");
@@ -179,26 +195,26 @@ try {
 		</table>
 	</div>
 	<div class="container">
-		<table class="buttons">
-			<tr>
-				<td width=1100></td>
-				<td>
-					<div class="btn-group btn-group" role="group"
-						aria-label="Basic outlined example">
-						<input type="button" class="btn btn-outline-secondary"
-							value="게시판 목록" OnClick="location.href='BoardList.jsp'">
-					</div>
-				</td>
-				<td>
-					<div class="btn-group btn-group" role="group"
-						aria-label="Basic outlined example">
-						<input type="button" class="btn btn-outline-secondary"
-							value="새 게시판 만들기" OnClick="window.location='BoardMake.jsp'">
-					</div>
-				</td>
-			</tr>
-		</table>
-	</div>
+			<table class="buttons">
+				<tr>
+					<td width=1100></td>
+					<td>
+						<div class="btn-group btn-group" role="group"
+							aria-label="Basic outlined example">
+							<input type="button" class="btn btn-outline-secondary" value="목록"
+								OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'">
+						</div>
+					</td>
+					<td>
+						<div class="btn-group btn-group" role="group"
+							aria-label="Basic outlined example">
+							<input type="button" class="btn btn-outline-secondary" value="신규"
+								OnClick="window.location='boardItemInsert.jsp'">
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 	<br>
 	<br>
 	<br>

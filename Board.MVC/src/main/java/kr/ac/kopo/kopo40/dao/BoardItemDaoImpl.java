@@ -9,11 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import kr.ac.kopo.kopo40.data.Data;
 import kr.ac.kopo.kopo40.domain.BoardItem;
-import kr.ac.kopo.kopo40.domain.Comment;
 
 public class BoardItemDaoImpl implements BoardItemDao {
-	static final String IP = "192.168.171.18";
+
 	static BoardItemDaoImpl instance = null;
 	public static BoardItemDaoImpl getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
@@ -22,6 +23,8 @@ public class BoardItemDaoImpl implements BoardItemDao {
 		return instance;
 	}
 
+	String IP = Data.IP;
+	
 	@Override
 	public void create(BoardItem boardItem) {
 		// TODO Auto-generated method stub

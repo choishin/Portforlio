@@ -1,6 +1,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
+<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
+<%
+	String IP = Data.IP;
+%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -51,16 +55,14 @@ h1, h4 {
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="gongji_list.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='gongji_list.jsp'>board1</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='gongji_list2.jsp'>board2</a></li>
+						aria-current="page" href="BoardList.jsp">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='gongji_search.jsp'>
+				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> 
-					<input class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input
+						class="btn btn-outline-secondary" type="submit" value="Search">
 				</form>
 			</div>
 		</div>
@@ -79,7 +81,7 @@ h1, h4 {
 			<%
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
-				Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc?autoReconnect=true", "root",
+				Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc?autoReconnect=true", "root",
 				"kopoctc");
 				Statement stmt = conn.createStatement();
 

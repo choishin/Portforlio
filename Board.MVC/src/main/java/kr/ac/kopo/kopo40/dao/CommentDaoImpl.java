@@ -7,10 +7,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.ac.kopo.kopo40.data.Data;
 import kr.ac.kopo.kopo40.domain.Comment;
 
 public class CommentDaoImpl implements CommentDao{
-	static final String IP = "192.168.171.18";
+
+	String IP = Data.IP;
 	
 	@Override
 	public void createComment(Comment comment) {

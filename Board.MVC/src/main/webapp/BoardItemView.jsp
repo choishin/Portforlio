@@ -1,7 +1,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
+<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
 <%
+	String IP = Data.IP;
+%>
+<%
+request.setCharacterEncoding("UTF-8");
+String board_index = request.getParameter("board_index");
 String get_id = request.getParameter("get_id");
 %>
 <html>
@@ -37,11 +43,9 @@ String get_id = request.getParameter("get_id");
 	/*교차측 방향 정렬 (가로세로모두에서)*/
 	align-items: flex-start;
 }
-
 h1, h2, h3, h4 {
 	color: #767676;
 }
-
 .writer {
 width: 200px;
 }
@@ -75,7 +79,7 @@ width: 200px;
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="gongji_list.jsp">Home</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='gongji_list.jsp'>board1</a></li>
+						href='BoardItem1.jsp'>board1</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href='gongji_list2.jsp'>board2</a></li>
 				</ul>
@@ -94,14 +98,12 @@ width: 200px;
 					<%
 					try {
 						Class.forName("com.mysql.cj.jdbc.Driver");
-						Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+						Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 						Statement stmt = conn.createStatement();
-
 						String QueryTxt;
-						QueryTxt = String.format("update gongji set viewcnt=viewcnt+1 where id=" + get_id + ";");
+						QueryTxt = String.format("update board1 set viewcnt=viewcnt+1 where id=" + get_id + ";");
 						stmt.execute(QueryTxt);
-						QueryTxt = String.format("select * from gongji where id=" + get_id + ";");
-
+						QueryTxt = String.format("select * from board1 where id=" + get_id + ";");
 						ResultSet rset = stmt.executeQuery(QueryTxt);
 						int iCnt = 0;
 						while (rset.next()) {
@@ -110,7 +112,6 @@ width: 200px;
 							String date = rset.getString(3);
 							String content = rset.getString(4);
 							String viewcnt = rset.getString(5);
-
 							out.print("<tr> ");
 							out.print("<th scope='col' width=200px><b>번호</b></th>");
 							out.print("<td>" + id + "</th>");
@@ -129,13 +130,10 @@ width: 200px;
 							out.print("<th scope='col'width=200px style='vertical-align: top; height:auto;'><b>내용</b></th>");
 							out.print("<td height=200px style='vertical-align: top; height:auto;'>" + content + "</th>");
 							out.print("</tr>");
-
 						}
-
 						rset.close();
 						stmt.close();
 						conn.close();
-
 					} catch (Exception e) {
 						out.print(e);
 					}
@@ -158,31 +156,25 @@ width: 200px;
 					<%
 					try {
 						Class.forName("com.mysql.cj.jdbc.Driver");
-						Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.171.18:3306/kopoctc", "root", "kopoctc");
+						Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 						Statement stmt = conn.createStatement();
-
 						String QueryTxt;
 						QueryTxt = String.format("select * from comments where post_id=" + get_id + ";");
 						ResultSet rset = stmt.executeQuery(QueryTxt);
-
 						while (rset.next()) {
 							String comment_name = rset.getString(2);
 							String comment_contents = rset.getString(3);
 							String comment_date = rset.getString(4);
-
 							out.print("<tr>");
 							out.print("<td class='writer'>" + comment_name + "</th> ");
 							out.print("<td class='contents'>" + comment_contents + "</th> ");
 							out.print("<td class='date'>" + comment_date + "</th>");
 							out.print("<td class='buttons'></th>");
 							out.print("</tr>");
-
 						}
-
 						rset.close();
 						stmt.close();
 						conn.close();
-
 					} catch (Exception e) {
 						out.print(e);
 					}
@@ -194,10 +186,11 @@ width: 200px;
 	<!--댓글창-->
 	<br>
 <div class="container">
-	<form method="post" action="comment_insert.jsp">
+	<form method="post" action="for_commentInsert.jsp">
 		<table class="table table-hover">
 			<thead>
 				<tr>
+					<input type=hidden name="board_index" value="<%=board_index%>">
 					<input type=hidden name="post_id" value="<%=get_id%>">
 				</tr>
 				<tr>
@@ -231,7 +224,7 @@ width: 200px;
 		<tr>
 			<th scope="col" width=450></th>
 			<th scope="col"><input class="btn btn-outline-secondary"
-				type="button" value="목록" OnClick="location.href='gongji_list.jsp'">
+				type="button" value="목록" OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'">
 			</th>
 			<th scope="col"><input class="btn btn-outline-secondary"
 				type="button" value="수정"
@@ -240,7 +233,7 @@ width: 200px;
 			<th scope="col" width=450></th>
 		</tr>
 	</table>
-<div>
+</div>
 	<script>
 		function characterCheck(obj) {
 			var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;

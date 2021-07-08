@@ -1,15 +1,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
 <%@ page contentType="text/html; charset=utf-8" %> 
 <%@ page import="java.sql.*, javax.sql.*, java.io.*" %> 
+<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
+<%
+	String IP = Data.IP;
+%>
 <% 
 	request.setCharacterEncoding("UTF-8");
+	String board_index = request.getParameter("board_index"); 
 	String post_id = request.getParameter("post_id"); 
 	String comment_name = request.getParameter("comment_name"); 	
 	String comment_contents = request.getParameter("comment_contents"); 		
 	
-// 	out.println(post_id);
-// 	out.println(comment_name);
-// 	out.println(comment_contents);
 %>
 <html> 
 <head>
@@ -30,11 +32,11 @@ function getDate(){
 <%
 try{
 		Class.forName("com.mysql.cj.jdbc.Driver");  													
-		Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");  
+		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");  
 		Statement stmt = conn.createStatement(); 
 		
 		String QueryTxt;
-		QueryTxt = "insert into comments(post_id,comment_name,comment_contents,comment_date) value ("+post_id+",'"+comment_name+"','"+comment_contents+"',date_format(now(),'%Y-%m-%d %I:%i:%s'));";
+		QueryTxt = "insert into comments(post_id,name,date,content) value ("+post_id+",'"+comment_name+"',date_format(now(),'%Y-%m-%d %I:%i:%s'),'"+comment_contents+"');";
 		stmt.execute(QueryTxt);	
 							
 %>
@@ -48,7 +50,7 @@ catch (Exception e) {
 }
 %>
 <script>
-window.location="gongji_view.jsp?get_id=<%=post_id%>";
+window.location='BoardItemView.jsp?board_index=<%=board_index%>&get_id=<%=post_id%>;
 function characterCheck(obj){
 	var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;
 	if( regExp.test(obj.value) ) {

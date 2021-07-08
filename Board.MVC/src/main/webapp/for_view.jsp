@@ -3,24 +3,12 @@
 <%@ page import="java.sql.*, javax.sql.*, java.io.*" %> 
 <html> 
 <head>
-<SCRIPT LANGUAGE="JavaScript"> 
-</SCRIPT> 
 </head> 
 <body> 
-<form method="get" action="BoardItem1_view.jsp"> 
+<form method="get" action="BoardItemView.jsp"> 
+	게시판번호: <input type="text" name="board_index"><br> 
 	글번호: <input type="text" name="get_id"><br> 
 	<input type="submit" value="전송"> 
 </form> 
-<form method="get" action="comment_insert.jsp"> 
-	글번호: <input type="text" name="post_id"><br> 
-	<input type="submit" value="전송"> 
-</form> 
-<table width=650>
-<tr>
-<td width=600></td>
- <td><input type=button value="목록" OnClick="location.href='gongji_list.jsp"></td> 
- <td><input type=button value="수정" OnClick="location.href='gongji_update.jsp?key=1'"></td>
- </tr>
-</table> 
 </body> 
 </html>

@@ -1,13 +1,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
+<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
+<%
+	String IP = Data.IP;
+%>
 <%
 request.setCharacterEncoding("UTF-8");
 String get_id = request.getParameter("get_id");
 String get_title = request.getParameter("get_title");
-String get_date = request.getParameter("get_date");
 String get_content = request.getParameter("get_content");
-String get_viewcnt = request.getParameter("get_viewcnt");
 %>
 <html>
 <head>
@@ -21,10 +23,6 @@ String get_viewcnt = request.getParameter("get_viewcnt");
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 <SCRIPT LANGUAGE="JavaScript">
-	function submitForm(mode) {
-		fm.action = "gongji_write.jsp";
-		fm.submit();
-	}
 	function getDate() {
 		var now = new Date();
 		var year = now.getFullYear();
@@ -74,16 +72,14 @@ h1, h4 {
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="gongji_list.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='gongji_list.jsp'>board1</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='gongji_list2.jsp'>board2</a></li>
+						aria-current="page" href="BoardList.jsp">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='gongji_search.jsp'>
+				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> 
-					<input class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input
+						class="btn btn-outline-secondary" type="submit" value="Search">
 				</form>
 			</div>
 		</div>
@@ -91,26 +87,25 @@ h1, h4 {
 	<%
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 		Statement stmt = conn.createStatement();
 
 		String QueryTxt;
-		QueryTxt = "insert into gongji(title,date,content,viewcnt) value('" + get_title
-		+ "',date_format(now(),'%Y-%m-%d %I:%i:%s'),'" + get_content + "'," + get_viewcnt + ")";
+		QueryTxt = "update gongji set title='" + get_title + "', content='" + get_content + "' where id=" + get_id + ";";
 		stmt.execute(QueryTxt);
 	%>
 	<div class="container">
 		<div id="textbox">
 			<table>
 				<tr>
-					<td colspan="2"><h1>게시물 등록 완료</h1></td>
+					<td colspan="2"><h1>게시물 수정 완료</h1></td>
 				</tr>
 				<tr>
 					<td width="100"></td>
 					<td width="900"><input class="btn btn-outline-secondary" type=button
-						value="목록" OnClick="location.href='gongji_list.jsp'">
-					<input class="btn btn-outline-secondary" type=button
-						value="쓰기" OnClick="location.href='gongji_insert.jsp'"></td>
+						value="목록" OnClick="location.href='gongji_list.jsp'"> <input
+						class="btn btn-outline-secondary" type=button value="쓰기"
+						OnClick="location.href='gongji_insert.jsp'"></td>
 				</tr>
 			</table>
 		</div>
@@ -122,6 +117,7 @@ h1, h4 {
 	out.print(e);
 	}
 	%>
+
 	</FORM>
 </body>
 </html>

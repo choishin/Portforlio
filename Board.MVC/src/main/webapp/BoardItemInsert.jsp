@@ -1,10 +1,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*"%>
-<%@ page import="kr.ac.kopo.kopo40.domain.Board"%>
-<%@ page import="kr.ac.kopo.kopo40.dao.BoardDaoImpl"%>
-<%@ page import="kr.ac.kopo.kopo40.service.BoardServiceImpl"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
+<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
+<%
+	String IP = Data.IP;
+%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -16,6 +16,19 @@
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
+<SCRIPT LANGUAGE="JavaScript">
+	function getDate() {
+		var now = new Date();
+		var year = now.getFullYear();
+		var month = now.getMonth();
+		var date = now.getDate();
+		var hours = now.getHours();
+		var minutes = now.getMinutes();
+		var seconds = now.getSeconds();
+		document.write(year + "년 " + month + "월 " + date + "일 " + hours + ":"
+				+ minutes + ":" + seconds);
+	}
+</SCRIPT>
 <style>
 .contaner {
 	/*flex : 정렬을 위한 컨테이너*/
@@ -26,12 +39,17 @@
 	align-items: flex-start;
 }
 
-table {
-	text-align: center;
+#table {
+	width: 900px;
+	margin-top: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-h1, h4 {
-	color: #767676;
+tr, th {
+	text-align: center;
+	vertical-align: middle;
 }
 </style>
 </head>
@@ -53,12 +71,10 @@ h1, h4 {
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="BoardList.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='BoardItem1.jsp'>board1</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='gongji_list2.jsp'>board2</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='gongji_search.jsp'>
+				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -66,21 +82,23 @@ h1, h4 {
 			</div>
 		</div>
 	</nav>
-	<br>
-	<br>
-	<center>
-		<h1>새 게시판 만들기</h1>
-	</center>
-	<br>
-	<br>
-	<br>
 	<%
 	try {
-		BoardDaoImpl bd = new BoardDaoImpl();
-		BoardServiceImpl bs = new BoardServiceImpl();
-		int get_id = bs.getMax();
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+		Statement stmt = conn.createStatement();
+
+		String QueryTxt;
+		QueryTxt = String.format("select max(id) from board1;");
+
+		ResultSet rset = stmt.executeQuery(QueryTxt);
+		int get_id = 0;
+		while (rset.next()) {
+			String id = rset.getString(1);
+			get_id = Integer.parseInt(id);
+		}
 	%>
-	<FORM METHOD=POST action="BoardWrite.jsp">
+	<FORM METHOD=POST action="BoardItemWrite.jsp">
 		<div class="container">
 			<div id="table">
 				<table class="table table-hover">
@@ -95,10 +113,26 @@ h1, h4 {
 							</th>
 						</tr>
 						<tr>
+							<th scope="col" style="vertical-align: top;">조회수</th>
+							<th scope="col" style="vertical-align: top;">
+								<div class="input-group mb-3">
+									<input type="text" class="form-control" aria-label="Username"
+										name=get_viewcnt value=0 readonly>
+							</th>
+							</div>
+						</tr>
+						<tr>
 							<th scope="col"><b>제목</b></th>
 							<th scope="col"><input type="text" class="form-control"
-								placeholder="제목" aria-label="Username" name=new_title size="20"
+								placeholder="제목" aria-label="Username" name=get_title size="20"
 								maxlength="70" minlength="1" required></th>
+						</tr>
+						<tr>
+							<th scope="col"><b>일자</b></th>
+							<th scope="col" style="text-align: left;"><script>
+								getDate()
+							</script></th>
+							<!--<input type=text name=get_date readonly></td>-->
 						</tr>
 						<tr>
 							<th scope="col"><b>내용</b></th>
@@ -111,12 +145,14 @@ h1, h4 {
 								</div>
 							</th>
 						</tr>
-
-					</thead>
 				</table>
 			</div>
 		</div>
 		<%
+		rset.close();
+		stmt.close();
+		conn.close();
+
 		} catch (Exception e) {
 		out.print(e);
 		}
@@ -127,10 +163,10 @@ h1, h4 {
 					<td width=780></td>
 					<td>
 						<button class="btn btn-outline-secondary"
-							OnClick="location.href='BoardList.jsp'">취소</button>
+							OnClick="location.href='BoardItemList.jsp?board_index=1">취소</button>
 					</td>
 					<td><input class="btn btn-outline-secondary" type="submit"
-						value="만들기"></td>
+						value="쓰기"></td>
 				</tr>
 			</table>
 		</div>
@@ -152,8 +188,5 @@ h1, h4 {
 			}
 		}
 	</script>
-	<br>
-	<br>
-	<br>
 </body>
 </html>

@@ -7,10 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import kr.ac.kopo.kopo40.data.Data;
 import kr.ac.kopo.kopo40.domain.Board;
 
 public class BoardDaoImpl implements BoardDao {
-	static final String IP = "192.168.171.18";
 	static BoardDaoImpl instance = null;
 	public static BoardDaoImpl getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
@@ -19,6 +20,8 @@ public class BoardDaoImpl implements BoardDao {
 		return instance;
 	}
 
+	String IP = Data.IP;
+	
 	@Override
 	public void create(Board board) {
 		try {
