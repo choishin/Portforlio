@@ -5,12 +5,12 @@
 <%
 	String IP = Data.IP;
 %>
-<% 
+<%  	
+	String board_index = request.getParameter("board_index"); 	
 	String get_id = request.getParameter("get_id"); 	
 	String get_title = request.getParameter("get_title"); 	
 	String get_date = request.getParameter("get_date"); 	
 	String get_content = request.getParameter("get_content"); 	
-	String board_index = request.getParameter("board_index"); 	
 %>
 <html>
 <head>
@@ -50,7 +50,7 @@ try{
 		Statement stmt = conn.createStatement(); 
 			
 		String QueryTxt;
-		QueryTxt = "insert into board1(title,date,content) value('"+get_title+"',date(now()),'"+get_content+"')";
+		QueryTxt = "insert into board1(title,date,content,viewcnt,board_index) value('"+get_title+"',date(now()),'"+get_content+"',0,"+board_index+")";
 		stmt.execute(QueryTxt);
 %>
 <h1>게시물 등록 완료</h1>
@@ -66,8 +66,8 @@ catch (Exception e) {
 		<tr>
 			<td width=600></td>
 			<td><input type=button value="취소"
-				OnClick="location.href='gongji_list.jsp'"></td>
-			<td><input type=button value="쓰기" OnClick="location.href='boardItemWrite.jsp'"></td>
+				OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'"></td>
+			<td><input type=button value="쓰기" OnClick="BoardItemInsert.jsp?board_index=<%=board_index%>"></td>
 		</tr>
 	</table>
 </body>

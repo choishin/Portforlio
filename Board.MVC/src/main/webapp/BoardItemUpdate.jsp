@@ -7,6 +7,7 @@
 %>
 <%
 request.setCharacterEncoding("UTF-8");
+String board_index = request.getParameter("board_index");
 String get_id = request.getParameter("get_id");
 %>
 <html>
@@ -93,7 +94,7 @@ tr, th {
 		Statement stmt = conn.createStatement();
 
 		String QueryTxt;
-		QueryTxt = String.format("select * from gongji where id=" + get_id + ";");
+		QueryTxt = String.format("select * from board1 where id=" + get_id + ";");
 
 		ResultSet rset = stmt.executeQuery(QueryTxt);
 		String id = "";
@@ -109,7 +110,7 @@ tr, th {
 			viewcnt = rset.getString(5);
 		}
 	%>
-	<form method="post" action="gongji_set.jsp">
+	<form method="post" action="BoardItemSet.jsp">
 		<div class="container">
 			<div id="table">
 				<table class="table table-hover">
@@ -118,6 +119,7 @@ tr, th {
 							<th scope="col"><b>번호</b></th>
 							<th scope="col" style="vertical-align: top;">
 								<div class="input-group mb-3">
+								<input type=hidden name="board_index" value="<%=board_index%>">
 									<input type="text" class="form-control" aria-label="Username"
 										name=get_id value=<%=get_id%> readonly>
 								</div>
@@ -177,12 +179,12 @@ tr, th {
 				<tr>
 					<td width=780></td>
 					<td><input class="btn btn-outline-secondary" type=button
-						value="취소" OnClick="location.href='gongji_list.jsp'"></td>
+						value="취소" OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'"></td>
 					<td><input class="btn btn-outline-secondary" type="submit"
 						value="수정"></td>
 					<td>
 						<input class="btn btn-outline-secondary" type=button 
-						value="삭제" OnClick="location.href='gongji_delete.jsp?get_id=<%=get_id%>'">
+						value="삭제" OnClick="location.href='BoardItemDelete.jsp?board_index=<%=board_index%>&get_id=<%=get_id%>'">
 					</td>
 				</tr>
 			</table>

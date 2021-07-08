@@ -1,12 +1,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
+<%@ page import="kr.ac.kopo.kopo40.data.Data"%>
 <%
-	String IP = Data.IP;
+String IP = Data.IP;
 %>
 <%
 request.setCharacterEncoding("UTF-8");
+String board_index = request.getParameter("board_index");
 String get_id = request.getParameter("get_id");
 String get_title = request.getParameter("get_title");
 String get_date = request.getParameter("get_date");
@@ -25,10 +26,6 @@ String get_viewcnt = request.getParameter("get_viewcnt");
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 <SCRIPT LANGUAGE="JavaScript">
-	function submitForm(mode) {
-		fm.action = "gongji_write.jsp";
-		fm.submit();
-	}
 	function getDate() {
 		var now = new Date();
 		var year = now.getFullYear();
@@ -79,8 +76,10 @@ h1, h4 {
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="BoardList.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemList.jsp?board_index=1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemView_accordion.jsp'>board2</a></li>
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
@@ -93,12 +92,12 @@ h1, h4 {
 	<%
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 		Statement stmt = conn.createStatement();
 
 		String QueryTxt;
-		QueryTxt = "insert into gongji(title,date,content,viewcnt) value('" + get_title
-		+ "',date_format(now(),'%Y-%m-%d %I:%i:%s'),'" + get_content + "'," + get_viewcnt + ")";
+		QueryTxt = "insert into board1(title,date,content,viewcnt,board_index) value('" + get_title
+		+ "',date_format(now(),'%Y-%m-%d %I:%i:%s'),'" + get_content + "'," + get_viewcnt + "," + board_index + ")";
 		stmt.execute(QueryTxt);
 	%>
 	<div class="container">
@@ -108,11 +107,21 @@ h1, h4 {
 					<td colspan="2"><h1>게시물 등록 완료</h1></td>
 				</tr>
 				<tr>
-					<td width="100"></td>
-					<td width="900"><input class="btn btn-outline-secondary" type=button
-						value="목록" OnClick="location.href='gongji_list.jsp'">
-					<input class="btn btn-outline-secondary" type=button
-						value="쓰기" OnClick="location.href='gongji_insert.jsp'"></td>
+					<td width=1100></td>
+					<td>
+						<div class="btn-group btn-group" role="group"
+							aria-label="Basic outlined example">
+							<input type="button" class="btn btn-outline-secondary" value="목록"
+								OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'">
+						</div>
+					</td>
+					<td>
+						<div class="btn-group btn-group" role="group"
+							aria-label="Basic outlined example">
+							<input type="button" class="btn btn-outline-secondary" value="신규"
+								OnClick="window.location='BoardItemInsert.jsp?board_index=<%=board_index%>'">
+						</div>
+					</td>
 				</tr>
 			</table>
 		</div>
@@ -124,6 +133,5 @@ h1, h4 {
 	out.print(e);
 	}
 	%>
-	</FORM>
 </body>
 </html>

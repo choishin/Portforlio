@@ -157,6 +157,10 @@ try {
 					String boardItem_date = boardItem.getDate();
 					String boardItem_content = boardItem.getContent();
 					int boardItem_viewcnt = boardItem.getViewcnt();
+					
+					if (boardItem_title.contains("삭제된 글 입니다.")) {
+						continue;
+					}
 
 					out.print("<tr>");
 					out.print("<th scope='row' width='50px;'> <p align=center>" + boardItem_id + "</p></th>");
@@ -209,7 +213,7 @@ try {
 						<div class="btn-group btn-group" role="group"
 							aria-label="Basic outlined example">
 							<input type="button" class="btn btn-outline-secondary" value="신규"
-								OnClick="window.location='boardItemInsert.jsp'">
+								OnClick="window.location='BoardItemInsert.jsp?board_index=<%=board_index%>'">
 						</div>
 					</td>
 				</tr>

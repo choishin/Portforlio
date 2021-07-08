@@ -86,7 +86,7 @@ h1, h4 {
 				Statement stmt = conn.createStatement();
 
 				String QueryTxt;
-				QueryTxt = String.format("select * from gongji order by id desc;");
+				QueryTxt = String.format("select * from board1 order by id desc;");
 
 				ResultSet rset = stmt.executeQuery(QueryTxt);
 				while (rset.next()) {

@@ -4,6 +4,7 @@
 <%@ page import="kr.ac.kopo.kopo40.data.Data" %>
 <%
 	String IP = Data.IP;
+	String board_index = request.getParameter("board_index");
 %>
 <html>
 <head>
@@ -98,7 +99,7 @@ tr, th {
 			get_id = Integer.parseInt(id);
 		}
 	%>
-	<FORM METHOD=POST action="BoardItemWrite.jsp">
+	<FORM METHOD=POST action="BoardItemWrite.jsp?board_index=<%=board_index%>">
 		<div class="container">
 			<div id="table">
 				<table class="table table-hover">
@@ -106,6 +107,7 @@ tr, th {
 						<tr>
 							<th scope="col" style="vertical-align: top;"><b>번호</b></th>
 							<th scope="col" style="vertical-align: top;">
+							<input type=hidden name="board_index" value="<%=board_index%>">
 								<div class="input-group mb-3">
 									<input type="text" class="form-control" aria-label="Username"
 										name=get_id value=<%=get_id + 1%> readonly>
@@ -163,7 +165,7 @@ tr, th {
 					<td width=780></td>
 					<td>
 						<button class="btn btn-outline-secondary"
-							OnClick="location.href='BoardItemList.jsp?board_index=1">취소</button>
+							OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'">취소</button>
 					</td>
 					<td><input class="btn btn-outline-secondary" type="submit"
 						value="쓰기"></td>

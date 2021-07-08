@@ -7,6 +7,7 @@
 %>
 <%
 request.setCharacterEncoding("UTF-8");
+String board_index = request.getParameter("board_index");
 String get_id = request.getParameter("get_id");
 String get_title = request.getParameter("get_title");
 String get_content = request.getParameter("get_content");
@@ -91,7 +92,7 @@ h1, h4 {
 		Statement stmt = conn.createStatement();
 
 		String QueryTxt;
-		QueryTxt = "update gongji set title='" + get_title + "', content='" + get_content + "' where id=" + get_id + ";";
+		QueryTxt = "update board1 set title='" + get_title + "', content='" + get_content + "' where board_index="+board_index+" and id=" + get_id + ";";
 		stmt.execute(QueryTxt);
 	%>
 	<div class="container">
@@ -103,9 +104,9 @@ h1, h4 {
 				<tr>
 					<td width="100"></td>
 					<td width="900"><input class="btn btn-outline-secondary" type=button
-						value="목록" OnClick="location.href='gongji_list.jsp'"> <input
+						value="목록" OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'"> <input
 						class="btn btn-outline-secondary" type=button value="쓰기"
-						OnClick="location.href='gongji_insert.jsp'"></td>
+						OnClick="location.href='BoardItemInsert.jsp?board_index=<%=board_index%>'"></td>
 				</tr>
 			</table>
 		</div>
@@ -117,7 +118,5 @@ h1, h4 {
 	out.print(e);
 	}
 	%>
-
-	</FORM>
 </body>
 </html>

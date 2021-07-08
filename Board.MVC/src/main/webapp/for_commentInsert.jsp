@@ -36,7 +36,7 @@ try{
 		Statement stmt = conn.createStatement(); 
 		
 		String QueryTxt;
-		QueryTxt = "insert into comments(post_id,name,date,content) value ("+post_id+",'"+comment_name+"',date_format(now(),'%Y-%m-%d %I:%i:%s'),'"+comment_contents+"');";
+		QueryTxt = "insert into comments(board_index,post_id,name,date,content) value ("+board_index+","+post_id+",'"+comment_name+"',date_format(now(),'%Y-%m-%d %I:%i:%s'),'"+comment_contents+"');";
 		stmt.execute(QueryTxt);	
 							
 %>
@@ -50,7 +50,7 @@ catch (Exception e) {
 }
 %>
 <script>
-window.location='BoardItemView.jsp?board_index=<%=board_index%>&get_id=<%=post_id%>;
+window.location='BoardItemView.jsp?board_index=<%=board_index%>&get_id=<%=post_id%>';
 function characterCheck(obj){
 	var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;
 	if( regExp.test(obj.value) ) {

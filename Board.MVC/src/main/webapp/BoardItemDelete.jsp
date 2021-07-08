@@ -7,6 +7,7 @@
 %>
 <%
 request.setCharacterEncoding("UTF-8");
+String board_index = request.getParameter("board_index");
 String get_id = request.getParameter("get_id");
 %>
 <html>
@@ -90,9 +91,9 @@ h1, h4 {
 				<tr>
 					<td width="100"></td>
 					<td width="900"><input class="btn btn-outline-secondary"
-						type=button value="목록" OnClick="location.href='gongji_list.jsp'">
+						type=button value="목록" OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'">
 						<input class="btn btn-outline-secondary" type=button value="신규"
-						OnClick="location.href='gongji_insert.jsp'"></td>
+						OnClick="location.href='BoardItemInsert.jsp?board_index=<%=board_index%>'"></td>
 				</tr>
 			</table>
 		</div>

@@ -77,16 +77,14 @@ width: 200px;
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="gongji_list.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='BoardItem1.jsp'>board1</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='gongji_list2.jsp'>board2</a></li>
+						aria-current="page" href="BoardList.jsp">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='gongji_search.jsp'>
+				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> 
-					<input class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input
+						class="btn btn-outline-secondary" type="submit" value="Search">
 				</form>
 			</div>
 		</div>
@@ -162,8 +160,8 @@ width: 200px;
 						QueryTxt = String.format("select * from comments where post_id=" + get_id + ";");
 						ResultSet rset = stmt.executeQuery(QueryTxt);
 						while (rset.next()) {
-							String comment_name = rset.getString(2);
-							String comment_contents = rset.getString(3);
+							String comment_name = rset.getString(3);
+							String comment_contents = rset.getString(5);
 							String comment_date = rset.getString(4);
 							out.print("<tr>");
 							out.print("<td class='writer'>" + comment_name + "</th> ");
@@ -228,7 +226,7 @@ width: 200px;
 			</th>
 			<th scope="col"><input class="btn btn-outline-secondary"
 				type="button" value="수정"
-				OnClick="location.href='gongji_update.jsp?get_id=<%=get_id%>'">
+				OnClick="location.href='BoardItemUpdate.jsp?board_index=<%=board_index%>&get_id=<%=get_id%>'">
 			</th>
 			<th scope="col" width=450></th>
 		</tr>
