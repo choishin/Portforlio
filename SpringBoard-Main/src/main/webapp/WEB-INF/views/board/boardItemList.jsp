@@ -2,10 +2,6 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data"%>
-<%
-String IP = Data.IP;
-%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -74,13 +70,17 @@ h1, h4 {
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="gongji_list.jsp">Home</a></li>
+						aria-current="page" href="/SpringBoard-Main/BoardList">Home</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='gongji_list.jsp'>board1</a></li>
+						href='/SpringBoard-Main/Board/BoardItemList/1'>board1</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='gongji_list2.jsp'>board2</a></li>
+						href='/SpringBoard-Main/Board/BoardItemList/2'>board2</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='/SpringBoard-Main/Board/BoardItemList/3'>board3</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='/SpringBoard-Main/Board/BoardItemList/4'>board4</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='gongji_search.jsp'>
+				<form class="d-flex" method='get' action='/Board/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -90,10 +90,10 @@ h1, h4 {
 	</nav>
 	<br>
 	<br>
-	<center>
-		<h1>Board1</h1>
-		<h4>클릭해서 게시글을 보고, 댓글 달기와 조회수 보기가 가능한 게시판</h4>
-	</center>
+<%-- 	<center> --%>
+<%-- 		<h1><c:out value="${BoardItemList.title}"></c:out></h1> --%>
+<%-- 		<h4><c:out value="${BoardItemList.info}"></c:out></h4> --%>
+<%-- 	</center> --%>
 	<br>
 	<br>
 	<br>
@@ -107,8 +107,8 @@ h1, h4 {
 					<th scope="col" width="200px"><p align=center>등록일</p></th>
 				</tr>
 			<tbody>
-				<c:forEach var="boardItemList" items="${boardItemList}">
-					<c:out value="${boardItemList.title}" />
+				<c:forEach var="BoardItemList" items="${BoardItemList}">
+					<c:out value="${BoardItemList.title}"/>
 				</c:forEach>
 			</tbody>
 		</table>

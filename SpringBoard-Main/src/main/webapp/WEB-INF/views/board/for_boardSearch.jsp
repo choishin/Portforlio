@@ -5,7 +5,7 @@
 <head>
 </head> 
 <body> 
-<form method="get" action="/SpringBoard-Main/board/boardItemSearch"> 
+<form method="get" action="/SpringBoard-Main/board/boardItemList"> 
 	게시판 번호: <input type="text" name="board_index"><br> 
 	<input type="submit" value="전송"> 
 </form> 

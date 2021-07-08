@@ -76,16 +76,20 @@ h1, h4 {
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="gongji_list.jsp">Home</a></li>
+						aria-current="page" href="/SpringBoard-Main/BoardList">Home</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='gongji_list.jsp'>board1</a></li>
+						href='/SpringBoard-Main/Board/BoardItemList/1'>board1</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='gongji_list2.jsp'>board2</a></li>
+						href='/SpringBoard-Main/Board/BoardItemList/2'>board2</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='/SpringBoard-Main/Board/BoardItemList/3'>board3</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='/SpringBoard-Main/Board/BoardItemList/4'>board4</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='gongji_search.jsp'>
+				<form class="d-flex" method='get' action='/Board/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> 
-					<input class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input
+						class="btn btn-outline-secondary" type="submit" value="Search">
 				</form>
 			</div>
 		</div>

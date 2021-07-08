@@ -22,9 +22,11 @@
 	/*교차측 방향 정렬 (가로세로모두에서)*/
 	align-items: flex-start;
 }
+
 table {
 	text-align: center;
 }
+
 h1, h4 {
 	color: #767676;
 }
@@ -47,13 +49,17 @@ h1, h4 {
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="BoardList.jsp">Home</a></li>
+						aria-current="page" href="/SpringBoard-Main/BoardList">Home</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/board/boardItemView.jsp?board_index=1'>board1</a></li>
+						href='/SpringBoard-Main/Board/BoardItemList/1'>board1</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/board/boardItemView.jsp?board_index=2'>board2</a></li>
+						href='/SpringBoard-Main/Board/BoardItemList/2'>board2</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='/SpringBoard-Main/Board/BoardItemList/3'>board3</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='/SpringBoard-Main/Board/BoardItemList/4'>board4</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='gongji_search.jsp'>
+				<form class="d-flex" method='get' action='/Board/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -70,8 +76,25 @@ h1, h4 {
 	<br>
 	<br>
 	<br>
-	<c:forEach var="BoardList" items="${BoardList}">
-		${BoardList.title}
-	</c:forEach>
+	<div class="container">
+		<table class="table table-hover">
+			<thead>
+			<tbody>
+				<tr>
+					<th scope='row'>
+						<p align=center>게시판 번호</p>
+					</th>
+					<th scope='row'>
+						<p align=center>게시판 이름</p>
+					</th>
+				</tr>
+				<c:forEach var="BoardList" items="${BoardList}">
+					<tr>
+						<td><p align=center>
+								<c:out value="${BoardList.title}" />
+							</p></td>
+						<td><a href='/SpringBoard-Main/Board/BoardItemList/${BoardList.id}'>${BoardList.title}</a></td>
+					</tr>
+				</c:forEach>
 </body>
 </html>
