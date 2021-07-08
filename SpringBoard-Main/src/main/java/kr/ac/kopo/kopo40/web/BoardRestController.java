@@ -24,12 +24,12 @@ public class BoardRestController {
 	@Autowired
 	private BoardRepository boardRepository;
 
-	@RequestMapping(value = "/board/list")
-	@ResponseBody
-	public List<Board> list(Model model) {
-
-		return boardRepository.findAll();
-	}
+//	@RequestMapping(value = "BoardList")
+//	@ResponseBody
+//	public List<Board> list(Model model) {
+//
+//		return boardRepository.findAll();
+//	}
 
 	@RequestMapping(value = "/board/pageable")
 	@ResponseBody
@@ -54,7 +54,7 @@ public class BoardRestController {
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardRestController.class);
 
-	@RequestMapping("/api/board/findOne")
+	@RequestMapping("/findOne")
 	public Board findOne(@RequestParam HashMap<String, String> map) {
 		int id = Integer.parseInt(map.get("id"));
 		String title = map.get("title");

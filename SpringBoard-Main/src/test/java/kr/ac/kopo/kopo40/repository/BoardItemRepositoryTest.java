@@ -1,9 +1,10 @@
 package kr.ac.kopo.kopo40.repository;
 
+
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+
 
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
@@ -20,18 +21,16 @@ public class BoardItemRepositoryTest {
 
 	@Autowired
 	private BoardItemRepository boardItemRepository;
-
+//	@Transactional
 //	@Test
 	void create() {
-		BoardItem boardItem1 = new BoardItem();
-		boardItem1.setTitle("title1");
-		// 코드 더 추가해야함
 
-		boardItemRepository.save(boardItem1);
+		//코드를 수정해야할 듯 함...
+
 	}
 
-	@Transactional
-	@Test
+//	@Transactional
+//	@Test
 	void selectAll1() {
 		Optional<BoardItem> boardItemOptional = boardItemRepository.findById(2);
 		if (boardItemOptional.isPresent()) {

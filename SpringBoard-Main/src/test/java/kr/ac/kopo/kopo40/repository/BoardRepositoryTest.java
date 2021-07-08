@@ -27,23 +27,37 @@ public class BoardRepositoryTest {
 	private BoardItemRepository boardItemRepository;
 
 //	@Transactional
-//	@Test
+	@Test
 	public void oneToMany_TwoWay() {
 		List<BoardItem> boardItems = new ArrayList<BoardItem>();
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Board board1 = new Board();
-		board1.setTitle("board1");
+		Board board3 = new Board();
+		board3.setTitle("board3");
 
-		BoardItem boardItem = new BoardItem();
-		boardItem.setBoard(board1);
-		boardItem.setTitle("test2");
-		boardItem.setDate(sdf.format(date));
-		boardItem.setContent("test글!");
-		boardItem.setViewCnt(0);
-		boardItems.add(boardItem);
-		board1.setBoardItems(boardItems);
-		boardRepository.save(board1);
+		BoardItem boardItem1 = new BoardItem();
+		boardItem1.setBoard(board3);
+		boardItem1.setTitle("test1");
+		boardItem1.setDate(sdf.format(date));
+		boardItem1.setContent("test글!");
+		boardItem1.setViewCnt(0);
+		boardItems.add(boardItem1);
+		BoardItem boardItem2 = new BoardItem();
+		boardItem2.setBoard(board3);
+		boardItem2.setTitle("test2");
+		boardItem2.setDate(sdf.format(date));
+		boardItem2.setContent("test글!");
+		boardItem2.setViewCnt(0);
+		boardItems.add(boardItem2);		
+		BoardItem boardItem3 = new BoardItem();
+		boardItem3.setBoard(board3);
+		boardItem3.setTitle("test3");
+		boardItem3.setDate(sdf.format(date));
+		boardItem3.setContent("test글!");
+		boardItem3.setViewCnt(0);
+		boardItems.add(boardItem3);	
+		board3.setBoardItems(boardItems);
+		boardRepository.save(board3);
 
 	}
 
