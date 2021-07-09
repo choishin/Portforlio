@@ -4,8 +4,6 @@ package kr.ac.kopo.kopo40.repository;
 import java.util.List;
 import java.util.Optional;
 
-
-
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +25,24 @@ public class BoardItemRepositoryTest {
 
 		//코드를 수정해야할 듯 함...
 
+	}
+	
+	@Test
+	void findOneByIdAndBoard_id(int id, int board_id) {
+		Optional<BoardItem> boardItem = boardItemRepository.findOneByIdAndBoard_id(id, board_id);
+		BoardItem newBoard = boardItem.get(); 
+	}
+	
+//	@Test
+	void totalMax() {
+		int result = boardItemRepository.totalMax();
+		System.out.println(result);
+	}
+	
+	@Test
+	void max() {
+		int result = boardItemRepository.max(1);
+		System.out.println(result);
 	}
 
 //	@Transactional

@@ -1,9 +1,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data"%>
+<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
 <%
 	String IP = Data.IP;
+%>
+<%
+request.setCharacterEncoding("UTF-8");
+String board_index = request.getParameter("board_index");
+String get_id = request.getParameter("get_id");
 %>
 <html>
 <head>
@@ -68,17 +73,11 @@ tr, th {
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="/SpringBoard-Main/BoardList">Home</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/1'>board1</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/2'>board2</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/3'>board3</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/4'>board4</a></li>
+						aria-current="page" href="BoardList.jsp">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='/Board/BoardItemSearch'>
+				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -89,28 +88,36 @@ tr, th {
 	<%
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 		Statement stmt = conn.createStatement();
 		String QueryTxt;
-		QueryTxt = String.format("select max(id) from gongji;");
+		QueryTxt = String.format("select * from board1 where id=" + get_id + ";");
 		ResultSet rset = stmt.executeQuery(QueryTxt);
-		int get_id = 0;
+		String id = "";
+		String title = "";
+		String date = "";
+		String content = "";
+		String viewcnt = "";
 		while (rset.next()) {
-			String id = rset.getString(1);
-			get_id = Integer.parseInt(id);
+			id = rset.getString(1);
+			title = rset.getString(2);
+			date = rset.getString(3);
+			content = rset.getString(4);
+			viewcnt = rset.getString(5);
 		}
 	%>
-	<FORM METHOD=POST action="gongji_write.jsp">
+	<form method="post" action="BoardItemSet.jsp">
 		<div class="container">
 			<div id="table">
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th scope="col" style="vertical-align: top;"><b>번호</b></th>
+							<th scope="col"><b>번호</b></th>
 							<th scope="col" style="vertical-align: top;">
 								<div class="input-group mb-3">
+								<input type=hidden name="board_index" value="<%=board_index%>">
 									<input type="text" class="form-control" aria-label="Username"
-										name=get_id value=<%=get_id + 1%> readonly>
+										name=get_id value=<%=get_id%> readonly>
 								</div>
 							</th>
 						</tr>
@@ -119,15 +126,17 @@ tr, th {
 							<th scope="col" style="vertical-align: top;">
 								<div class="input-group mb-3">
 									<input type="text" class="form-control" aria-label="Username"
-										name=get_viewcnt value=0 readonly>
+										name=get_viewcnt value=<%=viewcnt%> readonly>
+								</div>
 							</th>
-							</div>
 						</tr>
 						<tr>
 							<th scope="col"><b>제목</b></th>
 							<th scope="col"><input type="text" class="form-control"
-								placeholder="제목" aria-label="Username" name=get_title size="20"
-								maxlength="70" minlength="1" required></th>
+								value=<%=title%> aria-label="Username" name=get_title size="20"
+								maxlength="70" minlength="1" onkeyup='characterCheck(this);'
+								onkeydown='characterCheck(this);' onchange='noSpaceForm(this);'
+								autocomplete='off' required></th>
 						</tr>
 						<tr>
 							<th scope="col"><b>일자</b></th>
@@ -143,7 +152,9 @@ tr, th {
 									<textarea class="form-control" aria-label="With textarea"
 										placeholder="내용을 작성해 주세요."
 										style='width: 500px; height: 250px;' name=get_content cols=70
-										row=600 required></textarea>
+										row=600 onkeyup='characterCheck(this);'
+										onkeydown='characterCheck(this);'
+										onchange='noSpaceForm(this);' autocomplete='off' required><%=content%></textarea>
 								</div>
 							</th>
 						</tr>
@@ -162,16 +173,18 @@ tr, th {
 			<table class="buttons">
 				<tr>
 					<td width=780></td>
-					<td>
-						<button class="btn btn-outline-secondary"
-							OnClick="location.href='gongji_list.jsp'">취소</button>
-					</td>
+					<td><input class="btn btn-outline-secondary" type=button
+						value="취소" OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'"></td>
 					<td><input class="btn btn-outline-secondary" type="submit"
-						value="쓰기"></td>
+						value="수정"></td>
+					<td>
+						<input class="btn btn-outline-secondary" type=button 
+						value="삭제" OnClick="location.href='BoardItemDelete.jsp?board_index=<%=board_index%>&get_id=<%=get_id%>'">
+					</td>
 				</tr>
 			</table>
-		</div>
-	</FORM>
+			</div>
+	</form>
 	<script>
 		function characterCheck(obj) {
 			var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;

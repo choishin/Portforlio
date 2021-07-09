@@ -7,16 +7,15 @@
 //import org.springframework.ui.Model;
 //import org.springframework.web.bind.annotation.RequestMapping;
 //
-//import kr.ac.kopo.kopo40.domain.Board;
-//import kr.ac.kopo.kopo40.repository.BoardRepository;
+//import kr.ac.kopo.kopo40.repository.CommentRepository;
 //
 //@Controller
 //public class CommentController {
 //   
 //   @Autowired
-//   private BoardRepository boardRepository;
+//   private CommentRepository commentRepository;
 //   
-//   @RequestMapping(value = "/BoardList")
+//   @RequestMapping(value = "/")
 //   //@ResponseBody
 //   public String selectAll(Model model) {
 //      PageRequest pageable = PageRequest.of(0, 2);

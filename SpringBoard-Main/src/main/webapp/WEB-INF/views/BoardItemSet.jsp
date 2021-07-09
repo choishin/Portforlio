@@ -1,13 +1,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data"%>
+<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
 <%
-String IP = Data.IP;
+	String IP = Data.IP;
 %>
 <%
 request.setCharacterEncoding("UTF-8");
+String board_index = request.getParameter("board_index");
 String get_id = request.getParameter("get_id");
+String get_title = request.getParameter("get_title");
+String get_content = request.getParameter("get_content");
 %>
 <html>
 <head>
@@ -20,6 +23,19 @@ String get_id = request.getParameter("get_id");
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
+<SCRIPT LANGUAGE="JavaScript">
+	function getDate() {
+		var now = new Date();
+		var year = now.getFullYear();
+		var month = now.getMonth();
+		var date = now.getDate();
+		var hours = now.getHours();
+		var minutes = now.getMinutes();
+		var seconds = now.getSeconds();
+		document.write(year + "년 " + month + "월 " + date + "일 " + hours + ":"
+				+ minutes + ":" + seconds);
+	}
+</SCRIPT>
 <style>
 .contaner {
 	/*flex : 정렬을 위한 컨테이너*/
@@ -29,19 +45,16 @@ String get_id = request.getParameter("get_id");
 	/*교차측 방향 정렬 (가로세로모두에서)*/
 	align-items: flex-start;
 }
-
 #textbox {
 	margin-top: 100px;
 	width: 1000px;
 }
-
 h1, h4 {
 	color: #767676;
 }
 </style>
 </head>
 <body>
-	<!--  Nav Bar -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -58,17 +71,11 @@ h1, h4 {
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="/SpringBoard-Main/BoardList">Home</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/1'>board1</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/2'>board2</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/3'>board3</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/4'>board4</a></li>
+						aria-current="page" href="BoardList.jsp">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='/Board/BoardItemSearch'>
+				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -79,26 +86,24 @@ h1, h4 {
 	<%
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 		Statement stmt = conn.createStatement();
 		String QueryTxt;
-		QueryTxt = "update gongji set title='삭제된 글 입니다.', content='삭제된 글 입니다.' where id=" + get_id + ";";
-		stmt.execute(QueryTxt);
-		QueryTxt = String.format("delete from comments where post_id=" + get_id + ";");
+		QueryTxt = "update board1 set title='" + get_title + "', content='" + get_content + "' where board_index="+board_index+" and id=" + get_id + ";";
 		stmt.execute(QueryTxt);
 	%>
 	<div class="container">
 		<div id="textbox">
 			<table>
 				<tr>
-					<td colspan="2"><h1>게시물 삭제 완료</h1></td>
+					<td colspan="2"><h1>게시물 수정 완료</h1></td>
 				</tr>
 				<tr>
 					<td width="100"></td>
-					<td width="900"><input class="btn btn-outline-secondary"
-						type=button value="목록" OnClick="location.href='gongji_list.jsp'">
-						<input class="btn btn-outline-secondary" type=button value="신규"
-						OnClick="location.href='gongji_insert.jsp'"></td>
+					<td width="900"><input class="btn btn-outline-secondary" type=button
+						value="목록" OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'"> <input
+						class="btn btn-outline-secondary" type=button value="쓰기"
+						OnClick="location.href='BoardItemInsert.jsp?board_index=<%=board_index%>'"></td>
 				</tr>
 			</table>
 		</div>

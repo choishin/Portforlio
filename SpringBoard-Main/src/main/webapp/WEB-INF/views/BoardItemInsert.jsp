@@ -1,14 +1,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data"%>
-<%
-String IP = Data.IP;
-%>
-<%
-request.setCharacterEncoding("UTF-8");
-String keyword = request.getParameter("keyword");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -42,6 +35,7 @@ String keyword = request.getParameter("keyword");
 	/*교차측 방향 정렬 (가로세로모두에서)*/
 	align-items: flex-start;
 }
+
 #table {
 	width: 900px;
 	margin-top: 50px;
@@ -49,33 +43,15 @@ String keyword = request.getParameter("keyword");
 	justify-content: center;
 	align-items: center;
 }
+
 tr, th {
 	text-align: center;
 	vertical-align: middle;
 }
 </style>
 </head>
-<%
-try {
-	Class.forName("com.mysql.cj.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
-	Statement stmt = conn.createStatement();
-	String QueryTxt;
-	QueryTxt = String.format(
-	"SELECT * FROM gongji WHERE title LIKE '%%" + keyword + "%%' or content like '%%" + keyword + "%%';");
-	ResultSet rset = stmt.executeQuery(QueryTxt);
-	String result_id = "";
-	String noResult = "";
-	while (rset.next()) {
-		result_id = rset.getString(1);
-		if (result_id == "" || result_id == null) {
-			noResult = "<h3> 검색 결과가 없습니다</h3>";
-		} else {
-			noResult = "<h3>" + keyword + "검색 결과 </h3>";
-		}
-	}
-%>
 <body>
+<!-- 상단바 -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -94,15 +70,13 @@ try {
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="/SpringBoard-Main/BoardList">Home</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/1'>board1</a></li>
+						href='/SpringBoard-Main/BoardItemList/1'>board1</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/2'>board2</a></li>
+						href='/SpringBoard-Main/BoardItemList/2'>board2</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/3'>board3</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/4'>board4</a></li>
+						href='/SpringBoard-Main/BoardItemList/3'>board3</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='/Board/BoardItemSearch'>
+				<form class="d-flex" method='get' action='/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -110,63 +84,73 @@ try {
 			</div>
 		</div>
 	</nav>
-	<br>
-		<%out.println(noResult);%>
-		<br>
-	<table class="table table-hover">
-		<thead>
-		<% 
-				stmt = conn.createStatement();
-				QueryTxt = String.format(
-				"SELECT * FROM gongji WHERE title LIKE '%%" + keyword + "%%' or content like '%%" + keyword + "%%';");
-				rset = stmt.executeQuery(QueryTxt);
-				String id = "";
-				String title = "";
-				String date = "";
-				String content = "";
-				String viewcnt = "";
-				while (rset.next()) {
-					id = rset.getString(1);
-					title = rset.getString(2);
-					date = rset.getString(3);
-					content = rset.getString(4);
-					viewcnt = rset.getString(5);
-					out.println("<tr>");
-					out.println("<td>");
-					out.println(id);
-					out.println("</th>");
-					out.println("<td'>");
-					out.println(title);
-					out.println("</td>");
-					out.println("<td>");
-					out.println(date);
-					out.println("</td>");
-					out.println("<td>");
-					out.println(content);
-					out.println("</td>");
-					out.println("</tr>");
-				}
-			%>
-		
-		</tbody>
-	</table>
-	<div class="container">
-		<div id="textbox">
-			<table>
+<%-- 	<c:out value="${values[0]} -> 게시판 번호"/>  --%> 
+<%-- 	<c:out value="${values[1]} -> 해당 게시판 번호의 마지막 게시글 번호"/>	 --%>
+	<FORM METHOD=POST action="/SpringBoard-Main/BoardItemWrite/${values[0]}">
+		<div class="container">
+			<div id="table">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col" style="vertical-align: top;"><b>번호</b></th>
+							<th scope="col" style="vertical-align: top;">
+							<input
+								type=hidden name="board_index" value="${values[0]}">
+								<div class="input-group mb-3">
+									<input type="text" class="form-control" aria-label="Username"
+										name=get_id value='${values[1]+1}'
+										readonly>
+								</div></th>
+						</tr>
+						<tr>
+							<th scope="col" style="vertical-align: top;">조회수</th>
+							<th scope="col" style="vertical-align: top;">
+								<div class="input-group mb-3">
+									<input type="text" class="form-control" aria-label="Username"
+										name=get_viewcnt value=0 readonly>
+								</div>
+							</th>
+						</tr>
+						<tr>
+							<th scope="col"><b>제목</b></th>
+							<th scope="col"><input type="text" class="form-control"
+								placeholder="제목" aria-label="Username" name=get_title size="20"
+								maxlength="70" minlength="1" required></th>
+						</tr>
+						<tr>
+							<th scope="col"><b>일자</b></th>
+							<th scope="col" style="text-align: left;"><script>
+								getDate()
+							</script></th>
+						</tr>
+						<tr>
+							<th scope="col"><b>내용</b></th>
+							<th scope="col">
+								<div class="input-group">
+									<textarea class="form-control" aria-label="With textarea"
+										placeholder="내용을 작성해 주세요."
+										style='width: 500px; height: 250px;' name=get_content cols=70
+										row=600 required></textarea>
+								</div>
+							</th>
+						</tr>
+				</table>
+			</div>
+		</div>
+		<div class="container">
+			<table class="buttons">
 				<tr>
-					<td colspan="2">
+					<td width=780></td>
+					<td>
+						<button class="btn btn-outline-secondary"
+							OnClick="location.href='/SpringBoard-Main/BoardItemList/${values[0]}'">취소</button>
 					</td>
-				</tr>
-				<tr>
-					<td width="100"></td>
-					<td width="900"><input class="btn btn-outline-secondary"
-						type=button value="목록" OnClick="location.href='gongji_list.jsp'">
-						<input class="btn btn-outline-secondary" type=button value="신규"
-						OnClick="location.href='gongji_insert.jsp'"></td>
+					<td><input class="btn btn-outline-secondary" type="submit"
+						value="쓰기"></td>
 				</tr>
 			</table>
 		</div>
-	</div>
+	</FORM>
 	<script>
 		function characterCheck(obj) {
 			var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;
@@ -184,13 +168,5 @@ try {
 			}
 		}
 	</script>
-	<%
-	rset.close();
-	stmt.close();
-	conn.close();
-	} catch (Exception e) {
-	out.print(e);
-	}
-	%>
 </body>
 </html>

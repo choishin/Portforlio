@@ -51,15 +51,13 @@ h1, h4 {
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="/SpringBoard-Main/BoardList">Home</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/1'>board1</a></li>
+						href='/SpringBoard-Main/BoardItemList/1'>board1</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/2'>board2</a></li>
+						href='/SpringBoard-Main/BoardItemList/2'>board2</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/3'>board3</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/4'>board4</a></li>
+						href='/SpringBoard-Main/BoardItemList/3'>board3</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='/Board/BoardItemSearch'>
+				<form class="d-flex" method='get' action='/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -93,7 +91,7 @@ h1, h4 {
 						<td><p align=center>
 								<c:out value="${BoardList.title}" />
 							</p></td>
-						<td><a href='/SpringBoard-Main/Board/BoardItemList/${BoardList.id}'>${BoardList.title}</a></td>
+						<td><a href='/SpringBoard-Main/BoardItemList/${BoardList.id}'>${BoardList.title}</a></td>
 					</tr>
 				</c:forEach>
 </body>

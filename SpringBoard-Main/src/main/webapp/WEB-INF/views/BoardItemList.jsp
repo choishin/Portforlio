@@ -72,15 +72,13 @@ h1, h4 {
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="/SpringBoard-Main/BoardList">Home</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/1'>board1</a></li>
+						href='/SpringBoard-Main/BoardItemList/1'>board1</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/2'>board2</a></li>
+						href='/SpringBoard-Main/BoardItemList/2'>board2</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/3'>board3</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href='/SpringBoard-Main/Board/BoardItemList/4'>board4</a></li>
+						href='/SpringBoard-Main/BoardItemList/3'>board3</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='/Board/BoardItemSearch'>
+				<form class="d-flex" method='get' action='/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -90,10 +88,9 @@ h1, h4 {
 	</nav>
 	<br>
 	<br>
-<%-- 	<center> --%>
-<%-- 		<h1><c:out value="${BoardItemList.title}"></c:out></h1> --%>
-<%-- 		<h4><c:out value="${BoardItemList.info}"></c:out></h4> --%>
-<%-- 	</center> --%>
+	<center>
+		<h1><c:out value="${board.title}"/></h1>
+	</center>
 	<br>
 	<br>
 	<br>
@@ -107,33 +104,38 @@ h1, h4 {
 					<th scope="col" width="200px"><p align=center>등록일</p></th>
 				</tr>
 			<tbody>
-				<c:forEach var="BoardItemList" items="${BoardItemList}">
-					<c:out value="${BoardItemList.title}"/>
+				<c:forEach var="boardItem" items="${board.boardItems}">
+				<tr>
+				<th scope='row' width='50px;'> <p align=center><c:out value="${boardItem.id}"/></p></th>
+				<td width=500 width='400px'><p align=center><a href='/SpringBoard-Main/BoardItemView/${board.id}/${boardItem.id}'>${boardItem.title}</a></p></td>
+				<td width=50 width='100px'>${boardItem.viewCnt}</td>
+				<td width='200px'> <p align=center>${boardItem.date}</p></td>
+				</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
 	<div class="container">
-		<table class="buttons">
-			<tr>
-				<td width=1100></td>
-				<td>
-					<div class="btn-group btn-group" role="group"
-						aria-label="Basic outlined example">
-						<input type="button" class="btn btn-outline-secondary" value="목록"
-							OnClick="location.href='gongji_list.jsp'">
-					</div>
-				</td>
-				<td>
-					<div class="btn-group btn-group" role="group"
-						aria-label="Basic outlined example">
-						<input type="button" class="btn btn-outline-secondary" value="신규"
-							OnClick="window.location='gongji_insert.jsp'">
-					</div>
-				</td>
-			</tr>
-		</table>
-	</div>
+			<table class="buttons">
+				<tr>
+					<td width=1100></td>
+					<td>
+						<div class="btn-group btn-group" role="group"
+							aria-label="Basic outlined example">
+							<input type="button" class="btn btn-outline-secondary" value="목록"
+								OnClick="location.href='/SpringBoard-Main/BoardItemList/${board.id}'">
+						</div>
+					</td>
+					<td>
+						<div class="btn-group btn-group" role="group"
+							aria-label="Basic outlined example">
+							<input type="button" class="btn btn-outline-secondary" value="신규"
+								OnClick="window.location='/SpringBoard-Main/BoardItemInsert/${board.id}'">
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 	<br>
 	<br>
 	<br>
