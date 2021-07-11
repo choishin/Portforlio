@@ -1,15 +1,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
-<%
-	String IP = Data.IP;
-%>
-<%
-request.setCharacterEncoding("UTF-8");
-String board_index = request.getParameter("board_index");
-String get_id = request.getParameter("get_id");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -56,11 +48,15 @@ h1, h4 {
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="BoardList.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
+						aria-current="page" href="/SpringBoard-Main/BoardList">Home</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='/SpringBoard-Main/BoardItemList/1'>board1</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='/SpringBoard-Main/BoardItemList/2'>board2</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='/SpringBoard-Main/BoardItemList/3'>board3</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
+				<form class="d-flex" method='get' action='/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -68,17 +64,6 @@ h1, h4 {
 			</div>
 		</div>
 	</nav>
-	<%
-	try {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
-		Statement stmt = conn.createStatement();
-		String QueryTxt;
-		QueryTxt = "update board1 set title='삭제된 글 입니다.', content='삭제된 글 입니다.' where id=" + get_id + ";";
-		stmt.execute(QueryTxt);
-		QueryTxt = String.format("delete from comments where post_id=" + get_id + ";");
- 		stmt.execute(QueryTxt);
-	%>
 	<div class="container">
 		<div id="textbox">
 			<table>
@@ -88,19 +73,12 @@ h1, h4 {
 				<tr>
 					<td width="100"></td>
 					<td width="900"><input class="btn btn-outline-secondary"
-						type=button value="목록" OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'">
+						type=button value="목록" OnClick="location.href='/SpringBoard-Main/BoardItemList/${values[0]}'">
 						<input class="btn btn-outline-secondary" type=button value="신규"
-						OnClick="location.href='BoardItemInsert.jsp?board_index=<%=board_index%>'"></td>
+						OnClick="location.href='/SpringBoard-Main/BoardItemInsert/${values[0]}'"></td>
 				</tr>
 			</table>
 		</div>
 	</div>
-	<%
-	stmt.close();
-	conn.close();
-	} catch (Exception e) {
-	out.print(e);
-	}
-	%>
 </body>
 </html>

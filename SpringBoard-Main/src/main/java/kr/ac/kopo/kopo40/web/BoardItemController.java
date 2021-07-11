@@ -1,13 +1,17 @@
 package kr.ac.kopo.kopo40.web;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,80 +36,117 @@ public class BoardItemController {
 	
 	@Autowired
 	private CommentRepository commentRepository;
-
+	
+	/* 게시글 목록 */
 	@RequestMapping(value = "/BoardItemList/{board_index}")
-	public String listBoardItem(@PathVariable("board_index") String board_index, Model model) {
-		Optional<Board> board = boardRepository.findById(Integer.parseInt(board_index));
-		Board boardForReturn = board.get();
-		model.addAttribute("board", boardForReturn);
+	public String listBoardItem(@PathVariable("board_index") int board_index, Model model) {
+		
+		Optional<Board> board = boardRepository.findById(board_index);
+		List<BoardItem> boardItems = boardItemRepository.sortBoardItems(board_index);
+		model.addAttribute("board",board.get());
+		model.addAttribute("boardItems", boardItems);
 		return "/BoardItemList";
 	}
-
+	
+	/* 새로운 게시글 작성 */
 	@RequestMapping(value = "/BoardItemInsert/{board_index}")
-	public String InsertBoardItem(@PathVariable("board_index") String board_index, Model model) {
-		int lastCnt = boardItemRepository.max(Integer.parseInt(board_index));
-		int[] values = { Integer.parseInt(board_index), lastCnt };
+	public String InsertBoardItem(@PathVariable("board_index") int board_index, Model model) {
+		int lastCnt = boardItemRepository.max(board_index);
+		int[] values = { board_index, lastCnt };
 		model.addAttribute("values", values);
 		return "/BoardItemInsert";
 	}
-
+	
+	/* 새로운 게시글 등록 */
+	@Transactional
 	@RequestMapping("/BoardItemWrite/{board_index}")
-	public String insertBoardItem(@RequestParam("board_index") int board_index,
+	public String writeBoardItem(@RequestParam("board_index") int board_index, @RequestParam("get_id") int id,
 			@RequestParam("get_viewcnt") int viewcnt, @RequestParam("get_title") String title,
 			@RequestParam("get_content") String content, Model model) {
+		
+		int[] values = {board_index, id};
+		model.addAttribute("values",values);
 
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Board board = new Board();
-		board.setId(board_index);
+		Optional<Board> board = boardRepository.findById(board_index);
+		
 		BoardItem boardItem = new BoardItem();
-		boardItem.setBoard(board);
-		boardItem.setViewCnt(viewcnt);
+		boardItem.setBoard(board.get());
+		boardItem.setId(id);
 		boardItem.setTitle(title);
-		boardItem.setDate(sdf.format(date));
 		boardItem.setContent(content);
-		boardItemRepository.save(boardItem);
+		boardItem.setViewCnt(viewcnt);
+		boardItem.setDate(sdf.format(date));
+		board.get().addBoardItem(boardItem);
+		Hibernate.initialize(boardItem);
+		boardRepository.save(board.get());
 
 		return "/BoardItemWrite";
 	}
-	
+		
+	/* 게시글 보기 */
+	@Modifying
+	@Transactional
 	@RequestMapping(value = "/BoardItemView/{board_index}/{id}")
 	public String selectOne(@PathVariable("board_index") int board_id,@PathVariable("id") int id, Model model) {
-		Optional<BoardItem> boardItem = boardItemRepository.findOneByIdAndBoard_id(id, board_id);
-		model.addAttribute("boardItem",boardItem.get());
 		
-		List<Comment> comments = commentRepository.findAllByPost_id(id);
-		model.addAttribute("comments",comments);
+		boardItemRepository.addViewCnt(board_id,id);	
+		Optional<BoardItem> returnedBoardItem = boardItemRepository.findOneByIdAndBoard_id(id, board_id);
+		List<Comment> returnedComments = commentRepository.findOneByBoard_idAndPost_id(board_id,id);
+		BoardItem boardItem = new BoardItem();
+		boardItem = returnedBoardItem.get();
+
+		model.addAttribute("boardItem", boardItem);		
+		model.addAttribute("comments",returnedComments);
 		
 		return "/BoardItemView";
 	}
 
-	@RequestMapping(value = "/BoardItemUpdate/{board_index}")
-	public String updateBoardItem(Model model) {
-
+	/* 게시글 수정 페이지 */
+	@RequestMapping(value = "/BoardItemUpdate/{board_id}/{id}")
+	public String updateBoardItem(@PathVariable("board_id") int board_id,@PathVariable("id") int id, Model model) {
+		Optional<BoardItem> boardItem = boardItemRepository.findOneByBoard_idAndId(board_id,id);
+		model.addAttribute("boardItem",boardItem.get());
+		
 		return "/BoardItemUpdate";
 	}
 
-	@RequestMapping(value = "/BoardItemSet/{board_index}")
-	public String setBoardItem(Model model) {
+	/* 게시글 수정 등록 */
+	@RequestMapping(value = "/BoardItemSet/{board_id}/{id}")
+	public String setBoardItem(@PathVariable("board_id") int board_id,@PathVariable("id") int id,@RequestParam("get_title") String title, @RequestParam("get_content") String content,Model model) {
+		Optional<BoardItem> boardItem = boardItemRepository.findOneByBoard_idAndId(board_id,id);
+		model.addAttribute("boardItem",boardItem.get());
+		boardItemRepository.setBoardItem(title, content, board_id, id);
 
 		return "/BoardItemSet";
 	}
-
-	@RequestMapping(value = "/BoardItemDelete/{board_index}")
-	public String deleteBoardItem(Model model) {
+	
+	/* 게시글 삭제 */
+	@Modifying
+	@Transactional
+	@RequestMapping(value = "/BoardItemDelete/{board_id}/{id}")
+	public String deleteBoardItem(@PathVariable("board_id") int board_id,@PathVariable("id") int id,Model model) {
+		int[] values = {board_id, id};
+		model.addAttribute("values", values);
+		
+		Optional<Board> board = boardRepository.findById(board_id);
+		Optional<BoardItem> boardItem = boardItemRepository.findOneByBoard_idAndId(board_id,id);
+	    board.get().getBoardItems().remove(boardItem.get());
+	    boardItem.get().setBoard(null);
+	    boardItemRepository.delete(boardItem.get());
+	    boardRepository.save(board.get());
 
 		return "/BoardItemDelete";
 	}
 	
-	@RequestMapping(value = "/BoardItemView")
-	// @ResponseBody
-	public String selectAll(Model model) {
-		PageRequest pageable = PageRequest.of(0, 10);
-		Page<BoardItem> page = boardItemRepository.findAll(pageable);
-		model.addAttribute("BoardItems", page.getContent());
-
-		return "/BoardItemView";
-	}
+//	@RequestMapping(value = "/BoardItemView")
+//	public String selectAll(Model model) {
+//		PageRequest pageable = PageRequest.of(0, 10);
+//		Page<BoardItem> page = boardItemRepository.findAll(pageable);
+//		model.addAttribute("BoardItems", page.getContent());
+//
+//		return "/BoardItemView";
+//	}
 
 }

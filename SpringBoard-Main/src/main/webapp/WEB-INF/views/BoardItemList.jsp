@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -89,7 +90,9 @@ h1, h4 {
 	<br>
 	<br>
 	<center>
-		<h1><c:out value="${board.title}"/></h1>
+		<h1>
+			<c:out value="${board.title}" />
+		</h1>
 	</center>
 	<br>
 	<br>
@@ -104,38 +107,49 @@ h1, h4 {
 					<th scope="col" width="200px"><p align=center>등록일</p></th>
 				</tr>
 			<tbody>
-				<c:forEach var="boardItem" items="${board.boardItems}">
-				<tr>
-				<th scope='row' width='50px;'> <p align=center><c:out value="${boardItem.id}"/></p></th>
-				<td width=500 width='400px'><p align=center><a href='/SpringBoard-Main/BoardItemView/${board.id}/${boardItem.id}'>${boardItem.title}</a></p></td>
-				<td width=50 width='100px'>${boardItem.viewCnt}</td>
-				<td width='200px'> <p align=center>${boardItem.date}</p></td>
-				</tr>
+				<c:forEach var="boardItem" items="${boardItems}"
+					varStatus="status">
+					<tr>
+						<th scope='row' width='50px;'>
+							<p align=center>
+								${fn:length(boardItems) - status.index}
+<%-- 								<c:out value="${boardItem.id}"/> --%>
+							</p>
+						</th>
+						<td width=500 width='400px'><p align=center>
+								<a
+									href='/SpringBoard-Main/BoardItemView/${board.id}/${boardItem.id}'>${boardItem.title}</a>
+							</p></td>
+						<td width=50 width='100px'>${boardItem.viewCnt}</td>
+						<td width='200px'>
+							<p align=center>${boardItem.date}</p>
+						</td>
+					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
 	<div class="container">
-			<table class="buttons">
-				<tr>
-					<td width=1100></td>
-					<td>
-						<div class="btn-group btn-group" role="group"
-							aria-label="Basic outlined example">
-							<input type="button" class="btn btn-outline-secondary" value="목록"
-								OnClick="location.href='/SpringBoard-Main/BoardItemList/${board.id}'">
-						</div>
-					</td>
-					<td>
-						<div class="btn-group btn-group" role="group"
-							aria-label="Basic outlined example">
-							<input type="button" class="btn btn-outline-secondary" value="신규"
-								OnClick="window.location='/SpringBoard-Main/BoardItemInsert/${board.id}'">
-						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
+		<table class="buttons">
+			<tr>
+				<td width=1100></td>
+				<td>
+					<div class="btn-group btn-group" role="group"
+						aria-label="Basic outlined example">
+						<input type="button" class="btn btn-outline-secondary" value="목록"
+							OnClick="location.href='/SpringBoard-Main/BoardItemList/${board.getId()}'">
+					</div>
+				</td>
+				<td>
+					<div class="btn-group btn-group" role="group"
+						aria-label="Basic outlined example">
+						<input type="button" class="btn btn-outline-secondary" value="신규"
+							OnClick="window.location='/SpringBoard-Main/BoardItemInsert/${board.getId()}'">
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
 	<br>
 	<br>
 	<br>

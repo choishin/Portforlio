@@ -39,8 +39,8 @@ public class BoardItem {
 	private Board board;
 
 	// 게시글과 댓글을 1:多 관계로 연결
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "boardItem", fetch = FetchType.LAZY)
-	private Collection<Comment> comments;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "boardItem", fetch = FetchType.LAZY, orphanRemoval = true)
+	private Collection<Comment> comments = new ArrayList<Comment>();
 
 	public Collection<Comment> getComments() {
 		if (comments == null) {

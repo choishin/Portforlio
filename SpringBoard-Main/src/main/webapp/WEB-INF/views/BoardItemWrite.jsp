@@ -1,10 +1,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%
-request.setCharacterEncoding("UTF-8");
-String board_index = request.getParameter("board_index");
-%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -92,14 +88,14 @@ h1, h4 {
 						<div class="btn-group btn-group" role="group"
 							aria-label="Basic outlined example">
 							<input type="button" class="btn btn-outline-secondary" value="목록"
-								OnClick="location.href='/SpringBoard-Main/BoardItemList/<%=board_index%>'">
+								OnClick="location.href='/SpringBoard-Main/BoardItemList/${values[0]}'"/>
 						</div>
 					</td>
 					<td>
 						<div class="btn-group btn-group" role="group"
 							aria-label="Basic outlined example">
 							<input type="button" class="btn btn-outline-secondary" value="신규"
-								OnClick="location.href='/SpringBoard-Main/BoardItemInsert/<%=board_index%>'">
+								OnClick="location.href='/SpringBoard-Main/BoardItemInsert/${values[0]}'">
 						</div>
 					</td>
 				</tr>

@@ -17,25 +17,39 @@ public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
-	private String id;
+	private int id;
+	
 	@Column
 	private String name;
+	
 	@Column
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateTime;
+	private String dateTime;
+	
 	@Column
 	private String contents;
+	
+	@Column
+	private int board_id;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "post_id")
 	private BoardItem boardItem;
 
-	public String getId() {
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getBoard_id() {
+		return board_id;
+	}
+
+	public void setBoard_id(int board_id) {
+		this.board_id = board_id;
 	}
 
 	public String getName() {
@@ -46,11 +60,11 @@ public class Comment {
 		this.name = name;
 	}
 
-	public Date getDateTime() {
+	public String getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Date dateTime) {
+	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
 

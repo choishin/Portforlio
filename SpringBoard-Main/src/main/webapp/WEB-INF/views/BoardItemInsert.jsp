@@ -84,8 +84,6 @@ tr, th {
 			</div>
 		</div>
 	</nav>
-<%-- 	<c:out value="${values[0]} -> 게시판 번호"/>  --%> 
-<%-- 	<c:out value="${values[1]} -> 해당 게시판 번호의 마지막 게시글 번호"/>	 --%>
 	<FORM METHOD=POST action="/SpringBoard-Main/BoardItemWrite/${values[0]}">
 		<div class="container">
 			<div id="table">

@@ -2,11 +2,6 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-request.setCharacterEncoding("UTF-8");
-String board_index = request.getParameter("board_index");
-String get_id = request.getParameter("get_id");
-%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -103,12 +98,12 @@ h1, h2, h3, h4 {
 					<tr>
 						<th scope='col' width=200px><b>번호</b></th>
 						<td><c:out value="${boardItem.id}" />
-						</th>
+						</td>
 					</tr>
 					<tr>
 						<th scope='col' width=200px><b>조회수</b></th>
-						<td><c:out value="${boardItem.viewCnt}" />
-						</th>
+						<td><c:out value="${boardItem.viewCnt}"/>
+						</td>
 					</tr>
 					<tr>
 						<th scope='col' width=200px><b>제목</b></th>
@@ -117,18 +112,21 @@ h1, h2, h3, h4 {
 					<tr>
 						<th scope='col' width=200px><b>일자</b></th>
 						<td><c:out value="${boardItem.date}" />
-						</th>
+						</td>
 					</tr>
 					<tr>
 						<th scope='col' width=200px
 							style='vertical-align: top; height: auto;'><b>내용</b></th>
 						<td height=200px style='vertical-align: top; height: auto;'><c:out
-								value="${boardItem.content}" /></td>
+								value="${boardItem.content}" /></td> 
 					</tr>
 				</tbody>
 			</table>
 		</div>
+		</FORM>
 		<br>
+		
+		<!-- 댓글보기 -->
 		<div class="container">
 			<h3>댓글보기</h3>
 			<table class="table table-hover">
@@ -139,19 +137,68 @@ h1, h2, h3, h4 {
 						<th scope="col" class="date">일자</th>
 						<th class="buttons"></th>
 					</tr>
-					<c:forEach var="comment" items="${boardItem.comments}">
-						<tr>
-							<td class='writer'><c:out value="${comment.id}" /></td>
-							<td class='contents'><c:out value="${comment.content}" /></td>
-							<td class='date'><c:out value="${comment.dateTime}" /></td>
+					<c:forEach var="comment" items="${comments}" varStatus="status">
+							<tr>
+							<td class='writer'><c:out value="${comment.name}" /></td> 
+							<td class='contents'><c:out value="${comment.getContents()}" /></td> 
+							<td class='date'><c:out value="${comment.getDateTime()}" /></td>
 							<td class='buttons'></td>
-						</tr>
+							</tr>
 					</c:forEach>
-
-
-					<!-- 댓글보기 -->
-
-					<!--댓글창-->
+				</thead>
+			</table>
+			</div>
+<!--댓글창-->
+	<br>
+<div class="container">
+	<form method="post" action="/SpringBoard-Main/CommentInsert">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<input type=hidden name="board_index" value="${boardItem.getBoard().getId()}">
+					<input type=hidden name="post_id" value="${boardItem.id}">
+				</tr>
+				<tr>
+					<th scope="col" class="writer" style="vertical-align: top;">
+						<div class="input-group mb-3">
+							<input type="text" class="form-control" placeholder="작성자"
+								aria-label="Username" aria-describedby="basic-addon1"
+								name='comment_name' placeholder='작성자' maxlength=70 minlength=1
+								required>
+						</div>
+					</th>
+					<th scope="col" class="contents">
+						<div class="input-group">
+							<textarea class="form-control" aria-label="With textarea"
+								name='comment_contents' rows='2' cols='70'
+								placeholder='댓글을 작성해주세요' maxlength=200 minlength=1 required></textarea>
+						</div>
+					</th>
+					<th scope="col" class="date" style="vertical-align: top;"><script>
+						getDate()
+					</script></th>
+					<th scope="col" style="vertical-align: top;"><input
+						class="btn btn-outline-secondary" type="submit" value="등록">
+					<input
+						class="btn btn-outline-secondary" type="reset" value="취소">
+					</th>
+				</tr>
+		</table>
+	</form>
+	</div>
+	<table width=1000>
+		<tr>
+			<th scope="col" width=450></th>
+			<th scope="col"><input class="btn btn-outline-secondary"
+				type="button" value="목록" OnClick="location.href='/SpringBoard-Main/BoardItemList/${boardItem.getBoard().getId()}'">
+			</th>
+			<th scope="col"><input class="btn btn-outline-secondary"
+				type="button" value="수정"
+				OnClick="location.href='/SpringBoard-Main/BoardItemUpdate/${boardItem.getBoard().getId()}/${boardItem.id}'">
+			</th>
+			<th scope="col" width=450></th>
+		</tr>
+	</table>
 					<script>
 						function characterCheck(obj) {
 							var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;
@@ -164,7 +211,7 @@ h1, h2, h3, h4 {
 						function noSpaceForm(obj) {
 							var str_space = /\s/;
 							if (str_space.exec(obj.value)) {
-								alert("해당 항목에는 공백을 사용할수 없습니다.");
+								alert("해당 항목에는 공백을 사용할수 없습니다.
 								obj.focus();
 								obj.value = obj.value.replace(' ', '');
 							}

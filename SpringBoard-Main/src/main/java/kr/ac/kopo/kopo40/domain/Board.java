@@ -39,7 +39,7 @@ public class Board {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "board", fetch = FetchType.LAZY)
-	private Collection<BoardItem> boardItems;
+	private Collection<BoardItem> boardItems = new ArrayList<BoardItem>();
 
 	public Collection<BoardItem> getBoardItems() {
 		if (boardItems == null) {
