@@ -29,12 +29,7 @@ public interface BoardItemRepository extends JpaRepository<BoardItem, Integer>, 
 	
 	@Query(value="SELECT b from BoardItem b where board_id=:board_id order by b.id desc")
 	List<BoardItem> sortBoardItems(int board_id);
-		
-	@Modifying
-	@Transactional
-	@Query(value="DELETE from BoardItem b where board_id=:board_id and id=:id")
-	void deleteOneByBoard_idAndId(int board_id, int id);
-	
+			
 	@Query(value = "SELECT max(id) FROM BoardItem")
 	Integer totalMax();
 	
@@ -54,5 +49,17 @@ public interface BoardItemRepository extends JpaRepository<BoardItem, Integer>, 
 	@Query(value = "update BoardItem b set b.title=:title, b.content=:content where board_id=:board_id and b.id=:id")
 	Integer setBoardItem(@Param("title") String title, @Param("content") String content,@Param("board_id") int board_id, @Param("id") int id);
 	
+	@Modifying
+	@Transactional
+	@Query(value="DELETE from BoardItem b where board_id=:board_id and id=:id")
+	void deleteOneByBoard_idAndId(int board_id, int id);
+	
+//	@Query(value="SELECT b from BoardItem b where b.title like '%%:keyword%%' or b.content like '%%:keyword%%'")
+//	Page<BoardItem> searchByKeyword(@Param("keyword") String keyword);
+	
+	@Query(value="SELECT b from BoardItem b where b.title like CONCAT('%',:keyword,'%') or b.content like CONCAT('%',:keyword,'%')")
+	List<BoardItem> searchByKeywordList(@Param("keyword") String keyword);
+	
+
 }
 

@@ -11,6 +11,8 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,6 +102,8 @@ public class BoardItemController {
 		model.addAttribute("boardItem", boardItem);		
 		model.addAttribute("comments",returnedComments);
 		
+
+		
 		return "/BoardItemView";
 	}
 
@@ -140,6 +144,16 @@ public class BoardItemController {
 		return "/BoardItemDelete";
 	}
 	
+	@RequestMapping(value = "/BoardItemSearch")
+	public String searchBoardItem(@RequestParam("keyword") String keyword, Model model) {
+	
+		List<BoardItem> boardItems = boardItemRepository.searchByKeywordList(keyword);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("boardItems",boardItems);
+		
+		return "/BoardItemSearch";
+	}
+	
 //	@RequestMapping(value = "/BoardItemView")
 //	public String selectAll(Model model) {
 //		PageRequest pageable = PageRequest.of(0, 10);
@@ -150,3 +164,4 @@ public class BoardItemController {
 //	}
 
 }
+ 

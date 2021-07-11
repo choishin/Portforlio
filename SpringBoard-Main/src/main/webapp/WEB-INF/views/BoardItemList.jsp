@@ -79,7 +79,7 @@ h1, h4 {
 					<li class="nav-item"><a class="nav-link"
 						href='/SpringBoard-Main/BoardItemList/3'>board3</a></li>
 				</ul>
-				<form class="d-flex" method='get' action='/BoardItemSearch'>
+				<form class="d-flex" method='post' action='/SpringBoard-Main/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -112,8 +112,8 @@ h1, h4 {
 					<tr>
 						<th scope='row' width='50px;'>
 							<p align=center>
-								${fn:length(boardItems) - status.index}
-<%-- 								<c:out value="${boardItem.id}"/> --%>
+<%-- 								${fn:length(boardItems) - status.index} --%>
+								<c:out value="${boardItem.id}"/>
 							</p>
 						</th>
 						<td width=500 width='400px'><p align=center>

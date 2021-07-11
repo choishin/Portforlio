@@ -6,15 +6,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.ac.kopo.kopo40.domain.Board;
@@ -34,7 +32,21 @@ public class BoardItemRepositoryTest {
 	@Autowired
 	private CommentRepository commentRepository;
 	
-	@Test
+	@Test 
+	void searchByKeywordList() {
+		List<BoardItem> boardItems = boardItemRepository.searchByKeywordList("글");
+		for(int i=0; i<boardItems.size(); i++) {
+			BoardItem boardItem = new BoardItem();
+			boardItem = boardItems.get(i);
+			System.out.println(boardItem.getId());
+			System.out.println(boardItem.getTitle());
+			System.out.println(boardItem.getDate());
+			System.out.println(boardItem.getContent());
+		}
+
+	}
+	
+//	@Test
 	void sortBoardItems() {
 		List<BoardItem> boardItems = boardItemRepository.sortBoardItems(1);
 	}
@@ -51,7 +63,7 @@ public class BoardItemRepositoryTest {
 	    boardRepository.save(board.get());
 	}
 
-	@Transactional
+//	@Transactional
 //	@Test
 	void writeBoardItem() {
 		
@@ -77,20 +89,18 @@ public class BoardItemRepositoryTest {
 		Optional<BoardItem> returnedBoardItem = boardItemRepository.findOneByIdAndBoard_id(1, 1);
 		List<Comment> returnedComments = commentRepository.findOneByBoard_idAndPost_id(1,1);
 		List<BoardItem> boardItems = new ArrayList<BoardItem>();
-		
-		Board board = new Board();
-		board.setId(1);
-		board.setTitle(board.getTitle());
-		
-		BoardItem boardItem = new BoardItem();
-		boardItem = returnedBoardItem.get();
-		int viewCnt = boardItem.getViewCnt();
-		boardItem.setViewCnt(viewCnt++);
-		boardItems.add(boardItem);
-		board.setBoardItems(boardItems);
-		boardRepository.save(board);
-		
-		
+
+	}
+	
+//	@Transactional
+//	@Test
+	void selectAll1() {
+		Optional<BoardItem> boardItemOptional = boardItemRepository.findById(2);
+		if (boardItemOptional.isPresent()) {
+			BoardItem boardItem = boardItemOptional.get();
+			Hibernate.initialize(boardItem.getBoard());
+			System.out.println(boardItem.getBoard().getId());
+		}
 	}
 
 //	@Test
@@ -131,37 +141,5 @@ public class BoardItemRepositoryTest {
 		System.out.println(result);
 	}
 
-//	@Transactional
-//	@Test
-	void selectAll1() {
-		Optional<BoardItem> boardItemOptional = boardItemRepository.findById(2);
-		if (boardItemOptional.isPresent()) {
-			BoardItem boardItem = boardItemOptional.get();
-			Hibernate.initialize(boardItem.getBoard());
-			System.out.println(boardItem.getBoard().getId());
-		}
-	}
-
-//	@Test
-	void selectAll2() {
-		List<BoardItem> boardItems = boardItemRepository.findAll();
-		for (BoardItem boardItem : boardItems) {
-			System.out.println(boardItem.getTitle());
-		}
-	}
-
-//	@Test
-	void selectOne1() {
-		Optional<BoardItem> boardItemOptional = boardItemRepository.findById(1);
-		if (boardItemOptional.isPresent()) {
-			BoardItem boardItem = boardItemOptional.get();
-			System.out.println(boardItem.getTitle());
-		}
-	}
-
-//	@Test
-	void deleteOne() {
-		boardItemRepository.deleteById(2);
-	}
 
 }
