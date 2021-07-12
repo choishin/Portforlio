@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -79,7 +79,8 @@ h1, h4 {
 					<li class="nav-item"><a class="nav-link"
 						href='/SpringBoard-Main/BoardItemList/3'>board3</a></li>
 				</ul>
-				<form class="d-flex" method='post' action='/SpringBoard-Main/BoardItemSearch'>
+				<form class="d-flex" method='post'
+					action='/SpringBoard-Main/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -107,13 +108,12 @@ h1, h4 {
 					<th scope="col" width="200px"><p align=center>등록일</p></th>
 				</tr>
 			<tbody>
-				<c:forEach var="boardItem" items="${boardItems}"
-					varStatus="status">
+				<c:forEach var="boardItem" items="${boardItems.getContent()}" varStatus="status">
 					<tr>
 						<th scope='row' width='50px;'>
 							<p align=center>
-<%-- 								${fn:length(boardItems) - status.index} --%>
-								<c:out value="${boardItem.id}"/>
+								<%-- ${fn:length(boardItems) - status.index} --%>
+								<c:out value="${boardItem.id}" />
 							</p>
 						</th>
 						<td width=500 width='400px'><p align=center>
@@ -154,13 +154,43 @@ h1, h4 {
 	<br>
 	<br>
 	<!--페이징-->
-	<div class="container">
-		<div id="paging">
-			<nav aria-label="Page navigation example">
-				<ul class="pagination">
-				</ul>
-			</nav>
-		</div>
+	<div class="text-xs-center">
+		<ul class="pagination justify-content-center">
+			<!-- 이전 -->
+			<c:choose>
+				<c:when test="${boardItems.first}"></c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link"
+						href="/SpringBoard-Main/BoardItemList/${board.getId()}?field=${param.field}&word=${param.word}&page=0">처음</a></li>
+					<li class="page-item"><a class="page-link"
+						href="/SpringBoard-Main/BoardItemList/${board.getId()}?field=${param.field}&word=${param.word}&page=${boardItems.number-1}">&larr;</a></li>
+				</c:otherwise>
+			</c:choose>
+			<!-- 페이지 그룹 -->
+			<c:forEach begin="${startBlockPage}" end="${endBlockPage}" var="i">
+				<c:choose>
+					<c:when test="${boardItems.pageable.pageNumber+1 == i}">
+						<li class="page-item disabled"><a class="page-link"
+							href="/SpringBoard-Main/BoardItemList/${board.getId()}?field=${param.field}&word=${param.word}&page=${i-1}">${i}</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link"
+							href="/SpringBoard-Main/BoardItemList/${board.getId()}?field=${param.field}&word=${param.word}&page=${i-1}">${i}</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<!-- 다음 -->
+			<c:choose>
+				<c:when test="${boardItems.last}"></c:when>
+				<c:otherwise>
+					<li class="page-item "><a class="page-link"
+						href="/SpringBoard-Main/BoardItemList/${board.getId()}?field=${param.field}&word=${param.word}&page=${boardItems.number+1}">&rarr;</a></li>
+					<li class="page-item "><a class="page-link"
+						href="/SpringBoard-Main/BoardItemList/${board.getId()}?field=${param.field}&word=${param.word}&page=${boardItems.totalPages-1}">마지막</a></li>
+				</c:otherwise>
+			</c:choose>
+		</ul>
 	</div>
+
 </body>
 </html>

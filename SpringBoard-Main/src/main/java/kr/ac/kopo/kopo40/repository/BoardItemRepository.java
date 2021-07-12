@@ -23,13 +23,13 @@ public interface BoardItemRepository extends JpaRepository<BoardItem, Integer>, 
 	
 	Optional<BoardItem> findOneByBoard_idAndId(int board_id, int id);
 
-	Page<BoardItem> findAllByBoard_id(String board_id, Pageable pageable);
+	Page<BoardItem> findAllByBoard_idOrderByIdDesc(int board_id, Pageable pageable);
 
-	List<BoardItem> findAllByBoard_id(String board_id);
+	List<BoardItem> findAllByBoard_id(int board_id);
 	
 	@Query(value="SELECT b from BoardItem b where board_id=:board_id order by b.id desc")
-	List<BoardItem> sortBoardItems(int board_id);
-			
+	List<BoardItem> sortBoardItemsList(int board_id);
+				
 	@Query(value = "SELECT max(id) FROM BoardItem")
 	Integer totalMax();
 	
@@ -60,6 +60,9 @@ public interface BoardItemRepository extends JpaRepository<BoardItem, Integer>, 
 	@Query(value="SELECT b from BoardItem b where b.title like CONCAT('%',:keyword,'%') or b.content like CONCAT('%',:keyword,'%')")
 	List<BoardItem> searchByKeywordList(@Param("keyword") String keyword);
 	
+	@Query(value="SELECT count(b) from BoardItem b where board_id=:board_id")
+	Integer countByBoard_id (@Param("board_id") int board_id);
+		
 
 }
 

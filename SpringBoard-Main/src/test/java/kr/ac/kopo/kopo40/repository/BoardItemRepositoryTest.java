@@ -31,8 +31,16 @@ public class BoardItemRepositoryTest {
 
 	@Autowired
 	private CommentRepository commentRepository;
+
+	@Test
+	void countByBoard_id () {
+		
+		int totalCnt = boardItemRepository.countByBoard_id(3);
+		System.out.println(totalCnt);
+	}
 	
-	@Test 
+	
+//	@Test 
 	void searchByKeywordList() {
 		List<BoardItem> boardItems = boardItemRepository.searchByKeywordList("글");
 		for(int i=0; i<boardItems.size(); i++) {
@@ -46,10 +54,6 @@ public class BoardItemRepositoryTest {
 
 	}
 	
-//	@Test
-	void sortBoardItems() {
-		List<BoardItem> boardItems = boardItemRepository.sortBoardItems(1);
-	}
 	
 //	@Modifying
 //	@Transactional
