@@ -1,6 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
@@ -25,6 +24,13 @@
 #textbox {
 	margin-top: 100px;
 	width: 1000px;
+}
+
+#buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 1050px;
 }
 h1, h4 {
 	color: #767676;
@@ -71,8 +77,8 @@ h1, h4 {
 					<td colspan="2"><h1>게시물 삭제 완료</h1></td>
 				</tr>
 				<tr>
-					<td width="100"></td>
-					<td width="900"><input class="btn btn-outline-secondary"
+					<td width="1100"></td>
+					<td><input class="btn btn-outline-secondary"
 						type=button value="목록" OnClick="location.href='/SpringBoard-Main/BoardItemList/${values[0]}'">
 						<input class="btn btn-outline-secondary" type=button value="신규"
 						OnClick="location.href='/SpringBoard-Main/BoardItemInsert/${values[0]}'"></td>

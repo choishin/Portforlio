@@ -1,6 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
@@ -57,7 +56,8 @@ h1, h4 {
 					<li class="nav-item"><a class="nav-link"
 						href='/SpringBoard-Main/BoardItemList/3'>board3</a></li>
 				</ul>
-				<form class="d-flex" method='post' action='/SpringBoard-Main/BoardItemSearch'>
+				<form class="d-flex" method='post'
+					action='/SpringBoard-Main/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -94,5 +94,8 @@ h1, h4 {
 						<td><a href='/SpringBoard-Main/BoardItemList/${BoardList.id}'>${BoardList.title}</a></td>
 					</tr>
 				</c:forEach>
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>

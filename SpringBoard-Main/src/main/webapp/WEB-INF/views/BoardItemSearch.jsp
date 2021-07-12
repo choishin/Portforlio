@@ -1,6 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
@@ -32,6 +31,15 @@ tr, th {
 	text-align: center;
 	vertical-align: middle;
 }
+h1, h4 {
+	color: #767676;
+}
+
+.space1 {
+display: block;
+
+}
+
 </style>
 </head>
 <body>
@@ -67,7 +75,10 @@ tr, th {
 			</div>
 		</div>
 	</nav>
-	<br> <c:out value="${keyword}"/>
+	<br> 
+	<div class="space1" width=10px;></div><h1><c:out value="${keyword} 검색 결과입니다."/></h1>
+	<br>
+	<div class="space1" width=10px;></div><h4><c:out value="${noResult}"/></h4>
 	<br>
 	<table class="table table-hover">
 		<thead>
@@ -80,7 +91,7 @@ tr, th {
 				<th scope="col" width="500px"><p align=center>내용</p></th>
 			</tr>
 		<tbody>
-			<c:forEach var="boardItem" items="${boardItems}">
+			<c:forEach var="boardItem" items="${boardItems.getContent()}">
 				<tr>
 					<td><c:out value="${boardItem.getBoard().getId()}" /></td>
 					<td><c:out value="${boardItem.getId()}" /></td>
@@ -92,6 +103,28 @@ tr, th {
 			</c:forEach>
 		</tbody>
 	</table>
+	<br>
+	<br>
+		<!--페이징-->
+	<div class="text-xs-center">
+		<ul class="pagination justify-content-center">
+			<!-- 페이지 그룹 -->
+			<c:forEach begin="${startBlockPage}" end="${endBlockPage}" var="i">
+				<c:choose>
+					<c:when test="${boardItems.pageable.pageNumber+1 == i}">
+						<li class="page-item disabled"><a class="page-link"
+							href="/SpringBoard-Main/BoardItemSearch/${keyword}?field=${param.field}&word=${param.word}&page=${i-1}">${i}</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link"
+							href="/SpringBoard-Main/BoardItemSearch/${keyword}?field=${param.field}&word=${param.word}&page=${i-1}">${i}</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</ul>
+	</div>
+	<br>
+	<br>
 	<div class="container">
 		<div id="textbox">
 			<table>
@@ -99,8 +132,8 @@ tr, th {
 					<td colspan="2"></td>
 				</tr>
 				<tr>
-					<td width="100"></td>
-					<td width="900"><input class="btn btn-outline-secondary"
+					<td width="1100"></td>
+					<td><input class="btn btn-outline-secondary"
 						type=button value="게시판 목록" OnClick="location.href='/SpringBoard-Main/BoardList'">
 					</td>
 				</tr>

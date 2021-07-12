@@ -31,29 +31,28 @@ public class BoardItemRepositoryTest {
 
 	@Autowired
 	private CommentRepository commentRepository;
-
+	
 	@Test
+	void searchByKeyword() {
+		
+		PageRequest pageable = PageRequest.of(0, 10);
+		Page<BoardItem> boardItems = boardItemRepository.searchByKeyword("test" ,pageable);
+		List<BoardItem> boardItems2 = boardItems.getContent();
+		for(int i=0; i<boardItems2.size(); i++) {
+			System.out.println(boardItems2.get(i).getId());
+			System.out.println(boardItems2.get(i).getTitle());
+			System.out.println(boardItems2.get(i).getDate());
+			System.out.println(boardItems2.get(i).getContent());
+		}
+	}
+
+//	@Test
 	void countByBoard_id () {
 		
 		int totalCnt = boardItemRepository.countByBoard_id(3);
 		System.out.println(totalCnt);
 	}
-	
-	
-//	@Test 
-	void searchByKeywordList() {
-		List<BoardItem> boardItems = boardItemRepository.searchByKeywordList("글");
-		for(int i=0; i<boardItems.size(); i++) {
-			BoardItem boardItem = new BoardItem();
-			boardItem = boardItems.get(i);
-			System.out.println(boardItem.getId());
-			System.out.println(boardItem.getTitle());
-			System.out.println(boardItem.getDate());
-			System.out.println(boardItem.getContent());
-		}
-
-	}
-	
+		
 	
 //	@Modifying
 //	@Transactional
@@ -130,7 +129,6 @@ public class BoardItemRepositoryTest {
 //	@Test
 	void findOneByIdAndBoard_id(int id, int board_id) {
 		Optional<BoardItem> boardItem = boardItemRepository.findOneByIdAndBoard_id(id, board_id);
-		BoardItem newBoard = boardItem.get();
 	}
 
 //	@Test

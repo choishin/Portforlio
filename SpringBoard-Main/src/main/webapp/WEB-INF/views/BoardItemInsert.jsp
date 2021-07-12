@@ -1,6 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
@@ -22,7 +21,7 @@
 		var hours = now.getHours();
 		var minutes = now.getMinutes();
 		var seconds = now.getSeconds();
-		document.write(year + "년 " + month + "월 " + date + "일 " + hours + ":"
+		document.write(year + "년 " + (month+1) + "월 " + date + "일 " + hours + ":"
 				+ minutes + ":" + seconds);
 	}
 </SCRIPT>
@@ -42,6 +41,13 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+#buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 1050px;
 }
 
 tr, th {

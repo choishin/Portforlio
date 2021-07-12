@@ -36,23 +36,5 @@ public class CommentRepositoryTest {
 
 	}
 	
-//	@Test 
-	void findAll() {
-		
-		List<Comment> comments = commentRepository.findOneByPost_id(1);
-		for (int i=0; i<comments.size(); i++) {
-		Comment comment = new Comment();
-		comment = comments.get(i);
-		
-		int index = comment.getId();
-		String contents = comment.getContents();
-		String date  = comment.getDateTime();
-		
-		System.out.println(index);
-		System.out.println(contents);
-		System.out.println(date);
-		}
-		
-	}
 }
 

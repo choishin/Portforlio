@@ -159,14 +159,63 @@ public class BoardItemController {
 	}
 
 	@RequestMapping(value = "/BoardItemSearch")
-	public String searchBoardItem(@RequestParam("keyword") String keyword, Model model) {
+	public String searchBoardItem(@RequestParam("keyword") String keyword,
+			@PageableDefault(size = 10) Pageable pageable,
+			@RequestParam(required = false, defaultValue = "") String field,
+			@RequestParam(required = false, defaultValue = "") String word, Model model) {
 
-		List<BoardItem> boardItems = boardItemRepository.searchByKeywordList(keyword);
-		model.addAttribute("keyword", keyword);
+		Page<BoardItem> boardItems = boardItemRepository.searchByKeyword(keyword, pageable);
+
+		String noResult = "";
+		if (boardItems.isEmpty()) {
+			noResult = "검색결과가 없습니다.";
+		}
+
+		int pageNumber = boardItems.getPageable().getPageNumber(); // 현재페이지
+		int totalPages = boardItems.getTotalPages(); // 총 페이지 수. 검색에따라 10개면 10개..
+		int pageBlock = 5; // 블럭의 수 1, 2, 3, 4, 5
+		int startBlockPage = ((pageNumber) / pageBlock) * pageBlock + 1; // 현재 페이지가 7이라면 1*5+1=6
+		int endBlockPage = startBlockPage + pageBlock - 1; // 6+5-1=10. 6,7,8,9,10해서 10.
+		endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
+
+		model.addAttribute("startBlockPage", startBlockPage);
+		model.addAttribute("endBlockPage", endBlockPage);
 		model.addAttribute("boardItems", boardItems);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("noResult", noResult);
 
 		return "/BoardItemSearch";
 	}
+	
+	@RequestMapping(value = "/BoardItemSearch/{keyword}")
+	public String searchBoardItemPaging(@PathVariable("keyword") String keyword,
+			@PageableDefault(size = 10) Pageable pageable,
+			@RequestParam(required = false, defaultValue = "") String field,
+			@RequestParam(required = false, defaultValue = "") String word, Model model) {
+
+		Page<BoardItem> boardItems = boardItemRepository.searchByKeyword(keyword, pageable);
+
+		String noResult = "";
+		if (boardItems.isEmpty()) {
+			noResult = "검색결과가 없습니다.";
+		}
+
+		int pageNumber = boardItems.getPageable().getPageNumber(); // 현재페이지
+		int totalPages = boardItems.getTotalPages(); // 총 페이지 수. 검색에따라 10개면 10개..
+		int pageBlock = 5; // 블럭의 수 1, 2, 3, 4, 5
+		int startBlockPage = ((pageNumber) / pageBlock) * pageBlock + 1; // 현재 페이지가 7이라면 1*5+1=6
+		int endBlockPage = startBlockPage + pageBlock - 1; // 6+5-1=10. 6,7,8,9,10해서 10.
+		endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
+
+		model.addAttribute("startBlockPage", startBlockPage);
+		model.addAttribute("endBlockPage", endBlockPage);
+		model.addAttribute("boardItems", boardItems);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("noResult", noResult);
+
+		return "/BoardItemSearch";
+	}
+
 
 //	@RequestMapping(value = "/BoardItemView")
 //	public String selectAll(Model model) {

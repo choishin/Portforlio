@@ -1,6 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -12,19 +11,6 @@
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
-<SCRIPT LANGUAGE="JavaScript">
-	function getDate() {
-		var now = new Date();
-		var year = now.getFullYear();
-		var month = now.getMonth();
-		var date = now.getDate();
-		var hours = now.getHours();
-		var minutes = now.getMinutes();
-		var seconds = now.getSeconds();
-		document.write(year + "년 " + month + "월 " + date + "일 " + hours + ":"
-				+ minutes + ":" + seconds);
-	}
-</SCRIPT>
 <style>
 .contaner {
 	/*flex : 정렬을 위한 컨테이너*/

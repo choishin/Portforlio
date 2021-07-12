@@ -18,14 +18,12 @@ import kr.ac.kopo.kopo40.domain.BoardItem;
 
 @Repository
 public interface BoardItemRepository extends JpaRepository<BoardItem, Integer>, JpaSpecificationExecutor<BoardItem> {
-		
-	Optional<BoardItem> findOneByBoard_id(int board_id);
+
+	List<BoardItem> findAllByBoard_id(int board_id);
 	
 	Optional<BoardItem> findOneByBoard_idAndId(int board_id, int id);
 
 	Page<BoardItem> findAllByBoard_idOrderByIdDesc(int board_id, Pageable pageable);
-
-	List<BoardItem> findAllByBoard_id(int board_id);
 	
 	@Query(value="SELECT b from BoardItem b where board_id=:board_id order by b.id desc")
 	List<BoardItem> sortBoardItemsList(int board_id);
@@ -35,6 +33,9 @@ public interface BoardItemRepository extends JpaRepository<BoardItem, Integer>, 
 	
 	@Query(value = "SELECT max(id) FROM BoardItem where board_id=:board_id")
 	Integer max(@Param("board_id") int board_id);
+	
+	@Query(value="SELECT count(b) from BoardItem b where board_id=:board_id")
+	Integer countByBoard_id (@Param("board_id") int board_id);
 		
 	@Query(value = "SELECT b FROM BoardItem b where b.id=:id and board_id=:board_id")
 	Optional<BoardItem> findOneByIdAndBoard_id(@Param("id")int id, @Param("board_id")int board_id);
@@ -54,15 +55,12 @@ public interface BoardItemRepository extends JpaRepository<BoardItem, Integer>, 
 	@Query(value="DELETE from BoardItem b where board_id=:board_id and id=:id")
 	void deleteOneByBoard_idAndId(int board_id, int id);
 	
-//	@Query(value="SELECT b from BoardItem b where b.title like '%%:keyword%%' or b.content like '%%:keyword%%'")
-//	Page<BoardItem> searchByKeyword(@Param("keyword") String keyword);
+//	@Query(value="SELECT b from BoardItem b where b.title like CONCAT('%',:keyword,'%') or b.content like CONCAT('%',:keyword,'%')")
+//	List<BoardItem> searchByKeywordList(@Param("keyword") String keyword);
 	
 	@Query(value="SELECT b from BoardItem b where b.title like CONCAT('%',:keyword,'%') or b.content like CONCAT('%',:keyword,'%')")
-	List<BoardItem> searchByKeywordList(@Param("keyword") String keyword);
+	Page<BoardItem> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 	
-	@Query(value="SELECT count(b) from BoardItem b where board_id=:board_id")
-	Integer countByBoard_id (@Param("board_id") int board_id);
-		
 
 }
 

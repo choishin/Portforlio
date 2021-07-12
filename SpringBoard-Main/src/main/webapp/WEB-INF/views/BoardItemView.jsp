@@ -1,6 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
@@ -35,6 +34,13 @@
 	justify-content: flex-start;
 	/*교차측 방향 정렬 (가로세로모두에서)*/
 	align-items: flex-start;
+}
+
+#buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 1050px;
 }
 
 h1, h2, h3, h4 {
@@ -83,7 +89,8 @@ h1, h2, h3, h4 {
 					<li class="nav-item"><a class="nav-link"
 						href='/SpringBoard-Main/BoardItemList/3'>board3</a></li>
 				</ul>
-				<form class="d-flex" method='post' action='/SpringBoard-Main/BoardItemSearch'>
+				<form class="d-flex" method='post'
+					action='/SpringBoard-Main/BoardItemSearch'>
 					<input class="form-control me-2" type="text" placeholder="Search"
 						aria-label="Search" name="keyword"> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
@@ -97,13 +104,11 @@ h1, h2, h3, h4 {
 				<thead>
 					<tr>
 						<th scope='col' width=200px><b>번호</b></th>
-						<td><c:out value="${boardItem.id}" />
-						</td>
+						<td><c:out value="${boardItem.id}" /></td>
 					</tr>
 					<tr>
 						<th scope='col' width=200px><b>조회수</b></th>
-						<td><c:out value="${boardItem.viewCnt}"/>
-						</td>
+						<td><c:out value="${boardItem.viewCnt}" /></td>
 					</tr>
 					<tr>
 						<th scope='col' width=200px><b>제목</b></th>
@@ -111,111 +116,112 @@ h1, h2, h3, h4 {
 					</tr>
 					<tr>
 						<th scope='col' width=200px><b>일자</b></th>
-						<td><c:out value="${boardItem.date}" />
-						</td>
+						<td><c:out value="${boardItem.date}" /></td>
 					</tr>
 					<tr>
 						<th scope='col' width=200px
 							style='vertical-align: top; height: auto;'><b>내용</b></th>
 						<td height=200px style='vertical-align: top; height: auto;'><c:out
-								value="${boardItem.content}" /></td> 
+								value="${boardItem.content}" /></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		</FORM>
-		<br>
-		
-		<!-- 댓글보기 -->
-		<div class="container">
-			<h3>댓글보기</h3>
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th scope="col" class="writer">작성자</th>
-						<th scope="col" class="contents">내용</th>
-						<th scope="col" class="date">일자</th>
-						<th class="buttons"></th>
-					</tr>
-					<c:forEach var="comment" items="${comments}" varStatus="status">
-							<tr>
-							<td class='writer'><c:out value="${comment.name}" /></td> 
-							<td class='contents'><c:out value="${comment.getContents()}" /></td> 
-							<td class='date'><c:out value="${comment.getDateTime()}" /></td>
-							<td class='buttons'></td>
-							</tr>
-					</c:forEach>
-				</thead>
-			</table>
-			</div>
-<!--댓글창-->
+	</FORM>
 	<br>
-<div class="container">
-	<form method="post" action="/SpringBoard-Main/CommentInsert">
+	<!-- 댓글보기 -->
+	<div class="container">
+		<h3>댓글보기</h3>
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<input type=hidden name="board_index" value="${boardItem.getBoard().getId()}">
-					<input type=hidden name="post_id" value="${boardItem.id}">
+					<th scope="col" class="writer">작성자</th>
+					<th scope="col" class="contents">내용</th>
+					<th scope="col" class="date">일자</th>
+					<th class="buttons"></th>
 				</tr>
-				<tr>
-					<th scope="col" class="writer" style="vertical-align: top;">
-						<div class="input-group mb-3">
-							<input type="text" class="form-control" placeholder="작성자"
-								aria-label="Username" aria-describedby="basic-addon1"
-								name='comment_name' placeholder='작성자' maxlength=70 minlength=1
-								required>
-						</div>
-					</th>
-					<th scope="col" class="contents">
-						<div class="input-group">
-							<textarea class="form-control" aria-label="With textarea"
-								name='comment_contents' rows='2' cols='70'
-								placeholder='댓글을 작성해주세요' maxlength=200 minlength=1 required></textarea>
-						</div>
-					</th>
-					<th scope="col" class="date" style="vertical-align: top;"><script>
+				<c:forEach var="comment" items="${comments}" varStatus="status">
+					<tr>
+						<td class='writer'><c:out value="${comment.name}" /></td>
+						<td class='contents'><c:out value="${comment.getContents()}" /></td>
+						<td class='date'><c:out value="${comment.getDateTime()}" /></td>
+						<td class='buttons'></td>
+					</tr>
+				</c:forEach>
+			</thead>
+		</table>
+	</div>
+	<!--댓글창-->
+	<br>
+	<div class="container">
+		<form method="post" action="/SpringBoard-Main/CommentInsert">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<input type=hidden name="board_index"
+							value="${boardItem.getBoard().getId()}">
+						<input type=hidden name="post_id" value="${boardItem.id}">
+					</tr>
+					<tr>
+						<th scope="col" class="writer" style="vertical-align: top;">
+							<div class="input-group mb-3">
+								<input type="text" class="form-control" placeholder="작성자"
+									aria-label="Username" aria-describedby="basic-addon1"
+									name='comment_name' placeholder='작성자' maxlength=70 minlength=1
+									required>
+							</div>
+						</th>
+						<th scope="col" class="contents">
+							<div class="input-group">
+								<textarea class="form-control" aria-label="With textarea"
+									name='comment_contents' rows='2' cols='70'
+									placeholder='댓글을 작성해주세요' maxlength=200 minlength=1 required></textarea>
+							</div>
+						</th>
+						<th scope="col" class="date" style="vertical-align: top;"><script>
 						getDate()
 					</script></th>
-					<th scope="col" style="vertical-align: top;"><input
-						class="btn btn-outline-secondary" type="submit" value="등록">
-					<input
-						class="btn btn-outline-secondary" type="reset" value="취소">
-					</th>
-				</tr>
-		</table>
-	</form>
+						<th scope="col" style="vertical-align: top;"><input
+							class="btn btn-outline-secondary" type="submit" value="등록">
+							<input class="btn btn-outline-secondary" type="reset" value="취소">
+						</th>
+					</tr>
+			</table>
+		</form>
 	</div>
-	<table width=1000>
-		<tr>
-			<th scope="col" width=450></th>
-			<th scope="col"><input class="btn btn-outline-secondary"
-				type="button" value="목록" OnClick="location.href='/SpringBoard-Main/BoardItemList/${boardItem.getBoard().getId()}'">
-			</th>
-			<th scope="col"><input class="btn btn-outline-secondary"
-				type="button" value="수정"
-				OnClick="location.href='/SpringBoard-Main/BoardItemUpdate/${boardItem.getBoard().getId()}/${boardItem.id}'">
-			</th>
-			<th scope="col" width=450></th>
-		</tr>
-	</table>
-					<script>
-						function characterCheck(obj) {
-							var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;
-							if (regExp.test(obj.value)) {
-								alert('특수문자는 입력하실수 없습니다.');
-								obj.value = obj.value.substring(0,
-										obj.value.length - 1);
-							}
-						}
-						function noSpaceForm(obj) {
-							var str_space = /\s/;
-							if (str_space.exec(obj.value)) {
-								alert("해당 항목에는 공백을 사용할수 없습니다.
-								obj.focus();
-								obj.value = obj.value.replace(' ', '');
-							}
-						}
-					</script>
+	<div id="buttons">
+		<table width=1000>
+			<tr>
+				<th scope="col" width=450></th>
+				<th scope="col"><input class="btn btn-outline-secondary"
+					type="button" value="목록"
+					OnClick="location.href='/SpringBoard-Main/BoardItemList/${boardItem.getBoard().getId()}'">
+				</th>
+				<th scope="col"><input class="btn btn-outline-secondary"
+					type="button" value="수정"
+					OnClick="location.href='/SpringBoard-Main/BoardItemUpdate/${boardItem.getBoard().getId()}/${boardItem.id}'">
+				</th>
+				<th scope="col" width=450></th>
+			</tr>
+		</table>
+	</div>
+	<script>
+		function characterCheck(obj) {
+			var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;
+			if (regExp.test(obj.value)) {
+				alert('특수문자는 입력하실수 없습니다.');
+				obj.value = obj.value.substring(0,
+						obj.value.length - 1);
+			}
+		}
+		function noSpaceForm(obj) {
+			var str_space = /\s/;
+			if (str_space.exec(obj.value)) {
+				alert("해당 항목에는 공백을 사용할수 없습니다.
+				obj.focus();
+				obj.value = obj.value.replace(' ', '');
+			}
+		}
+	</script>
 </body>
 </html>

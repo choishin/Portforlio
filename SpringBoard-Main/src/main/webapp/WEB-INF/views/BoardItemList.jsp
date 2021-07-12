@@ -1,8 +1,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -29,13 +27,6 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-}
-
-#paging {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 100px;
 }
 
 #buttons {
