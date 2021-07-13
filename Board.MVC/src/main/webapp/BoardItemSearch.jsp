@@ -46,6 +46,7 @@ tr, th {
 <%
 	BoardItemService bis = new BoardItemServiceImpl();
 	List<BoardItem> boardItems = bis.searchItems(keyword);
+	pageContext.setAttribute("boardItems", boardItems);
 	
 	String result ="";
 	if (boardItems.size() == 0) {

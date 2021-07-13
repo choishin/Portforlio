@@ -97,7 +97,7 @@ public class BoardItemServiceImpl implements BoardItemService {
 		try {
 			boardItemDao = BoardItemDaoImpl.getInstance();
 			int totalCnt = boardItemDao.totalCount(board_id);
-
+			
 			// 총 게시글 수 -> totalcnt
 			// default = 0, Contents가 출력되기 시작하는 위치
 			String fromPT = "1";
@@ -108,7 +108,7 @@ public class BoardItemServiceImpl implements BoardItemService {
 			} else {
 				fromPT = startNum;
 			}
-			// default = 0, 한 페이지에 출력될 게시글 수
+			// default = 10, 한 페이지에 출력될 게시글 수
 			String cntPT = "10";
 			if (countPage == null || countPage == "") {
 				cntPT = "10";
@@ -137,9 +137,9 @@ public class BoardItemServiceImpl implements BoardItemService {
 			if (Integer.parseInt(fromPT) > totalCnt) {
 				fromPT = Integer.toString(totalCnt - (totalCnt % Integer.parseInt(cntPT)));
 			}
-
+			
 			// default = 1, 현재 페이지 수
-			int pageNum = ((totalCnt - 1) / Integer.parseInt(cntPT)) + 1;
+			int pageNum = ((totalCnt -1) / Integer.parseInt(cntPT)) + 1;
 			// 한 화면에 출력될 페이지의 갯수
 			int printPage = 10;
 			// 한 화면에 출력될 페이지 중 '시작' 페이지 수
@@ -157,6 +157,21 @@ public class BoardItemServiceImpl implements BoardItemService {
 				pageNum = totalPage;
 			}
 			
+			if (endPage > totalPage) {
+				endPage = totalPage;
+			}
+			
+			int previous = Integer.parseInt(startNum) - Integer.parseInt(countPage);
+			int next = Integer.parseInt(startNum) + Integer.parseInt(countPage);
+			
+			if (previous <1) {
+				previous = 1;
+			}
+			
+			if (next > totalCnt) {
+				next = totalCnt;
+			}
+												
 			forReturn.add(totalCnt);
 			forReturn.add(Integer.parseInt(fromPT));
 			forReturn.add(Integer.parseInt(cntPT));
@@ -164,6 +179,8 @@ public class BoardItemServiceImpl implements BoardItemService {
 			forReturn.add(startPage);
 			forReturn.add(endPage);
 			forReturn.add(totalPage);
+			forReturn.add(previous);
+			forReturn.add(next);
 
 		} catch (Exception e) {
 			System.out.println(e);

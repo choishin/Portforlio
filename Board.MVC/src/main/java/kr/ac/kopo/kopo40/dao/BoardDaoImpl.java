@@ -72,7 +72,7 @@ public class BoardDaoImpl implements BoardDao {
 	}
 	
 	@Override
-	public Board selectOne(int id) {
+	public Board selectOne(int board_id) {
 		Board selectOne = new Board();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -80,7 +80,7 @@ public class BoardDaoImpl implements BoardDao {
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
-			QueryTxt = "select * from boardList where board_id=" + id + ";";
+			QueryTxt = "select * from boardList where id=" + board_id + ";";
 			ResultSet rset = stmt.executeQuery(QueryTxt);
 			while (rset.next()) {
 				int board_index = rset.getInt(1);

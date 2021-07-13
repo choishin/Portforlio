@@ -105,7 +105,7 @@ h1, h4 {
 						<div class="btn-group btn-group" role="group"
 							aria-label="Basic outlined example">
 							<input type="button" class="btn btn-outline-secondary" value="신규"
-								OnClick="window.location='BoardItemInsert.jsp?board_index=<%=board_id%>'">
+								OnClick="window.location='BoardItemInsert.jsp?board_id=<%=board_id%>'">
 						</div>
 					</td>
 				</tr>

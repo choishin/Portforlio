@@ -127,7 +127,7 @@ h1, h4 {
 					<tr>
 						<th scope='row' width='50px;'>
 							<p align=center>
-								<%-- ${fn:length(boardItems) - status.index} --%>
+								<%-- 						${fn:length(boardItems) - status.index} --%>
 								<c:out value="${boardItem.id}" />
 							</p>
 						</th>
@@ -168,50 +168,54 @@ h1, h4 {
 	<br>
 	<br>
 	<br>
+	<%
+	List<Integer> values = bis.paging(startNum, countPage, Integer.parseInt(board_id));
+	int totalCnt = values.get(0);
+	int fromPT = values.get(1);
+	int cntPT = values.get(2);
+	int pageNum = values.get(3);
+	int startPage = values.get(4);
+	int endPage = values.get(5);
+	int totalPage = values.get(6);
+	int previous = values.get(7);
+	int next = values.get(8);
+
+	pageContext.setAttribute("values", values);
+	pageContext.setAttribute("totalCnt", values.get(0));
+	pageContext.setAttribute("fromPT", values.get(1));
+	pageContext.setAttribute("cntPT", values.get(2));
+	pageContext.setAttribute("pageNum", values.get(3));
+	pageContext.setAttribute("startPage", values.get(4));
+	pageContext.setAttribute("endPage", values.get(5));
+	pageContext.setAttribute("totalPage", values.get(6));
+	pageContext.setAttribute("previous", values.get(7));
+	pageContext.setAttribute("next", values.get(8));
+
+	%>
 	<div class="container">
 		<div id="paging">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
-					<%
-					List<Integer> values = bis.paging(startNum, countPage, Integer.parseInt(board_id));
-					int totalCnt = values.get(0);
-					int fromPT = values.get(1);
-					int cntPT = values.get(2);
-					int pageNum = values.get(3);
-					int startPage = values.get(4);
-					int endPage = values.get(5);
-					int totalPage = values.get(6);
-					%>
 					<li class='page-item'><a class='page-link'
-						href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=<%=((pageNum - 2) * (cntPT)) + 1%>&countPage=<%=cntPT%>'>Previous</a></li>
-					<%
-					if (cntPT == 1) {
-						for (int i = startPage; i <= endPage; i++) {
-							if (endPage > totalPage) {
-						endPage = totalPage;
-						endPage++;
-							}
-							out.println("<li class='page-item'><a class='page-link' href='BoardItemList.jsp?board_id=" + board_id
-							+ "&startNum=" + ((i - 1) * (cntPT) + 1) + "&countPage=" + cntPT + "'>" + i + "</a></li>");
-						}
-					} else {
-						for (int i = startPage; i <= endPage; i++) {
-							if (endPage > totalPage) {
-						endPage = totalPage;
-							}
-							out.println("<li class='page-item'><a class='page-link' href='BoardItemList.jsp?board_id=" + board_id
-							+ "&startNum=" + ((i - 1) * (cntPT) + 1) + "&countPage=" + cntPT + "'>" + i + "</a></li>");
-						}
-					}
-					%>
+						href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=<%=previous%>&countPage=<%=cntPT%>'>Previous</a></li>
+					<c:choose>
+						<c:when test="${cntPT eq 1}">
+							<c:forEach begin="${startPage}" end="${endPage}" var="i">
+								<li class='page-item'><a class='page-link'
+									href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=${((i-1) * (cntPT)+1)}&countPage=<%=cntPT%>'><c:out
+											value="${i}" /></a></li>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<c:forEach begin="${startPage}" end="${endPage}" var="i">
+								<li class='page-item'><a class='page-link'
+									href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=${((i-1) * (cntPT)+1)}&countPage=${cntPT}'><c:out
+											value="${i}" /></a></li>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
 					<li class='page-item'><a class='page-link'
-						href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=<%=((pageNum - 1) * (cntPT)) + 1%>&countPage=<%=cntPT%>'>Next</a></li>
-					<%
-					// for debuging
-					// 						out.println("pageNum : " + pageNum);
-					// 						out.println("fromPT : " + Integer.parseInt(fromPT));
-					// 						out.println("나머지 : " + BoardCnt % (Integer.parseInt(cntPT)));
-					%>
+						href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=<%=next%>&countPage=<%=cntPT%>'>Next</a></li>
 				</ul>
 			</nav>
 		</div>

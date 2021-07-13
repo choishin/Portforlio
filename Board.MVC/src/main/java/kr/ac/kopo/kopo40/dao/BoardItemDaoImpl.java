@@ -14,7 +14,6 @@ import kr.ac.kopo.kopo40.domain.BoardItem;
 public class BoardItemDaoImpl implements BoardItemDao {
 
 	static BoardItemDaoImpl instance = null;
-
 	public static BoardItemDaoImpl getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
 			instance = new BoardItemDaoImpl();
@@ -66,6 +65,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 				String date = rset.getString(3);
 				String content = rset.getString(4);
 				int viewcnt = rset.getInt(5);
+				
 				BoardItem boardItem = new BoardItem();
 				boardItem.setId(id);
 				boardItem.setTitle(title);
@@ -103,6 +103,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 				String date = rset.getString(3);
 				String content = rset.getString(4);
 				int viewcnt = rset.getInt(5);
+				
 				newBoardItem.setId(id);
 				newBoardItem.setTitle(title);
 				newBoardItem.setDate(date);
@@ -313,7 +314,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 			String QueryTxt;
-			QueryTxt = String.format("SELECT count(*) FROM boardItem WHERE title LIKE '%%" + keyword
+			QueryTxt = String.format("SELECT * FROM boardItem WHERE title LIKE '%%" + keyword
 					+ "%%' or content like '%%" + keyword + "%%';");
 			ResultSet rset = stmt.executeQuery(QueryTxt);
 			int id = 0;
