@@ -1,13 +1,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
-<%
-	String IP = Data.IP;
-%>
+<%@ page import="kr.ac.kopo.kopo40.domain.BoardItem"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService" %>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl" %>
 <%
 request.setCharacterEncoding("UTF-8");
-String board_index = request.getParameter("board_index");
+String board_id = request.getParameter("board_id");
 String get_id = request.getParameter("get_id");
 %>
 <html>
@@ -76,8 +75,10 @@ tr, th {
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="BoardList.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemList.jsp?board_id=1&startNum=1&countPage=10'>board1</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemList.jsp?board_id=2&startNum=1&countPage=10'>board2</a></li>
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
@@ -88,27 +89,8 @@ tr, th {
 		</div>
 	</nav>
 	<%
-	try {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
-		Statement stmt = conn.createStatement();
-
-		String QueryTxt;
-		QueryTxt = String.format("select * from board1 where id=" + get_id + ";");
-
-		ResultSet rset = stmt.executeQuery(QueryTxt);
-		String id = "";
-		String title = "";
-		String date = "";
-		String content = "";
-		String viewcnt = "";
-		while (rset.next()) {
-			id = rset.getString(1);
-			title = rset.getString(2);
-			date = rset.getString(3);
-			content = rset.getString(4);
-			viewcnt = rset.getString(5);
-		}
+	BoardItemService bis = new BoardItemServiceImpl(); 
+	BoardItem boardItem = bis.selectOne(Integer.parseInt(board_id),Integer.parseInt(get_id));
 	%>
 	<form method="post" action="BoardItemSet.jsp">
 		<div class="container">
@@ -119,7 +101,7 @@ tr, th {
 							<th scope="col"><b>번호</b></th>
 							<th scope="col" style="vertical-align: top;">
 								<div class="input-group mb-3">
-								<input type=hidden name="board_index" value="<%=board_index%>">
+								<input type=hidden name="board_id" value="<%=board_id%>">
 									<input type="text" class="form-control" aria-label="Username"
 										name=get_id value=<%=get_id%> readonly>
 								</div>
@@ -130,14 +112,14 @@ tr, th {
 							<th scope="col" style="vertical-align: top;">
 								<div class="input-group mb-3">
 									<input type="text" class="form-control" aria-label="Username"
-										name=get_viewcnt value=<%=viewcnt%> readonly>
+										name=get_viewcnt value=<%=boardItem.getViewcnt()%> readonly>
 								</div>
 							</th>
 						</tr>
 						<tr>
 							<th scope="col"><b>제목</b></th>
 							<th scope="col"><input type="text" class="form-control"
-								value=<%=title%> aria-label="Username" name=get_title size="20"
+								value=<%=boardItem.getTitle()%> aria-label="Username" name=get_title size="20"
 								maxlength="70" minlength="1" onkeyup='characterCheck(this);'
 								onkeydown='characterCheck(this);' onchange='noSpaceForm(this);'
 								autocomplete='off' required></th>
@@ -147,7 +129,6 @@ tr, th {
 							<th scope="col" style="text-align: left;"><script>
 								getDate()
 							</script></th>
-							<!--<input type=text name=get_date readonly></td>-->
 						</tr>
 						<tr>
 							<th scope="col"><b>내용</b></th>
@@ -158,33 +139,24 @@ tr, th {
 										style='width: 500px; height: 250px;' name=get_content cols=70
 										row=600 onkeyup='characterCheck(this);'
 										onkeydown='characterCheck(this);'
-										onchange='noSpaceForm(this);' autocomplete='off' required><%=content%></textarea>
+										onchange='noSpaceForm(this);' autocomplete='off' required><%=boardItem.getContent()%></textarea>
 								</div>
 							</th>
 						</tr>
 				</table>
 			</div>
 		</div>
-		<%
-		rset.close();
-		stmt.close();
-		conn.close();
-
-		} catch (Exception e) {
-		out.print(e);
-		}
-		%>
 		<div class="container">
 			<table class="buttons">
 				<tr>
 					<td width=780></td>
 					<td><input class="btn btn-outline-secondary" type=button
-						value="취소" OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'"></td>
+						value="취소" OnClick="location.href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=1&countPage=10'"></td>
 					<td><input class="btn btn-outline-secondary" type="submit"
 						value="수정"></td>
 					<td>
 						<input class="btn btn-outline-secondary" type=button 
-						value="삭제" OnClick="location.href='BoardItemDelete.jsp?board_index=<%=board_index%>&get_id=<%=get_id%>'">
+						value="삭제" OnClick="location.href='BoardItemDelete.jsp?board_id=<%=board_id%>&get_id=<%=get_id%>'">
 					</td>
 				</tr>
 			</table>

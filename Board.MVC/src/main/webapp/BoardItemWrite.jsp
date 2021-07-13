@@ -1,13 +1,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data"%>
-<%
-String IP = Data.IP;
-%>
+<%@ page import="kr.ac.kopo.kopo40.domain.BoardItem"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardService" %>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardServiceImpl" %>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService" %>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl" %>
 <%
 request.setCharacterEncoding("UTF-8");
-String board_index = request.getParameter("board_index");
+String board_id = request.getParameter("board_id");
 String get_id = request.getParameter("get_id");
 String get_title = request.getParameter("get_title");
 String get_date = request.getParameter("get_date");
@@ -25,19 +26,6 @@ String get_viewcnt = request.getParameter("get_viewcnt");
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
-<SCRIPT LANGUAGE="JavaScript">
-	function getDate() {
-		var now = new Date();
-		var year = now.getFullYear();
-		var month = now.getMonth();
-		var date = now.getDate();
-		var hours = now.getHours();
-		var minutes = now.getMinutes();
-		var seconds = now.getSeconds();
-		document.write(year + "년 " + month + "월 " + date + "일 " + hours + ":"
-				+ minutes + ":" + seconds);
-	}
-</SCRIPT>
 <style>
 .contaner {
 	/*flex : 정렬을 위한 컨테이너*/
@@ -77,9 +65,9 @@ h1, h4 {
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="BoardList.jsp">Home</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='BoardItemList.jsp?board_index=1'>board1</a></li>
+						href='BoardItemList.jsp?board_id=1&startNum=1&countPage=10'>board1</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='BoardItemView_accordion.jsp'>board2</a></li>
+						href='BoardItemList.jsp?board_id=2&startNum=1&countPage=10'>board2</a></li>
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
@@ -90,15 +78,13 @@ h1, h4 {
 		</div>
 	</nav>
 	<%
-	try {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
-		Statement stmt = conn.createStatement();
-
-		String QueryTxt;
-		QueryTxt = "insert into board1(title,date,content,viewcnt,board_index) value('" + get_title
-		+ "',date_format(now(),'%Y-%m-%d %I:%i:%s'),'" + get_content + "'," + get_viewcnt + "," + board_index + ")";
-		stmt.execute(QueryTxt);
+	BoardItemService bis = new BoardItemServiceImpl();
+	BoardItem boardItem = new BoardItem();
+		
+	boardItem.setTitle(get_title);
+	boardItem.setContent(get_content);
+	boardItem.setBoard_id(Integer.parseInt(board_id));
+	bis.create(boardItem);
 	%>
 	<div class="container">
 		<div id="textbox">
@@ -112,26 +98,19 @@ h1, h4 {
 						<div class="btn-group btn-group" role="group"
 							aria-label="Basic outlined example">
 							<input type="button" class="btn btn-outline-secondary" value="목록"
-								OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'">
+								OnClick="location.href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=1&countPage=10'">
 						</div>
 					</td>
 					<td>
 						<div class="btn-group btn-group" role="group"
 							aria-label="Basic outlined example">
 							<input type="button" class="btn btn-outline-secondary" value="신규"
-								OnClick="window.location='BoardItemInsert.jsp?board_index=<%=board_index%>'">
+								OnClick="window.location='BoardItemInsert.jsp?board_index=<%=board_id%>'">
 						</div>
 					</td>
 				</tr>
 			</table>
 		</div>
 	</div>
-	<%
-	stmt.close();
-	conn.close();
-	} catch (Exception e) {
-	out.print(e);
-	}
-	%>
 </body>
 </html>

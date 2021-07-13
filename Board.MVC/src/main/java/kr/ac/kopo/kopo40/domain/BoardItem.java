@@ -1,22 +1,14 @@
 package kr.ac.kopo.kopo40.domain;
-//게시판 하나 하나의 객체
+
+//게시글
 public class BoardItem {
 	private int id;
 	private String title;
 	private String date;
 	private String content;
 	private int viewcnt;
+	private int board_id;
 
-	// 생성자
-//	public BoardItem(int id, String title, String date, String content, int viewcnt) {
-//		this.id = id;
-//		this.title = title;
-//		this.date = date;
-//		this.content = content;
-//		this.viewcnt = viewcnt;
-//	}
-	
-	// GetterSetter
 	public int getId() {
 		return id;
 	}
@@ -56,5 +48,14 @@ public class BoardItem {
 	public void setViewcnt(int viewcnt) {
 		this.viewcnt= viewcnt;
 	}
+
+	public int getBoard_id() {
+		return board_id;
+	}
+
+	public void setBoard_id(int board_id) {
+		this.board_id = board_id;
+	}
+	
 
 }

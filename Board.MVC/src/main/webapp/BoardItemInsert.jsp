@@ -1,10 +1,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
+<%@ page import="kr.ac.kopo.kopo40.domain.BoardItem"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl"%>
 <%
-	String IP = Data.IP;
-	String board_index = request.getParameter("board_index");
+request.setCharacterEncoding("UTF-8");
+String board_id = request.getParameter("board_id");
 %>
 <html>
 <head>
@@ -72,8 +74,10 @@ tr, th {
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="BoardList.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemList.jsp?board_id=1&startNum=1&countPage=10'>board1</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemList.jsp?board_id=2&startNum=1&countPage=10'>board2</a></li>
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
@@ -84,35 +88,22 @@ tr, th {
 		</div>
 	</nav>
 	<%
-	try {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
-		Statement stmt = conn.createStatement();
-
-		String QueryTxt;
-		QueryTxt = String.format("select max(id) from board1;");
-
-		ResultSet rset = stmt.executeQuery(QueryTxt);
-		int get_id = 0;
-		while (rset.next()) {
-			String id = rset.getString(1);
-			get_id = Integer.parseInt(id);
-		}
+	BoardItemService bis = new BoardItemServiceImpl();
+	int maxId = bis.getMax(Integer.parseInt(board_id));
 	%>
-	<FORM METHOD=POST action="BoardItemWrite.jsp?board_index=<%=board_index%>">
+	<FORM METHOD=POST action="BoardItemWrite.jsp?board_id=<%=board_id%>">
 		<div class="container">
 			<div id="table">
 				<table class="table table-hover">
 					<thead>
 						<tr>
 							<th scope="col" style="vertical-align: top;"><b>번호</b></th>
-							<th scope="col" style="vertical-align: top;">
-							<input type=hidden name="board_index" value="<%=board_index%>">
+							<th scope="col" style="vertical-align: top;"><input
+								type=hidden name="board_index" value="<%=board_id%>">
 								<div class="input-group mb-3">
 									<input type="text" class="form-control" aria-label="Username"
-										name=get_id value=<%=get_id + 1%> readonly>
-								</div>
-							</th>
+										name=get_id value=<%=maxId + 1%> readonly>
+								</div></th>
 						</tr>
 						<tr>
 							<th scope="col" style="vertical-align: top;">조회수</th>
@@ -120,8 +111,8 @@ tr, th {
 								<div class="input-group mb-3">
 									<input type="text" class="form-control" aria-label="Username"
 										name=get_viewcnt value=0 readonly>
+								</div>
 							</th>
-							</div>
 						</tr>
 						<tr>
 							<th scope="col"><b>제목</b></th>
@@ -150,22 +141,13 @@ tr, th {
 				</table>
 			</div>
 		</div>
-		<%
-		rset.close();
-		stmt.close();
-		conn.close();
-
-		} catch (Exception e) {
-		out.print(e);
-		}
-		%>
 		<div class="container">
 			<table class="buttons">
 				<tr>
 					<td width=780></td>
 					<td>
 						<button class="btn btn-outline-secondary"
-							OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'">취소</button>
+							OnClick="location.href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=1&countPage=10'">취소</button>
 					</td>
 					<td><input class="btn btn-outline-secondary" type="submit"
 						value="쓰기"></td>

@@ -1,28 +1,29 @@
 package kr.ac.kopo.kopo40.domain;
 
+//°Ô½ÃÆÇ
 public class Board {
-	private int board_index;
-	private String board_title;
-	private String board_info;
-	public int getBoard_index() {
-		return board_index;
+	private int board_id;
+	private String title;
+	private String info;
+	
+	public int getBoard_id() {
+		return board_id;
 	}
-	public void setBoard_index(int board_index) {
-		this.board_index = board_index;
+	public void setBoard_id(int board_id) {
+		this.board_id = board_id;
 	}
-	public String getBoard_title() {
-		return board_title;
+	public String getTitle() {
+		return title;
 	}
-	public void setBoard_title(String board_title) {
-		this.board_title = board_title;
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	public String getBoard_info() {
-		return board_info;
+	public String getInfo() {
+		return info;
 	}
-	public void setBoard_info(String board_info) {
-		this.board_info = board_info;
+	public void setInfo(String info) {
+		this.info = info;
 	}
 	
-
 	
 }	

@@ -1,10 +1,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
-<%
-	String IP = Data.IP;
-%>
+<%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*"%>
+<%@ page import="kr.ac.kopo.kopo40.domain.BoardItem"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardService"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardServiceImpl"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String keyword = request.getParameter("keyword");
@@ -20,28 +22,13 @@ String keyword = request.getParameter("keyword");
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
-<SCRIPT LANGUAGE="JavaScript">
-	function getDate() {
-		var now = new Date();
-		var year = now.getFullYear();
-		var month = now.getMonth();
-		var date = now.getDate();
-		var hours = now.getHours();
-		var minutes = now.getMinutes();
-		var seconds = now.getSeconds();
-		document.write(year + "�� " + month + "�� " + date + "�� " + hours + ":"
-				+ minutes + ":" + seconds);
-	}
-</SCRIPT>
 <style>
 .contaner {
-	/*flex : ������ ���� �����̳�*/
 	display: flex;
-	/*���� ���� ���� (���ο�����)*/
 	justify-content: flex-start;
-	/*������ ���� ���� (���μ��θ�ο���)*/
 	align-items: flex-start;
 }
+
 #table {
 	width: 900px;
 	margin-top: 50px;
@@ -49,6 +36,7 @@ String keyword = request.getParameter("keyword");
 	justify-content: center;
 	align-items: center;
 }
+
 tr, th {
 	text-align: center;
 	vertical-align: middle;
@@ -56,24 +44,15 @@ tr, th {
 </style>
 </head>
 <%
-try {
-	Class.forName("com.mysql.cj.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
-	Statement stmt = conn.createStatement();
-	String QueryTxt;
-	QueryTxt = String.format(
-	"SELECT count(*) FROM board1 WHERE title LIKE '%%" + keyword + "%%' or content like '%%" + keyword + "%%';");
-	ResultSet rset = stmt.executeQuery(QueryTxt);
-	String result_id = "";
-	String Result = "";
-	while (rset.next()) {
-		result_id = rset.getString(1);
-		if (Integer.parseInt(result_id)==0) {
-			Result = "<h3>검색 결과가 없습니다.</h3>";
+	BoardItemService bis = new BoardItemServiceImpl();
+	List<BoardItem> boardItems = bis.searchItems(keyword);
+	
+	String result ="";
+	if (boardItems.size() == 0) {
+			result = "<h3>검색 결과가 없습니다.</h3>";
 		} else {
-			Result = "<h3>" + keyword + " 검색 결과 입니다. </h3>";
+			result = "<h3>" + keyword + " 검색 결과 입니다. </h3>";
 		}
-	}
 %>
 <body>
 	<script
@@ -93,8 +72,10 @@ try {
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="BoardList.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemList.jsp?board_id=1&startNum=1&countPage=10'>board1</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemList.jsp?board_id=2&startNum=1&countPage=10'>board2</a></li>
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
@@ -105,68 +86,36 @@ try {
 		</div>
 	</nav>
 	<br>
-		<%=Result%>
-		<br>
+	<%=result%>
+	<br>
 	<table class="table table-hover">
 		<thead>
+			<tr>
+				<th scope="col" width="50px"><p align=center>게시판번호</p></th>
+				<th scope="col" width="50px"><p align=center>글번호</p></th>
+				<th scope="col" width="200px"><p align=center>제목</p></th>
+				<th scope="col" width="50px"><p align=center>조회수</p></th>
+				<th scope="col" width="200px"><p align=center>등록일</p></th>
+				<th scope="col" width="500px"><p align=center>내용</p></th>
+			</tr>
+		<tbody>
+			<c:forEach var="boardItem" items="${boardItems}" varStatus="status">
 				<tr>
-					<th scope="col" width="50px"><p align=center>게시판번호</p></th>
-					<th scope="col" width="50px"><p align=center>글번호</p></th>
-					<th scope="col" width="200px"><p align=center>제목</p></th>
-					<th scope="col" width="50px"><p align=center>조회수</p></th>
-					<th scope="col" width="200px"><p align=center>등록일</p></th>
-					<th scope="col" width="500px"><p align=center>내용</p></th>
+					<td><c:out value="${boardItem.board_id}" /></td>
+					<td><c:out value="${boardItem.id}" /></td>
+					<td><c:out value="${boardItem.title}" /></td>
+					<td><c:out value="${boardItem.viewcnt}" /></td>
+					<td><c:out value="${boardItem.date}" /></td>
+					<td><c:out value="${boardItem.content}" /></td>
 				</tr>
-				<tbody>
-		<% 
-				stmt = conn.createStatement();
-				QueryTxt = String.format(
-				"SELECT * FROM board1 WHERE title LIKE '%%" + keyword + "%%' or content like '%%" + keyword + "%%';");
-				rset = stmt.executeQuery(QueryTxt);
-				String id = "";
-				String title = "";
-				String date = "";
-				String content = "";
-				String viewcnt = "";
-				String board_index ="";
-				while (rset.next()) {
-					id = rset.getString(1);
-					title = rset.getString(2);
-					date = rset.getString(3);
-					content = rset.getString(4);
-					viewcnt = rset.getString(5);
-					board_index = rset.getString(6);
-					
-					out.println("<tr>");
-					out.println("<td>");
-					out.println(board_index);
-					out.println("</td>");
-					out.println("<td>");
-					out.println(id);
-					out.println("</td>");
-					out.println("<td>");
-					out.println(title);					
-					out.println("</td>");
-					out.println("<td>");
-					out.println(viewcnt);
-					out.println("</td>");					
-					out.println("<td>");
-					out.println(date);
-					out.println("</td>");
-					out.println("<td>");
-					out.println(content);
-					out.println("</td>");
-					out.println("</tr>");
-				}
-			%>	
+			</c:forEach>
 		</tbody>
 	</table>
 	<div class="container">
 		<div id="textbox">
 			<table>
 				<tr>
-					<td colspan="2">
-					</td>
+					<td colspan="2"></td>
 				</tr>
 				<tr>
 					<td width="100"></td>
@@ -194,13 +143,5 @@ try {
 			}
 		}
 	</script>
-	<%
-	rset.close();
-	stmt.close();
-	conn.close();
-	} catch (Exception e) {
-	out.print(e);
-	}
-	%>
 </body>
 </html>

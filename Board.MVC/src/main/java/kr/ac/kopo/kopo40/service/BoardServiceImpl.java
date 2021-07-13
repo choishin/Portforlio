@@ -22,21 +22,6 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Board selectOne(int id) {
-		try {
-			boardDao = BoardDaoImpl.getInstance();
-
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return boardDao.selectOne(id);
-	}
-
-	@Override
 	// DAO의 DB를 받아와서 pagination 등의 기능들을 덧붙여서 UI로 전달
 	public List<Board> selectAll() {
 		// TODO Auto-generated method stub
@@ -53,6 +38,21 @@ public class BoardServiceImpl implements BoardService {
 			e.printStackTrace();
 		}
 		return boardAll;
+	}
+	
+	@Override
+	public Board selectOne(int id) {
+		try {
+			boardDao = BoardDaoImpl.getInstance();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return boardDao.selectOne(id);
 	}
 
 	@Override
@@ -85,13 +85,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	public int getMax() {
-		int get_id = 0;
+		int maxId = 0;
 		try {
 			boardDao = BoardDaoImpl.getInstance();
-			get_id = boardDao.getMax();
+			maxId = boardDao.getMax();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return get_id;
+		return maxId;
 	}
 }

@@ -1,13 +1,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
-<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
-<%
-	String IP = Data.IP;
-%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService" %>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl" %>
 <%
 request.setCharacterEncoding("UTF-8");
-String board_index = request.getParameter("board_index");
+String board_id = request.getParameter("board_id");
 String get_id = request.getParameter("get_id");
 %>
 <html>
@@ -59,8 +57,10 @@ h1, h4 {
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="BoardList.jsp">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemList.jsp?board_index=1'>board1</a></li>
-					<li class="nav-item"><a class="nav-link" href='BoardItemView_accordion.jsp'>board2</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemList.jsp?board_id=1&startNum=1&countPage=10'>board1</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href='BoardItemList.jsp?board_id=2&startNum=1&countPage=10'>board2</a></li>
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
@@ -71,16 +71,8 @@ h1, h4 {
 		</div>
 	</nav>
 	<%
-	try {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
-		Statement stmt = conn.createStatement();
-
-		String QueryTxt;
-		QueryTxt = "update board1 set title='삭제된 글 입니다.', content='삭제된 글 입니다.' where id=" + get_id + ";";
-		stmt.execute(QueryTxt);
-		QueryTxt = String.format("delete from comments where post_id=" + get_id + ";");
- 		stmt.execute(QueryTxt);
+	 BoardItemService bs = new BoardItemServiceImpl();
+	 bs.delete(Integer.parseInt(board_id),Integer.parseInt(get_id));	
 	%>
 	<div class="container">
 		<div id="textbox">
@@ -91,20 +83,12 @@ h1, h4 {
 				<tr>
 					<td width="100"></td>
 					<td width="900"><input class="btn btn-outline-secondary"
-						type=button value="목록" OnClick="location.href='BoardItemList.jsp?board_index=<%=board_index%>'">
+						type=button value="목록" OnClick="location.href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=1&countPage=10'">
 						<input class="btn btn-outline-secondary" type=button value="신규"
-						OnClick="location.href='BoardItemInsert.jsp?board_index=<%=board_index%>'"></td>
+						OnClick="location.href='BoardItemInsert.jsp?board_id=<%=board_id%>'"></td>
 				</tr>
 			</table>
 		</div>
 	</div>
-	<%
-	stmt.close();
-	conn.close();
-
-	} catch (Exception e) {
-	out.print(e);
-	}
-	%>
 </body>
 </html>

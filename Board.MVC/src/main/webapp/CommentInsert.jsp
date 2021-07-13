@@ -1,17 +1,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
 <%@ page contentType="text/html; charset=utf-8" %> 
 <%@ page import="java.sql.*, javax.sql.*, java.io.*" %> 
-<%@ page import="kr.ac.kopo.kopo40.data.Data" %>
-<%
-	String IP = Data.IP;
-%>
+<%@ page import="kr.ac.kopo.kopo40.domain.Comment"%>
+<%@ page import="kr.ac.kopo.kopo40.dao.CommentDao"%>
+<%@ page import="kr.ac.kopo.kopo40.dao.CommentDaoImpl"%>
 <% 
 	request.setCharacterEncoding("UTF-8");
-	String board_index = request.getParameter("board_index"); 
+	String board_id = request.getParameter("board_id"); 
 	String post_id = request.getParameter("post_id"); 
-	String comment_name = request.getParameter("comment_name"); 	
-	String comment_contents = request.getParameter("comment_contents"); 		
-	
+	String name = request.getParameter("name"); 	
+	String content = request.getParameter("content"); 			
 %>
 <html> 
 <head>
@@ -30,27 +28,17 @@ function getDate(){
 </head> 
 <body> 
 <%
-try{
-		Class.forName("com.mysql.cj.jdbc.Driver");  													
-		Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");  
-		Statement stmt = conn.createStatement(); 
-		
-		String QueryTxt;
-		QueryTxt = "insert into comments(board_index,post_id,name,date,content) value ("+board_index+","+post_id+",'"+comment_name+"',date_format(now(),'%Y-%m-%d %I:%i:%s'),'"+comment_contents+"');";
-		stmt.execute(QueryTxt);	
-							
-%>
-<%
-		stmt.close(); 
-		conn.close(); 
+	CommentDao cd = new CommentDaoImpl();
+	Comment comment = new Comment();
+	comment.setBoard_id(Integer.parseInt(board_id));
+	comment.setPost_id(Integer.parseInt(post_id));
+	comment.setName(name);
+	comment.setContent(content);
+	cd.createComment(comment);
 
-}
-catch (Exception e) {
-	out.print(e);
-}
 %>
 <script>
-window.location='BoardItemView.jsp?board_index=<%=board_index%>&get_id=<%=post_id%>';
+window.location='BoardItemView.jsp?board_id=<%=board_id%>&get_id=<%=post_id%>';
 function characterCheck(obj){
 	var regExp = /[\{\}\\?.,;(\)*~~\'!^-_+<>!\#$%&\'\"\(\=]/gi;
 	if( regExp.test(obj.value) ) {
