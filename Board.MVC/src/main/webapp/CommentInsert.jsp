@@ -13,18 +13,6 @@
 %>
 <html> 
 <head>
-<SCRIPT LANGUAGE="JavaScript"> 
-function getDate(){
-	var now = new Date();
-	var year = now.getFullYear();
-	var month = now.getMonth();
-	var date = now.getDate();
-	var hours = now.getHours();
-	var minutes = now.getMinutes();
-	var seconds = now.getSeconds();
-	document.write(year+"년 "+month+"월 "+date+"일 "+hours+":"+minutes+":"+seconds);
-}
-</SCRIPT> 
 </head> 
 <body> 
 <%
@@ -35,7 +23,6 @@ function getDate(){
 	comment.setName(name);
 	comment.setContent(content);
 	cd.createComment(comment);
-
 %>
 <script>
 window.location='BoardItemView.jsp?board_id=<%=board_id%>&get_id=<%=post_id%>';

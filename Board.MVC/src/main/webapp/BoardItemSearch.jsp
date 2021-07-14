@@ -10,6 +10,8 @@
 <%
 request.setCharacterEncoding("UTF-8");
 String keyword = request.getParameter("keyword");
+String startNum = request.getParameter("startNum");
+String countPage = request.getParameter("countPage");
 %>
 <html>
 <head>
@@ -37,6 +39,13 @@ String keyword = request.getParameter("keyword");
 	align-items: center;
 }
 
+#paging {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 100px;
+}
+
 tr, th {
 	text-align: center;
 	vertical-align: middle;
@@ -44,16 +53,16 @@ tr, th {
 </style>
 </head>
 <%
-	BoardItemService bis = new BoardItemServiceImpl();
-	List<BoardItem> boardItems = bis.searchItems(keyword);
-	pageContext.setAttribute("boardItems", boardItems);
-	
-	String result ="";
-	if (boardItems.size() == 0) {
-			result = "<h3>검색 결과가 없습니다.</h3>";
-		} else {
-			result = "<h3>" + keyword + " 검색 결과 입니다. </h3>";
-		}
+BoardItemService bis = new BoardItemServiceImpl();
+List<BoardItem> boardItems = bis.searchItems(startNum, countPage, keyword);
+pageContext.setAttribute("boardItems", boardItems);
+
+String result = "";
+if (boardItems.size() == 0) {
+	result = "<h3>검색 결과가 없습니다.</h3>";
+} else {
+	result = "<h3>" + keyword + " 검색 결과 입니다. </h3>";
+}
 %>
 <body>
 	<script
@@ -80,7 +89,9 @@ tr, th {
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> <input
+						aria-label="Search" name="keyword"> <input type="hidden"
+						name="startNum" value="1" /> <input type="hidden"
+						name="countPage" value="10" /> <input
 						class="btn btn-outline-secondary" type="submit" value="Search">
 				</form>
 			</div>
@@ -119,12 +130,54 @@ tr, th {
 					<td colspan="2"></td>
 				</tr>
 				<tr>
-					<td width="100"></td>
-					<td width="900"><input class="btn btn-outline-secondary"
-						type=button value="게시판 목록" OnClick="location.href='BoardList.jsp'">
-					</td>
+					<td width="1200"></td>
+					<td><input class="btn btn-outline-secondary" type=button
+						value="게시판 목록" OnClick="location.href='BoardList.jsp'"></td>
 				</tr>
 			</table>
+		</div>
+	</div>
+	<br>
+	<br>
+	<%
+	List<Integer> values = bis.searchPaging(startNum, countPage, keyword);
+	pageContext.setAttribute("values", values);
+	pageContext.setAttribute("totalCnt", values.get(0));
+	pageContext.setAttribute("fromPT", values.get(1));
+	pageContext.setAttribute("cntPT", values.get(2));
+	pageContext.setAttribute("pageNum", values.get(3));
+	pageContext.setAttribute("startPage", values.get(4));
+	pageContext.setAttribute("endPage", values.get(5));
+	pageContext.setAttribute("totalPage", values.get(6));
+	pageContext.setAttribute("previous", values.get(7));
+	pageContext.setAttribute("next", values.get(8));
+	%>
+	<div class="container">
+		<div id="paging">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li class='page-item'><a class='page-link'
+						href='BoardItemSearch.jsp?keyword=<%=keyword%>&startNum=${previous}&countPage=${cntPT}'>Previous</a></li>
+					<c:choose>
+						<c:when test="${cntPT eq 1}">
+							<c:forEach begin="${startPage}" end="${endPage}" var="i">
+								<li class='page-item'><a class='page-link'
+									href='BoardItemSearch.jsp?keyword=<%=keyword%>&startNum=${((i-1) * (cntPT)+1)}&countPage=${cntPT}'><c:out
+											value="${i}" /></a></li>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<c:forEach begin="${startPage}" end="${endPage}" var="i">
+								<li class='page-item'><a class='page-link'
+									href='BoardItemSearch.jsp?keyword=<%=keyword%>&startNum=${((i-1) * (cntPT)+1)}&countPage=${cntPT}'><c:out
+											value="${i}" /></a></li>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+					<li class='page-item'><a class='page-link'
+						href='BoardItemSearch.jsp?keyword=<%=keyword%>&startNum=${next}&countPage=${cntPT}'>Next</a></li>
+				</ul>
+			</nav>
 		</div>
 	</div>
 	<script>

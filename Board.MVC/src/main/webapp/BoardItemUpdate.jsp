@@ -2,8 +2,8 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ page import="kr.ac.kopo.kopo40.domain.BoardItem"%>
-<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService" %>
-<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl" %>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String board_id = request.getParameter("board_id");
@@ -82,8 +82,10 @@ tr, th {
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> <input
-						class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input type="hidden"
+						name="startNum" value="1"/> <input type="hidden" name="countPage"
+						value="10" /> <input class="btn btn-outline-secondary"
+						type="submit" value="Search">
 				</form>
 			</div>
 		</div>
@@ -101,7 +103,7 @@ tr, th {
 							<th scope="col"><b>번호</b></th>
 							<th scope="col" style="vertical-align: top;">
 								<div class="input-group mb-3">
-								<input type=hidden name="board_id" value="<%=board_id%>">
+									<input type=hidden name="board_id" value="<%=board_id%>">
 									<input type="text" class="form-control" aria-label="Username"
 										name=get_id value=<%=get_id%> readonly>
 								</div>
@@ -119,8 +121,9 @@ tr, th {
 						<tr>
 							<th scope="col"><b>제목</b></th>
 							<th scope="col"><input type="text" class="form-control"
-								value=<%=boardItem.getTitle()%> aria-label="Username" name=get_title size="20"
-								maxlength="70" minlength="1" onkeyup='characterCheck(this);'
+								value=<%=boardItem.getTitle()%> aria-label="Username"
+								name=get_title size="20" maxlength="70" minlength="1"
+								onkeyup='characterCheck(this);'
 								onkeydown='characterCheck(this);' onchange='noSpaceForm(this);'
 								autocomplete='off' required></th>
 						</tr>
@@ -151,16 +154,17 @@ tr, th {
 				<tr>
 					<td width=780></td>
 					<td><input class="btn btn-outline-secondary" type=button
-						value="취소" OnClick="location.href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=1&countPage=10'"></td>
+						value="취소"
+						OnClick="location.href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=1&countPage=10'"></td>
 					<td><input class="btn btn-outline-secondary" type="submit"
 						value="수정"></td>
-					<td>
-						<input class="btn btn-outline-secondary" type=button 
-						value="삭제" OnClick="location.href='BoardItemDelete.jsp?board_id=<%=board_id%>&get_id=<%=get_id%>'">
+					<td><input class="btn btn-outline-secondary" type=button
+						value="삭제"
+						OnClick="location.href='BoardItemDelete.jsp?board_id=<%=board_id%>&get_id=<%=get_id%>'">
 					</td>
 				</tr>
 			</table>
-			</div>
+		</div>
 	</form>
 	<script>
 		function characterCheck(obj) {

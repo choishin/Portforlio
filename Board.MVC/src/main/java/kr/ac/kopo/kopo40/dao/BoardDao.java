@@ -12,6 +12,6 @@ public interface BoardDao {
 	void delete(Board board);
 	int totalCount();
 	int getMax();
-	void createTable();
 	void drop();
+	void createTable();
 }

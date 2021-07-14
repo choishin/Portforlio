@@ -83,8 +83,10 @@ h1, h4 {
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> <input
-						class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input type="hidden"
+						name="startNum"  value="1" /> <input type="hidden" name="countPage"
+						value="10" /> <input class="btn btn-outline-secondary"
+						type="submit" value="Search">
 				</form>
 			</div>
 		</div>
@@ -119,7 +121,7 @@ h1, h4 {
 			<tbody>
 				<%
 				BoardItemService bis = new BoardItemServiceImpl();
-				List<BoardItem> boardItems = bis.limitPaging(Integer.parseInt(startNum), Integer.parseInt(countPage),
+				List<BoardItem> boardItems = bis.listItems(Integer.parseInt(startNum), Integer.parseInt(countPage),
 						Integer.parseInt(board_id));
 				pageContext.setAttribute("boardItems", boardItems);
 				%>
@@ -169,17 +171,7 @@ h1, h4 {
 	<br>
 	<br>
 	<%
-	List<Integer> values = bis.paging(startNum, countPage, Integer.parseInt(board_id));
-	int totalCnt = values.get(0);
-	int fromPT = values.get(1);
-	int cntPT = values.get(2);
-	int pageNum = values.get(3);
-	int startPage = values.get(4);
-	int endPage = values.get(5);
-	int totalPage = values.get(6);
-	int previous = values.get(7);
-	int next = values.get(8);
-
+	List<Integer> values = bis.listPaging(startNum, countPage, Integer.parseInt(board_id));
 	pageContext.setAttribute("values", values);
 	pageContext.setAttribute("totalCnt", values.get(0));
 	pageContext.setAttribute("fromPT", values.get(1));
@@ -197,12 +189,12 @@ h1, h4 {
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
 					<li class='page-item'><a class='page-link'
-						href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=<%=previous%>&countPage=<%=cntPT%>'>Previous</a></li>
+						href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=${previous}&countPage=${cntPT}'>Previous</a></li>
 					<c:choose>
 						<c:when test="${cntPT eq 1}">
 							<c:forEach begin="${startPage}" end="${endPage}" var="i">
 								<li class='page-item'><a class='page-link'
-									href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=${((i-1) * (cntPT)+1)}&countPage=<%=cntPT%>'><c:out
+									href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=${((i-1) * (cntPT)+1)}&countPage=${cntPT}'><c:out
 											value="${i}" /></a></li>
 							</c:forEach>
 						</c:when>
@@ -215,7 +207,7 @@ h1, h4 {
 						</c:otherwise>
 					</c:choose>
 					<li class='page-item'><a class='page-link'
-						href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=<%=next%>&countPage=<%=cntPT%>'>Next</a></li>
+						href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=${next}&countPage=${cntPT}'>Next</a></li>
 				</ul>
 			</nav>
 		</div>

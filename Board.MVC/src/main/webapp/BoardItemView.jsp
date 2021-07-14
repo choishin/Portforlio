@@ -94,8 +94,10 @@ h1, h2, h3, h4 {
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> <input
-						class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input type="hidden"
+						name="startNum"  value="1" /> <input type="hidden" name="countPage"
+						value="10" /> <input class="btn btn-outline-secondary"
+						type="submit" value="Search">
 				</form>
 			</div>
 		</div>
@@ -154,13 +156,13 @@ h1, h2, h3, h4 {
 					pageContext.setAttribute("comments",comments);
 					%>
 					<c:forEach var="comment" items="${comments}" varStatus="status">
-					<tr>
-						<td class='writer'><c:out value="${comment.name}" /></td>
-						<td class='contents'><c:out value="${comment.getContent()}" /></td>
-						<td class='date'><c:out value="${comment.getDate()}" /></td>
-						<td class='buttons'></td>
-					</tr>
-				</c:forEach>
+						<tr>
+							<td class='writer'><c:out value="${comment.name}" /></td>
+							<td class='contents'><c:out value="${comment.getContent()}" /></td>
+							<td class='date'><c:out value="${comment.getDate()}" /></td>
+							<td class='buttons'></td>
+						</tr>
+					</c:forEach>
 				</thead>
 			</table>
 		</div>
@@ -180,15 +182,14 @@ h1, h2, h3, h4 {
 							<div class="input-group mb-3">
 								<input type="text" class="form-control" placeholder="작성자"
 									aria-label="Username" aria-describedby="basic-addon1"
-									name='name' placeholder='작성자' maxlength=70 minlength=1
-									required>
+									name='name' placeholder='작성자' maxlength=70 minlength=1 required>
 							</div>
 						</th>
 						<th scope="col" class="contents">
 							<div class="input-group">
 								<textarea class="form-control" aria-label="With textarea"
-									name='content' rows='2' cols='70'
-									placeholder='댓글을 작성해주세요' maxlength=200 minlength=1 required></textarea>
+									name='content' rows='2' cols='70' placeholder='댓글을 작성해주세요'
+									maxlength=200 minlength=1 required></textarea>
 							</div>
 						</th>
 						<th scope="col" class="date" style="vertical-align: top;"><script>

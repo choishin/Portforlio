@@ -13,6 +13,7 @@ import kr.ac.kopo.kopo40.domain.Board;
 
 public class BoardDaoImpl implements BoardDao {
 	static BoardDaoImpl instance = null;
+
 	public static BoardDaoImpl getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
 			instance = new BoardDaoImpl();
@@ -21,23 +22,25 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	String IP = Data.IP;
-	
+
 	@Override
 	public void create(Board board) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
+
 			String QueryTxt;
-			QueryTxt = "insert into boardList(title,info) values('" + board.getTitle() + "','"+board.getInfo()+"');";
+			QueryTxt = "insert into boardList(title,info) values('" + board.getTitle() + "','" + board.getInfo()
+					+ "');";
 			stmt.executeUpdate(QueryTxt);
+
 			stmt.close();
 			conn.close();
 		} catch (Exception e) {
 			System.out.print(e);
 		}
 	}
-	
 
 	@Override
 	public List<Board> selectAll() {
@@ -45,12 +48,11 @@ public class BoardDaoImpl implements BoardDao {
 		List<Board> boardAll = new ArrayList<Board>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
 			QueryTxt = String.format("select * from boardList;");
-
 			ResultSet rset = stmt.executeQuery(QueryTxt);
 			while (rset.next()) {
 				int board_index = rset.getInt(1);
@@ -70,13 +72,13 @@ public class BoardDaoImpl implements BoardDao {
 		}
 		return boardAll;
 	}
-	
+
 	@Override
 	public Board selectOne(int board_id) {
 		Board selectOne = new Board();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -105,7 +107,7 @@ public class BoardDaoImpl implements BoardDao {
 		String new_title = board.getTitle();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -126,7 +128,7 @@ public class BoardDaoImpl implements BoardDao {
 		int board_id = board.getBoard_id();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -145,8 +147,9 @@ public class BoardDaoImpl implements BoardDao {
 		int totalCnt = 0;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
+			
 			String QueryTxt;
 			QueryTxt = String.format("select count(*) from boardList;");
 			ResultSet rset = stmt.executeQuery(QueryTxt);
@@ -163,12 +166,11 @@ public class BoardDaoImpl implements BoardDao {
 		int maxId = 0;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
 			QueryTxt = String.format("select max(id) from boardList;");
-
 			ResultSet rset = stmt.executeQuery(QueryTxt);
 			while (rset.next()) {
 				String id = rset.getString(1);
@@ -179,12 +181,12 @@ public class BoardDaoImpl implements BoardDao {
 		}
 		return maxId;
 	}
-	
+
 	public void drop() {
 		// TODO Auto-generated method stub
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
@@ -207,17 +209,14 @@ public class BoardDaoImpl implements BoardDao {
 			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 			String QueryTxt = "";
-			QueryTxt = "create table boardList ("+
-			"id int not null primary key auto_increment,"+
-			"title varchar (70),"+
-			"info varchar(200)"+
-			");";
+			QueryTxt = "create table boardList (" + "id int not null primary key auto_increment,"
+					+ "title varchar (70)," + "info varchar(200)" + ");";
 			stmt.execute(QueryTxt);
 			stmt.close();
 			conn.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+
 	}
 }

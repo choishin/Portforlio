@@ -13,8 +13,9 @@ public interface BoardItemDao {
 	int totalCount(int board_id);
 	int getMax(int board_id);
 	void addViewCount(int board_id, int id);
-	List<BoardItem> limitPaging(int startNum, int countPage, int board_id);
+	int searchCount(String keyword);
+	List<BoardItem> searchItems(String startNum, String countPage,String keyword);
+	List<BoardItem> listItems(int startNum, int countPage, int board_id);
 	void drop();
 	void createTable();
-	List<BoardItem> searchItems(String keyword);
 }

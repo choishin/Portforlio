@@ -2,8 +2,8 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*"%>
 <%@ page import="kr.ac.kopo.kopo40.domain.BoardItem"%>
-<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService" %>
-<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl" %>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String board_id = request.getParameter("board_id");
@@ -68,8 +68,10 @@ h1, h4 {
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> <input
-						class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input type="hidden"
+						name="startNum"  value="1" /> <input type="hidden" name="countPage"
+						value="10" /> <input class="btn btn-outline-secondary"
+						type="submit" value="Search">
 				</form>
 			</div>
 		</div>
@@ -92,9 +94,10 @@ h1, h4 {
 				</tr>
 				<tr>
 					<td width="100"></td>
-					<td width="900"><input class="btn btn-outline-secondary" type=button
-						value="목록" OnClick="location.href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=1&countPage=10'"> <input
-						class="btn btn-outline-secondary" type=button value="쓰기"
+					<td width="900"><input class="btn btn-outline-secondary"
+						type=button value="목록"
+						OnClick="location.href='BoardItemList.jsp?board_id=<%=board_id%>&startNum=1&countPage=10'">
+						<input class="btn btn-outline-secondary" type=button value="쓰기"
 						OnClick="location.href='BoardItemInsert.jsp?board_index=<%=board_id%>'"></td>
 				</tr>
 			</table>

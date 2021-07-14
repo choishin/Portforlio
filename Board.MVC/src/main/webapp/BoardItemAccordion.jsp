@@ -1,10 +1,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*"%>
+<%@ page import="java.sql.*, javax.sql.*, java.io.*,java.util.*"%>
 <%@ page import="kr.ac.kopo.kopo40.domain.Board"%>
+<%@ page import="kr.ac.kopo.kopo40.domain.BoardItem"%>
 <%@ page import="kr.ac.kopo.kopo40.service.BoardService"%>
 <%@ page import="kr.ac.kopo.kopo40.service.BoardServiceImpl"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemService"%>
+<%@ page import="kr.ac.kopo.kopo40.service.BoardItemServiceImpl"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+request.setCharacterEncoding("UTF-8");
+String board_id = request.getParameter("board_id");
+%>
 <html>
 <head>
 <!-- Required meta tags -->
@@ -17,8 +24,18 @@
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 <style>
+/*스크롤 없애기*/
+body {
+	overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+	display: none;
+}
+
 .contaner {
-	/*flex : 정렬을 위한 컨테이너*/
+	height: 1200px;
+	/*flex: 정렬을 위한 컨테이너 */
 	display: flex;
 	/*주측 방향 정렬 (가로에서만)*/
 	justify-content: flex-start;
@@ -26,29 +43,11 @@
 	align-items: flex-start;
 }
 
-#paging {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 100px;
-}
-#buttons {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-left: 1050px;
-}
-
-table {
-	text-align: center;
-}
-
 h1, h4 {
 	color: #767676;
 }
 </style>
 </head>
-
 <body>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -74,66 +73,56 @@ h1, h4 {
 				</ul>
 				<form class="d-flex" method='get' action='BoardItemSearch.jsp'>
 					<input class="form-control me-2" type="text" placeholder="Search"
-						aria-label="Search" name="keyword"> 
-					<input type ="hidden" name="startNum"  value="1" />
-					<input type ="hidden" name="countPage" value="10"/>										
-					<input class="btn btn-outline-secondary" type="submit" value="Search">
+						aria-label="Search" name="keyword"> <input type="hidden"
+						name="startNum" /> <input type="hidden" name="countPage"
+						value="10" /> <input class="btn btn-outline-secondary"
+						type="submit" value="Search">
 				</form>
 			</div>
 		</div>
 	</nav>
 	<br>
 	<br>
+	<%
+		BoardService bs = new BoardServiceImpl();
+		Board board = bs.selectOne(Integer.parseInt(board_id));
+		pageContext.setAttribute("board", board);
+	%>
 	<center>
-		<h1>Board List</h1>
-		<h4>게시판 목록</h4>
+		<h1>${board.getTitle()}</h1>
+		<h4>${board.getInfo()}</h4>
 	</center>
 	<br>
 	<br>
 	<br>
 	<%
-		BoardService bs = new BoardServiceImpl();
-		List<Board> boardList = bs.selectAll();
-	    pageContext.setAttribute("boardList", boardList);	  
+	BoardItemService bis = new BoardItemServiceImpl();
+	List<BoardItem> boardItems = bis.selectAll(Integer.parseInt(board_id));
+	pageContext.setAttribute("boardItems", boardItems);
 	%>
 	<div class="container">
-		<table class="table table-hover">
-			<thead>
-			<tbody>
-				<tr>
-					<th scope='row'>
-						<p align=center>게시판 번호</p>
-					</th>
-					<th scope='row'>
-						<p align=center>게시판 이름</p>
-					</th>
-				</tr>
-				<c:forEach var="board" items="${boardList}">
-					<tr>
-						<td><p align=center>
-								<c:out value="${board.getTitle()}" />
-							</p></td>
-						<td><a href='BoardItemList.jsp?board_id=${board.getBoard_id()}&startNum=1&countPage=10'>${board.getTitle()}</a></td>
-					</tr>
-				</c:forEach>
-
-			</tbody>
-		</table>
-	</div>
-	<div class="container">
-		<table class="buttons">
-			<tr>
-				<td width=1100></td>
-				<td>
-					<div class="btn-group btn-group" role="group"
-						aria-label="Basic outlined example">
-						<input type="button" class="btn btn-outline-secondary"
-							value="게시판 목록" OnClick="location.href='BoardList.jsp'">
+		<div class="accordion" id="accordionExample">
+			<c:forEach var="boardItem" items="${boardItems}">
+				<div class='accordion-item'>
+					<h2 class='accordion-header' id='heading${boardItem.id}'>
+						<button class='accordion-button collapsed' type='button'
+							data-bs-toggle='collapse'
+							data-bs-target='#collapse${boardItem.id}' aria-expanded='false'
+							aria-controls='collapse${boardItem.id}'>
+							<c:out value="${boardItem.title}" />
+						</button>
+					</h2>
+					<div id='collapse${boardItem.id}'
+						class='accordion-collapse collapse'
+						aria-labelledby='heading${boardItem.id}'
+						data-bs-parent='#accordionExample'>
+						<div class='accordion-body'>
+							<c:out value="${boardItem.content}" />
+						</div>
 					</div>
-				</td>
-				<td></td>
-			</tr>
-		</table>
+				</div>
+			</c:forEach>
+		</div>
 	</div>
 	<br>
 	<br>

@@ -14,6 +14,7 @@ import kr.ac.kopo.kopo40.domain.BoardItem;
 public class BoardItemDaoImpl implements BoardItemDao {
 
 	static BoardItemDaoImpl instance = null;
+
 	public static BoardItemDaoImpl getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
 			instance = new BoardItemDaoImpl();
@@ -56,7 +57,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
-			QueryTxt = String.format("select * from boardItem order by id desc where board_id=" + board_id + ";");
+			QueryTxt = String.format("select * from boardItem where board_id=" + board_id + " order by id desc;");
 
 			ResultSet rset = stmt.executeQuery(QueryTxt);
 			while (rset.next()) {
@@ -65,7 +66,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 				String date = rset.getString(3);
 				String content = rset.getString(4);
 				int viewcnt = rset.getInt(5);
-				
+
 				BoardItem boardItem = new BoardItem();
 				boardItem.setId(id);
 				boardItem.setTitle(title);
@@ -96,14 +97,14 @@ public class BoardItemDaoImpl implements BoardItemDao {
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
-			QueryTxt = String.format("select * from boardItem where board_id=" + board_id + " and id=" + id+ ";");
+			QueryTxt = String.format("select * from boardItem where board_id=" + board_id + " and id=" + id + ";");
 			ResultSet rset = stmt.executeQuery(QueryTxt);
 			while (rset.next()) {
 				String title = rset.getString(2);
 				String date = rset.getString(3);
 				String content = rset.getString(4);
 				int viewcnt = rset.getInt(5);
-				
+
 				newBoardItem.setId(id);
 				newBoardItem.setTitle(title);
 				newBoardItem.setDate(date);
@@ -133,8 +134,9 @@ public class BoardItemDaoImpl implements BoardItemDao {
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
-			QueryTxt = "UPDATE boardItem SET title = '" + boardItem_title + "', date=date_format(now(),'%Y-%m-%d %I:%i:%s'), content='"
-					+ boardItem_content + "' WHERE board_id=" + board_id + " and id=" + boardItem_index + ";";
+			QueryTxt = "UPDATE boardItem SET title = '" + boardItem_title
+					+ "', date=date_format(now(),'%Y-%m-%d %I:%i:%s'), content='" + boardItem_content
+					+ "' WHERE board_id=" + board_id + " and id=" + boardItem_index + ";";
 			stmt.execute(QueryTxt);
 
 			stmt.close();
@@ -222,8 +224,78 @@ public class BoardItemDaoImpl implements BoardItemDao {
 		}
 
 	}
+	
+	@Override
+	public int searchCount(String keyword) {
+		// TODO Auto-generated method stub
+		int searchCnt = 0;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
+			Statement stmt = conn.createStatement();
+			String QueryTxt;
+			QueryTxt = String.format("SELECT * FROM boardItem WHERE title LIKE '%%" + keyword
+					+ "%%' or content like '%%" + keyword + "%%'");
+			ResultSet rset = stmt.executeQuery(QueryTxt);
+			while (rset.next()) {
+				searchCnt = rset.getInt(1);
+			}
+			rset.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			System.out.print(e);
+		}
+		return searchCnt;
+	}
 
-	public List<BoardItem> limitPaging(int startNum, int countPage, int board_id) {
+	@Override
+	public List<BoardItem> searchItems(String startNum, String countPage,String keyword) {
+		// TODO Auto-generated method stub
+		List<BoardItem> boardItems = new ArrayList<BoardItem>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
+			Statement stmt = conn.createStatement();
+			String QueryTxt;
+			QueryTxt = String.format("SELECT * FROM boardItem WHERE title LIKE '%%" + keyword
+					+ "%%' or content like '%%" + keyword + "%%' order by id desc limit "+startNum+","+countPage+";");
+			ResultSet rset = stmt.executeQuery(QueryTxt);
+			int id = 0;
+			String title = "";
+			String date = "";
+			String content = "";
+			int viewcnt = 0;
+			int board_id = 0;
+			while (rset.next()) {
+				BoardItem boardItem = new BoardItem();
+				id = rset.getInt(1);
+				title = rset.getString(2);
+				date = rset.getString(3);
+				content = rset.getString(4);
+				viewcnt = rset.getInt(5);
+				board_id = rset.getInt(6);
+
+				boardItem.setId(id);
+				boardItem.setTitle(title);
+				boardItem.setDate(date);
+				boardItem.setContent(content);
+				boardItem.setViewcnt(viewcnt);
+				boardItem.setBoard_id(board_id);
+				boardItems.add(boardItem);
+			}
+
+			rset.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			System.out.print(e);
+		}
+
+		return boardItems;
+	}
+
+	public List<BoardItem> listItems(int startNum, int countPage, int board_id) {
 		// TODO Auto-generated method stub
 		List<BoardItem> boardItemAll = new ArrayList<BoardItem>();
 		try {
@@ -232,9 +304,10 @@ public class BoardItemDaoImpl implements BoardItemDao {
 			Statement stmt = conn.createStatement();
 
 			String QueryTxt;
-			//startNum에 -1을 해준 이유: 들어온 자료는 0부터 인덱스가 시작되기 때문에, 1부터 출력을 하겠다고 했을 때 실제로 들어와야 하는 값은 0
+			// startNum에 -1을 해준 이유: 들어온 자료는 0부터 인덱스가 시작되기 때문에, 1부터 출력을 하겠다고 했을 때 실제로 들어와야 하는
+			// 값은 0
 			QueryTxt = String.format("select * from boardItem where board_id=" + board_id + " order by id desc limit "
-					+ (startNum-1) + "," + countPage + ";");
+					+ (startNum - 1) + "," + countPage + ";");
 
 			ResultSet rset = stmt.executeQuery(QueryTxt);
 			while (rset.next()) {
@@ -243,7 +316,7 @@ public class BoardItemDaoImpl implements BoardItemDao {
 				String date = rset.getString(3);
 				String content = rset.getString(4);
 				int viewcnt = rset.getInt(5);
-				
+
 				BoardItem boardItem = new BoardItem();
 				boardItem.setId(id);
 				boardItem.setTitle(title);
@@ -303,52 +376,6 @@ public class BoardItemDaoImpl implements BoardItemDao {
 			System.out.println(e);
 		}
 
-	}
-
-	@Override
-	public List<BoardItem> searchItems(String keyword) {
-		// TODO Auto-generated method stub
-		List<BoardItem> boardItems = new ArrayList<BoardItem>();
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://" + IP + ":3306/kopoctc", "root", "kopoctc");
-			Statement stmt = conn.createStatement();
-			String QueryTxt;
-			QueryTxt = String.format("SELECT * FROM boardItem WHERE title LIKE '%%" + keyword
-					+ "%%' or content like '%%" + keyword + "%%';");
-			ResultSet rset = stmt.executeQuery(QueryTxt);
-			int id = 0;
-			String title = "";
-			String date = "";
-			String content = "";
-			int viewcnt = 0;
-			int board_id = 0;
-			while (rset.next()) {
-				BoardItem boardItem = new BoardItem();
-				id = rset.getInt(1);
-				title = rset.getString(2);
-				date = rset.getString(3);
-				content = rset.getString(4);
-				viewcnt = rset.getInt(5);
-				board_id = rset.getInt(6);
-
-				boardItem.setId(id);
-				boardItem.setTitle(title);
-				boardItem.setDate(date);
-				boardItem.setContent(content);
-				boardItem.setViewcnt(viewcnt);
-				boardItem.setBoard_id(board_id);
-				boardItems.add(boardItem);
-			}
-
-			rset.close();
-			stmt.close();
-			conn.close();
-		} catch (Exception e) {
-			System.out.print(e);
-		}
-
-		return boardItems;
 	}
 
 }
