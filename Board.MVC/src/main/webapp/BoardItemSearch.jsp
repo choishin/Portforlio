@@ -53,7 +53,7 @@ tr, th {
 </style>
 </head>
 <%
-BoardItemService bis = new BoardItemServiceImpl();
+BoardItemService bis = BoardItemServiceImpl.getInstance();
 List<BoardItem> boardItems = bis.searchItems(startNum, countPage, keyword);
 pageContext.setAttribute("boardItems", boardItems);
 

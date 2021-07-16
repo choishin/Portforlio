@@ -94,7 +94,7 @@ h1, h4 {
 	<br>
 	<br>
 	<%
-	BoardService bs = new BoardServiceImpl();
+	BoardService bs = BoardServiceImpl.getInstance();
 	Board board = bs.selectOne(Integer.parseInt(board_id));
 	pageContext.setAttribute("board", board);
 	%>
@@ -120,7 +120,7 @@ h1, h4 {
 				</tr>
 			<tbody>
 				<%
-				BoardItemService bis = new BoardItemServiceImpl();
+				BoardItemService bis = BoardItemServiceImpl.getInstance();
 				List<BoardItem> boardItems = bis.listItems(Integer.parseInt(startNum), Integer.parseInt(countPage),
 						Integer.parseInt(board_id));
 				pageContext.setAttribute("boardItems", boardItems);

@@ -92,7 +92,7 @@ h1, h4 {
 	<br>
 	<br>
 	<%
-		BoardService bs = new BoardServiceImpl();
+		BoardService bs = BoardServiceImpl.getInstance();
 		List<Board> boardList = bs.selectAll();
 	    pageContext.setAttribute("boardList", boardList);	  
 	%>

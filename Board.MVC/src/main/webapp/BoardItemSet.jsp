@@ -77,7 +77,7 @@ h1, h4 {
 		</div>
 	</nav>
 	<%
-	BoardItemService bis = new BoardItemServiceImpl();
+	BoardItemService bis = BoardItemServiceImpl.getInstance();
 	BoardItem boardItem = new BoardItem();
 	boardItem.setBoard_id(Integer.parseInt(board_id));
 	boardItem.setId(Integer.parseInt(get_id));

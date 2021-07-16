@@ -73,7 +73,7 @@ h1, h4 {
 		</div>
 	</nav>
 	<%
-	 BoardItemService bs = new BoardItemServiceImpl();
+	 BoardItemService bs = BoardItemServiceImpl.getInstance();
 	 bs.delete(Integer.parseInt(board_id),Integer.parseInt(get_id));	
 	%>
 	<div class="container">

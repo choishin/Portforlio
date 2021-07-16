@@ -11,6 +11,14 @@ import kr.ac.kopo.kopo40.data.Data;
 import kr.ac.kopo.kopo40.domain.Comment;
 
 public class CommentDaoImpl implements CommentDao{
+	private static CommentDaoImpl instance = null;
+	private CommentDaoImpl() {}
+	public static CommentDaoImpl getInstance() {
+		if (instance == null) {
+			instance = new CommentDaoImpl();
+		}
+		return instance;
+	}
 
 	String IP = Data.IP;
 	

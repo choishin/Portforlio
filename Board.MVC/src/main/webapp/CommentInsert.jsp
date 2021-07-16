@@ -16,7 +16,7 @@
 </head> 
 <body> 
 <%
-	CommentDao cd = new CommentDaoImpl();
+	CommentDao cd = CommentDaoImpl.getInstance();
 	Comment comment = new Comment();
 	comment.setBoard_id(Integer.parseInt(board_id));
 	comment.setPost_id(Integer.parseInt(post_id));

@@ -5,8 +5,10 @@ import kr.ac.kopo.kopo40.domain.Board;
 
 public interface BoardService {
 	void create(Board board);
-	Board selectOne(int id);
 	List<Board> selectAll();
+	Board selectOne(int id);
 	void update(Board board);
 	void delete(Board board);
+	int totalCount();
+	int getMax();
 }

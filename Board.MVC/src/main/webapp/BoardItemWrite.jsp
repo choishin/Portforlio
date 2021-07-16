@@ -78,7 +78,7 @@ h1, h4 {
 		</div>
 	</nav>
 	<%
-	BoardItemService bis = new BoardItemServiceImpl();
+	BoardItemService bis = BoardItemServiceImpl.getInstance();
 	BoardItem boardItem = new BoardItem();
 		
 	boardItem.setTitle(get_title);

@@ -91,7 +91,7 @@ tr, th {
 		</div>
 	</nav>
 	<%
-	BoardItemService bis = new BoardItemServiceImpl(); 
+	BoardItemService bis = BoardItemServiceImpl.getInstance(); 
 	BoardItem boardItem = bis.selectOne(Integer.parseInt(board_id),Integer.parseInt(get_id));
 	%>
 	<form method="post" action="BoardItemSet.jsp">

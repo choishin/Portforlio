@@ -12,8 +12,8 @@ import kr.ac.kopo.kopo40.data.Data;
 import kr.ac.kopo.kopo40.domain.Board;
 
 public class BoardDaoImpl implements BoardDao {
-	static BoardDaoImpl instance = null;
-
+	private static BoardDaoImpl instance = null;	
+	private BoardDaoImpl() {}
 	public static BoardDaoImpl getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
 			instance = new BoardDaoImpl();

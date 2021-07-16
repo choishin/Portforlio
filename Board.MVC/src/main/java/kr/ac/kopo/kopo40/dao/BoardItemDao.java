@@ -4,7 +4,6 @@ import java.util.List;
 import kr.ac.kopo.kopo40.domain.BoardItem;
 
 public interface BoardItemDao {
-	
 	void create(BoardItem boardItem);	
 	List<BoardItem> selectAll(int board_index);
 	BoardItem selectOne(int id, int board_id);

@@ -15,7 +15,7 @@
 <body>
 	<h1>테이블 만들기</h1>
 	<%
-	BoardDao bd = new BoardDaoImpl();
+	BoardDao bd = BoardDaoImpl.getInstance();
 	bd.drop();
 	out.println("drop table boardList OK<br>");
 	bd.createTable();
@@ -31,7 +31,7 @@
 	bd.create(board1);
 	out.println("insert boardList data OK<br>");
 	
-	BoardItemDao bid = new BoardItemDaoImpl();
+	BoardItemDao bid = BoardItemDaoImpl.getInstance();
 	bid.drop();
 	out.println("drop table boardItem<br>");
 	bid.createTable();
@@ -49,7 +49,7 @@
 	}
 	out.println("insert boardItem data OK<br>");
 	
-	CommentDao cd = new CommentDaoImpl();
+	CommentDao cd = CommentDaoImpl.getInstance();
 	cd.drop();
 	out.println("drop table comment OK<br>");
 	cd.createComments();

@@ -90,7 +90,7 @@ tr, th {
 		</div>
 	</nav>
 	<%
-	BoardItemService bis = new BoardItemServiceImpl();
+	BoardItemService bis = BoardItemServiceImpl.getInstance();
 	int maxId = bis.getMax(Integer.parseInt(board_id));
 	%>
 	<FORM METHOD=POST action="BoardItemWrite.jsp?board_id=<%=board_id%>">

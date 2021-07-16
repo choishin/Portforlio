@@ -10,8 +10,8 @@ import kr.ac.kopo.kopo40.domain.BoardItem;
 public class BoardItemServiceImpl implements BoardItemService {
 	static BoardItemDaoImpl boardItemDao;
 	private static BoardItemServiceImpl instance = null;
-
-	public BoardItemServiceImpl getInstance() throws ClassNotFoundException, SQLException {
+	private BoardItemServiceImpl() {}
+	public static BoardItemServiceImpl getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
 			instance = new BoardItemServiceImpl();
 		}
@@ -175,7 +175,7 @@ public class BoardItemServiceImpl implements BoardItemService {
 			}
 
 			if (next > searchCnt) {
-				next = searchCnt;
+				next = searchCnt-1;
 			}
 
 			forReturn.add(searchCnt);
@@ -284,7 +284,7 @@ public class BoardItemServiceImpl implements BoardItemService {
 			}
 
 			if (next > totalCnt) {
-				next = totalCnt;
+				next = totalCnt-1;
 			}
 
 			forReturn.add(totalCnt);

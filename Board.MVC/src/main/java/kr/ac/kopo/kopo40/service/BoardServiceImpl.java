@@ -9,7 +9,8 @@ import kr.ac.kopo.kopo40.domain.Board;
 public class BoardServiceImpl implements BoardService {
 	static BoardDaoImpl boardDao;
 	private static BoardServiceImpl instance = null;
-	public BoardServiceImpl getInstance() throws ClassNotFoundException, SQLException {
+	private BoardServiceImpl() {}
+	public static BoardServiceImpl getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
 			instance = new BoardServiceImpl();
 		}

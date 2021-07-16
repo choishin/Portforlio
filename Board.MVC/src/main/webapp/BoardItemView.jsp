@@ -108,7 +108,7 @@ h1, h2, h3, h4 {
 			<table class="table table-hover">
 				<thead>
 					<%
-					BoardItemService bis = new BoardItemServiceImpl();
+					BoardItemService bis = BoardItemServiceImpl.getInstance();
 					bis.addViewCount(Integer.parseInt(board_id), Integer.parseInt(get_id));
 					BoardItem boardItem = bis.selectOne(Integer.parseInt(board_id), Integer.parseInt(get_id));
 					pageContext.setAttribute("boardItem",boardItem);
@@ -151,7 +151,7 @@ h1, h2, h3, h4 {
 						<th class="buttons"></th>
 					</tr>
 					<%
-					CommentDao cd = new CommentDaoImpl();
+					CommentDao cd = CommentDaoImpl.getInstance();
 					List<Comment> comments = cd.getComments(Integer.parseInt(board_id),Integer.parseInt(get_id));
 					pageContext.setAttribute("comments",comments);
 					%>
